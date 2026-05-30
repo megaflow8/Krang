@@ -1,2 +1,3 @@
 llvm-runtimes/openmp ABI_X86: 32
 dev-libs/icu ABI_X86: 32
+app-arch/xz-utils ABI_X86: -32
