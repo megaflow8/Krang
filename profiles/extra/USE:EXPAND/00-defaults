@@ -1,3 +1,2 @@
-sys-apps/systemd boot cryptsetup ukify
-sys-kernel/installkernel -dracut systemd-boot ugrd uki ukify
-sys-kernel/gentoo-kernel -debug
+
+

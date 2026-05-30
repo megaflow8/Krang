@@ -1,0 +1,2 @@
+app-crypt/certbot certbot-nginx
+app-misc/mime-types nginx
