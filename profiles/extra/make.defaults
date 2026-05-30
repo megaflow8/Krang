@@ -1,0 +1,30 @@
+# zet cpu flags op hasswell
+
+CPU_FLAGS_X86="aes avx avx2 bmi1 bmi2 f16c fma3 mmx mmxext pclmul popcnt rdrand sse sse2 sse3 sse4_1 sse4_2 ssse3"
+
+# Hoeft niet zichtbaar te zijn
+
+USE_EXPAND_HIDDEN="CPU_FLAGS LLVM_SLOTS PYTHON_* VIDEO_CARDS LUA_* INPUT_DEVICES"
+
+# Zet standaardt VGA optie's
+
+VIDEO_CARDS="-* nvidia amdgpu radeonsi radeon"
+
+# Zet portage Log's aan en standaart opruimen
+
+FEATURES="${FEATURES} clean-logs"
+PORTAGE_LOGDIR="/var/log/portage"
+
+# zet de taal op nl_BE
+
+LINGUAS="-* nl en"
+L10N="-* nl en en-US"
+
+# Zet de standaart Use vlags aan/uit
+USE="${USE} -gpm -dvd -cdda -qt6 -man -cdr -sysprof -gui -gnome-keyring -vulkan -iptables"
+USE="${USE} modules-compress modules-sign apparmor audit dist-kernel nftables secureboot homed"
+USE="${USE} pgo lto vaapi v4l lm-sensors ffmpeg liblc3"
+USE="${USE} flatpak gtk3 gtk4 fpm ftp"
+
+# Zet de standaart lincense op
+ACCEPT_LICENSE="* -@EULA"
