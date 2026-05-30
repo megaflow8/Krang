@@ -28,3 +28,6 @@ USE="${USE} flatpak gtk3 gtk4 fpm ftp"
 
 # Zet de standaart lincense op
 ACCEPT_LICENSE="* -@EULA"
+
+# Zet Abi op 64
+ABI_X86="64"
