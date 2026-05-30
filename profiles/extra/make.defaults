@@ -23,7 +23,7 @@ L10N="-* nl en en-US"
 # Zet de standaart Use vlags aan/uit
 USE="${USE} -gpm -dvd -cdda -qt6 -man -cdr -sysprof -gui -gnome-keyring -vulkan -iptables"
 USE="${USE} modules-compress modules-sign apparmor audit dist-kernel nftables secureboot homed"
-USE="${USE} pgo lto vaapi v4l lm-sensors ffmpeg liblc3"
+USE="${USE} vaapi v4l lm-sensors ffmpeg liblc3"
 USE="${USE} flatpak gtk3 gtk4 fpm ftp"
 
 # Zet de standaart lincense op
