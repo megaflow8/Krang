@@ -4,13 +4,13 @@ CPU_FLAGS_X86="aes avx avx2 bmi1 bmi2 f16c fma3 mmx mmxext pclmul popcnt rdrand 
 
 # Hoeft niet zichtbaar te zijn
 
-USE_EXPAND_HIDDEN="CPU_FLAGS LLVM_SLOTS PYTHON_TARGETS PYTHON_SINGLE_TARGET PERL_FEATURES VIDEO_CARDS INPUT_DEVICES ABI_X86 LLVM_TARGETS"
+USE_EXPAND_HIDDEN="CPU_FLAGS PYTHON_TARGETS PYTHON_SINGLE_TARGET PERL_FEATURES VIDEO_CARDS INPUT_DEVICES ABI_X86 LLVM_TARGETS LLVM_SLOT"
 
 # Zet standaardt VGA optie's
 
 VIDEO_CARDS="-* nvidia amdgpu radeonsi radeon"
 
-# Zet portage Log's aan en standaart opruimen
+# Zet portage Log's aan en ruimt ze na een week op
 
 FEATURES="${FEATURES} clean-logs"
 PORTAGE_LOGDIR="/var/log/portage"
