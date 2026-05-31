@@ -1,3 +1,3 @@
 # Krang
 
-De profiel voor de container Krang en binpkgs van h97i.org 
+De profiel en gnome 50 ebuilds voor de container Krang
