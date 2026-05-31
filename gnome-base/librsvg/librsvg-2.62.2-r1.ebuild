@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -15,17 +15,17 @@ inherit cargo gnome2 meson-multilib python-any-r1 rust-toolchain vala
 
 DESCRIPTION="Scalable Vector Graphics (SVG) rendering library"
 HOMEPAGE="https://wiki.gnome.org/Projects/LibRsvg https://gitlab.gnome.org/GNOME/librsvg"
-SRC_URI+=" https://dev.gentoo.org/~sam/distfiles/${CATEGORY}/${PN}/${PN}-c-${PV}-crates.tar.xz"
+SRC_URI+=" https://github.com/gentoo-crate-dist/${PN}/releases/download/${PV}/${P}-crates.tar.xz"
 
 LICENSE="LGPL-2.1+"
 # Dependent crate licenses
 LICENSE+="
 	Apache-2.0 Apache-2.0-with-LLVM-exceptions BSD ISC MIT MPL-2.0
-	Unicode-3.0
+	UoI-NCSA Unicode-3.0
 "
 
 SLOT="2"
-KEYWORDS="amd64 arm arm64 ~loong ppc ppc64 ~riscv ~s390 ~sparc x86"
+KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86"
 
 IUSE="gtk-doc +introspection test +vala"
 RESTRICT="!test? ( test )"
@@ -47,7 +47,7 @@ RDEPEND="
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
-	dev-util/cargo-c
+	>=dev-util/cargo-c-0.10.10
 	x11-libs/gdk-pixbuf
 	${PYTHON_DEPS}
 	$(python_gen_any_dep 'dev-python/docutils[${PYTHON_USEDEP}]')
@@ -91,7 +91,7 @@ multilib_src_configure() {
 		$(meson_use test tests)
 	)
 
-	if ! multilib_is_native_abi; then
+	if ! multilib_is_native_abi || tc-is-cross-compiler; then
 		emesonargs+=(
 			# Set the rust target, which can differ from CHOST
 			-Dtriplet="$(rust_abi)"
