@@ -5,7 +5,7 @@
 app-crypt/certbot certbot-nginx
 app-misc/mime-types nginx
 sys-apps/systemd boot cryptsetup ukify
-sys-process/htop delayacct lm-sensors
+sys-process/htop lm-sensors
 app-admin/sudo -sendmail
 sys-firmware/intel-microcode hostonly
 sys-fs/btrfs-progs -man
