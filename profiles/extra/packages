@@ -4,10 +4,6 @@
 *app-shells/bash-completion
 *games-util/game-device-udev-rules
 *net-firewall/ufw
-*sec-policy/apparmor-profiles
-*sys-apps/apparmor
-*sys-apps/apparmor-utils
-*sys-apps/tuned
 *sys-auth/rtkit
 *sys-kernel/gentoo-kernel
 *sys-fs/dosfstools
