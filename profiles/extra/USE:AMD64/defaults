@@ -1,0 +1,6 @@
+games-util/game-device-udev-rules
+sys-libs/libudev-compat
+=media-libs/mesa-26.0*
+net-libs/msgraph
+sys-kernel/gentoo-kernel
+virtual/dist-kernel
