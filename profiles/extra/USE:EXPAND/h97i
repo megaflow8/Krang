@@ -9,7 +9,6 @@ sys-process/htop lm-sensors
 app-admin/sudo -sendmail
 sys-firmware/intel-microcode hostonly
 sys-fs/btrfs-progs -man
-net-libs/ngtcp2 gnutls
 app-arch/xz-utils -pgo
 sys-apps/iproute2 -iptables
 sys-kernel/linux-firmware dist-kernel -initramfs compress-zstd

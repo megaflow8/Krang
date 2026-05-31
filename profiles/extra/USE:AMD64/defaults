@@ -5,3 +5,4 @@ sys-libs/libudev-compat
 net-libs/msgraph
 sys-kernel/gentoo-kernel
 virtual/dist-kernel
+dev-python/fastapi
