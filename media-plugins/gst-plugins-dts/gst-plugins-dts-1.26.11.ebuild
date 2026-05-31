@@ -7,12 +7,12 @@ GST_ORG_MODULE=gst-plugins-bad
 inherit gstreamer-meson
 
 DESCRIPTION="DTS audio decoder plugin for Gstreamer"
-KEYWORDS="~amd64 ~arm64 ~hppa ~loong ~mips ~ppc ~ppc64 ~riscv x86"
+KEYWORDS="~amd64 ~arm64 ~hppa ~loong ~mips ~ppc ~ppc64 ~riscv ~x86"
 IUSE="+orc"
 
 RDEPEND="
 	>=media-libs/libdca-0.0.5-r3[${MULTILIB_USEDEP}]
-	orc? ( >=dev-lang/orc-0.4.33[${MULTILIB_USEDEP}] )
+	orc? ( >=dev-lang/orc-0.4.41[${MULTILIB_USEDEP}] )
 "
 DEPEND="${RDEPEND}"
 

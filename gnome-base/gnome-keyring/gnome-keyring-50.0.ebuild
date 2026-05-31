@@ -4,7 +4,7 @@
 EAPI=8
 PYTHON_COMPAT=( python3_{11..14} )
 
-inherit gnome.org gnome2-utils meson python-any-r1 virtualx xdg
+inherit gnome.org gnome2-utils meson python-any-r1 virtualx xdg systemd
 
 DESCRIPTION="Password and keyring managing daemon"
 HOMEPAGE="https://gitlab.gnome.org/GNOME/gnome-keyring"
@@ -72,6 +72,8 @@ src_configure() {
 		$(meson_feature systemd)
 		$(meson_use pam)
 	)
+	-Dsystemduserunitdir="$(systemd_get_userunitdir)"
+
 	meson_src_configure
 }
 
@@ -91,16 +93,10 @@ src_test() {
 }
 
 pkg_postinst() {
-	# cap_ipc_lock only needed if building with libcap-ng, but that breaks with glib-2.70
-	# Never install as suid root, this breaks dbus activation, see bug
-	# #513870, https://gitlab.gnome.org/GNOME/gnome-keyring/-/issues/77
+	systemd_reenable gnome-keyring-daemon.socket
 
 	xdg_pkg_postinst
 	gnome2_schemas_update
-	if ! [[ $(eselect pinentry show | grep "pinentry-gnome3") ]] ; then
-		ewarn "Please select pinentry-gnome3 as default pinentry provider:"
-		ewarn " # eselect pinentry set pinentry-gnome3"
-	fi
 }
 
 pkg_postrm() {

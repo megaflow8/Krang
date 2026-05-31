@@ -5,26 +5,38 @@ EAPI=8
 
 PYTHON_COMPAT=( python3_{11..14} )
 
-inherit meson python-r1 xdg-utils
+inherit meson python-r1 verify-sig xdg-utils
 
 DESCRIPTION="A Python Interface to GStreamer"
 HOMEPAGE="https://gstreamer.freedesktop.org/"
-SRC_URI="https://gstreamer.freedesktop.org/src/${PN}/${P}.tar.xz"
+SRC_URI="
+	https://gstreamer.freedesktop.org/src/${PN}/${P}.tar.xz
+	verify-sig? ( https://gstreamer.freedesktop.org/src/${PN}/${P}.tar.xz.asc )
+"
 
 LICENSE="LGPL-2+"
 SLOT="1.0"
-KEYWORDS="~alpha ~amd64 arm arm64 ~hppa ~loong ppc ppc64 ~riscv ~sparc x86"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~loong ~ppc ~ppc64 ~riscv ~sparc ~x86"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 RDEPEND="${PYTHON_DEPS}
 	>=media-libs/gstreamer-${PV}:1.0[introspection]
+	>=media-libs/gst-plugins-bad-${PV}:1.0[introspection]
 	>=media-libs/gst-plugins-base-${PV}:1.0[introspection]
-	>=dev-python/pygobject-3.56.2[${PYTHON_USEDEP}]
+	>=dev-python/pygobject-3.8:3[${PYTHON_USEDEP}]
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
 	virtual/pkgconfig
+	verify-sig? ( sec-keys/openpgp-keys-tpm )
 "
+
+VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/tpm.asc
+
+PATCHES=(
+	"${FILESDIR}"/gst-python-1.26.11-pygobject-3.52.patch
+	"${FILESDIR}"/gst-python-1.26.11-skip-test.patch
+)
 
 src_prepare() {
 	default

@@ -5,15 +5,18 @@ EAPI=8
 
 RUST_OPTIONAL=1
 RUST_MIN_VER=1.48
-inherit gstreamer-meson rust
+inherit gstreamer-meson rust verify-sig virtualx
 
 DESCRIPTION="Open source multimedia framework"
 HOMEPAGE="https://gstreamer.freedesktop.org/"
-SRC_URI="https://${PN}.freedesktop.org/src/${PN}/${P}.tar.xz"
+SRC_URI="
+	https://${PN}.freedesktop.org/src/${PN}/${P}.tar.xz
+	verify-sig? ( https://${PN}.freedesktop.org/src/${PN}/${P}.tar.xz.asc )
+"
 
 LICENSE="LGPL-2+"
 SLOT="1.0"
-KEYWORDS="~alpha ~amd64 arm arm64 ~hppa ~loong ~mips ppc ppc64 ~riscv ~sparc x86 ~x64-macos ~x64-solaris"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~loong ~mips ~ppc ~ppc64 ~riscv ~sparc ~x86 ~x64-macos ~x64-solaris"
 IUSE="+caps +introspection ptp unwind"
 
 # gstreamer-1.22.x requires 2.62, but 2.64 is strongly recommended
@@ -32,9 +35,11 @@ BDEPEND="
 	app-alternatives/yacc
 	app-alternatives/lex
 	ptp? ( ${RUST_DEPEND} )
+	verify-sig? ( sec-keys/openpgp-keys-tpm )
 "
 
 DOCS=( AUTHORS ChangeLog NEWS MAINTAINERS README.md RELEASE )
+VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/tpm.asc
 
 # Rust
 QA_FLAGS_IGNORED="usr/.*/libexec/gstreamer-1.0/gst-ptp-helper"
@@ -69,4 +74,35 @@ multilib_src_configure() {
 	fi
 
 	gstreamer_multilib_src_configure
+}
+
+multilib_src_test() {
+	# Homebrew test skips for meson
+	local -a tests
+	tests=( $(meson test --list -C "${BUILD_DIR}") )
+
+	local -a _skip_tests=(
+		# flaky
+		gst_gstbin
+	)
+
+	# Add suites which in this case are PN
+	if has_version ">=dev-build/meson-1.10.0"; then
+		local -a skip_tests=()
+		for skip_test in ${_skip_tests[@]}; do
+			skip_tests+=( "${PN}:${skip_test}" )
+		done
+	else
+		local -a skip_tests=( ${_skip_tests[@]} )
+	fi
+	unset _skip_tests
+
+	for test_index in ${!tests[@]}; do
+		if [[ ${skip_tests[@]} =~ ${tests[${test_index}]} ]]; then
+			unset tests[${test_index}]
+		fi
+	done
+
+	# gstreamer_multilib_src_test doesn't pass arguments
+	GST_GL_WINDOW=x11 virtx meson_src_test --timeout-multiplier 5 ${tests[@]}
 }

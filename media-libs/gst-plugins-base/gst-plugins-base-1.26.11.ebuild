@@ -4,10 +4,11 @@
 EAPI=8
 GST_ORG_MODULE="gst-plugins-base"
 
-inherit flag-o-matic meson-multilib gstreamer-meson virtualx
+inherit flag-o-matic meson-multilib gstreamer-meson verify-sig virtualx
 
 DESCRIPTION="Basepack of plugins for gstreamer"
 HOMEPAGE="https://gstreamer.freedesktop.org/"
+SRC_URI+=" verify-sig? ( https://gstreamer.freedesktop.org/src/${PN}/${P}.tar.xz.asc )"
 
 LICENSE="GPL-2+ LGPL-2+"
 KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~loong ~mips ~ppc ~ppc64 ~riscv ~sparc ~x86 ~x64-macos ~x64-solaris"
@@ -59,6 +60,7 @@ GL_DEPS="
 	>=media-libs/graphene-1.4.0[${MULTILIB_USEDEP}]
 	media-libs/libpng:0=[${MULTILIB_USEDEP}]
 	media-libs/libjpeg-turbo:0=[${MULTILIB_USEDEP}]
+	virtual/opengl
 " # graphene for optional gltransformation and glvideoflip elements and more GLSL Uniforms support in glshader; libpng/jpeg for gloverlay element
 # >=media-libs/graphene-1.4.0[${MULTILIB_USEDEP}]
 
@@ -69,7 +71,7 @@ RDEPEND="
 	introspection? ( >=dev-libs/gobject-introspection-1.82.0-r2:= )
 	ivorbis? ( >=media-libs/tremor-0_pre20130223[${MULTILIB_USEDEP}] )
 	ogg? ( >=media-libs/libogg-1.3.0[${MULTILIB_USEDEP}] )
-	orc? ( >=dev-lang/orc-0.4.33[${MULTILIB_USEDEP}] )
+	orc? ( >=dev-lang/orc-0.4.41[${MULTILIB_USEDEP}] )
 	kernel_linux? ( >=x11-libs/libdrm-2.4.55[${MULTILIB_USEDEP}] )
 	pango? ( >=x11-libs/pango-1.36.3[${MULTILIB_USEDEP}] )
 	theora? ( >=media-libs/libtheora-1.1.1:=[encode,${MULTILIB_USEDEP}] )
@@ -87,8 +89,18 @@ DEPEND="${RDEPEND}
 	dev-util/glib-utils
 	X? ( x11-base/xorg-proto )
 "
+BDEPEND="verify-sig? ( sec-keys/openpgp-keys-tpm )"
 
 DOCS=( AUTHORS NEWS README.md RELEASE )
+VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/tpm.asc
+
+PATCHES=(
+	# bug #974283
+	"${FILESDIR}"/gst-plugins-base-1.26.11-GStreamer-SA-2026-0014.patch
+	# bug #974285
+	"${FILESDIR}"/gst-plugins-base-1.26.11-GStreamer-SA-2026-0019.patch
+	"${FILESDIR}"/gst-plugins-base-1.26.11-GStreamer-SA-2026-0023.patch
+)
 
 multilib_src_configure() {
 	filter-flags -mno-sse -mno-sse2 -mno-sse4.1 #610340
@@ -112,13 +124,19 @@ multilib_src_configure() {
 
 	if use opengl || use gles2; then
 		# because meson doesn't like extraneous commas
-		local gl_api=( $(use opengl && echo opengl) $(use gles2 && echo gles2) )
-		local gl_platform=( $(use X && use opengl && echo glx) $(use egl && echo egl) )
+		local gl_api=(
+			$(usev opengl)
+			$(usev gles2)
+		)
+		local gl_platform=(
+			$(use X && usev opengl glx)
+			$(usev egl)
+		)
 		local gl_winsys=(
-			$(use X && echo x11)
-			$(use wayland && echo wayland)
-			$(use egl && echo egl)
-			$(use gbm && echo gbm)
+			$(usev X x11)
+			$(usev wayland)
+			$(usev egl)
+			$(usev gbm)
 		)
 
 		emesonargs+=(
@@ -137,9 +155,6 @@ multilib_src_configure() {
 		)
 	fi
 
-	# Workaround EGL/eglplatform.h being built with X11 present
-	use X || export CFLAGS="${CFLAGS} -DEGL_NO_X11"
-
 	gstreamer_multilib_src_configure
 }
 
@@ -153,6 +168,10 @@ multilib_src_test() {
 
 	local -a _skip_tests=(
 		# flaky
+		elements_inputselector # tendency to timeout
+		elements_multisocketsink
+		generic_states
+		libs_gstglquery
 		pipelines_gl_launch_lines
 	)
 

@@ -1,8 +1,8 @@
-# Copyright 1999-2025 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-PYTHON_COMPAT=( python3_{10..14} )
+PYTHON_COMPAT=( python3_{11..14} )
 
 inherit gnome.org gnome2-utils meson python-any-r1 vala xdg
 
@@ -15,14 +15,21 @@ KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~sparc ~x86"
 
 IUSE="bluetooth eds test utils"
 REQUIRED_USE="bluetooth? ( eds )"
-RESTRICT="!test? ( test )"
+
+# Tests broken since glib-2.80
+# https://gitlab.gnome.org/GNOME/folks/-/work_items/140
+# https://bugs.gentoo.org/947108
+RESTRICT="test"
+#RESTRICT="!test? ( test )"
 
 DEPEND="
-	>=dev-libs/glib-2.58:2
+	>=dev-libs/glib-2.80:2
 	>=dev-libs/gobject-introspection-1.82.0-r2:=
 	>=dev-libs/libgee-0.10:0.8[introspection]
 	dev-libs/libxml2:2=
-	eds? ( >=gnome-extra/evolution-data-server-3.60.0 )
+	eds? (
+		>=gnome-extra/evolution-data-server-3.38:=
+	)
 	utils? ( sys-libs/readline:0= )
 "
 RDEPEND="${DEPEND}
