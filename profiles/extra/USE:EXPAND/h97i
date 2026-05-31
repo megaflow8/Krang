@@ -1,5 +1,15 @@
 */* pgo icu dbus ftp icu fpm nftables policykit xml 
 */* cpu_flags_x86: aes avx avx2 bmi1 bmi2 f16c fma3 mmx mmxext pclmul popcnt rdrand sse sse2 sse3 sse4_1 sse4_2 ssse3
 */* abi_x86: -32 64
+
 app-crypt/certbot certbot-nginx
 app-misc/mime-types nginx
+sys-kernel/installkernel dracut systemd-boot uki ukify
+sys-apps/systemd boot cryptsetup curl elfutils importd lzma ukify
+sys-process/htop delayacct lm-sensors
+app-admin/sudo -sendmail
+sys-firmware/intel-microcode hostonly
+sys-fs/btrfs-progs -man
+net-libs/ngtcp2 gnutls
+
+
