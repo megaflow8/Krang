@@ -10,25 +10,13 @@ DESCRIPTION="GNOME's main interface to configure various aspects of the desktop"
 HOMEPAGE="https://apps.gnome.org/Settings"
 SRC_URI+=" https://dev.gentoo.org/~mattst88/distfiles/${PN}-gentoo-logo.svg"
 SRC_URI+=" https://dev.gentoo.org/~mattst88/distfiles/${PN}-gentoo-logo-dark.svg"
-# Copyright 2023-2026 Gentoo Authors
-# Distributed under the terms of the GNU General Public License v2
-
-EAPI=8
-PYTHON_COMPAT=( python3_{11..14} )
-
-inherit gnome.org gnome2-utils meson python-any-r1 virtualx xdg
-
-DESCRIPTION="GNOME's main interface to configure various aspects of the desktop"
-HOMEPAGE="https://apps.gnome.org/Settings"
-SRC_URI+=" https://dev.gentoo.org/~pacho/${PN}/${PN}-49.5-patchset.tar.xz"
-SRC_URI+=" https://dev.gentoo.org/~mattst88/distfiles/${PN}-gentoo-logo.svg"
-SRC_URI+=" https://dev.gentoo.org/~mattst88/distfiles/${PN}-gentoo-logo-dark.svg"
 # Logo is CC-BY-SA-2.5
 LICENSE="GPL-2+ CC-BY-SA-2.5"
 SLOT="2"
-KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~x86"
+KEYWORDS="~amd64 ~arm arm64 ~loong ~ppc ~ppc64 ~riscv x86"
 
-IUSE="+bluetooth +cups debug elogind +gnome-online-accounts +ibus input_devices_wacom kerberos +geolocation networkmanager systemd test X"
+IUSE="+bluetooth +cups debug elogind +gnome-online-accounts +ibus +input_devices_wacom +kerberos +geolocation networkmanager systemd test"
+#IUSE="X debug elogind +ibus +geolocation systemd test wayland"
 REQUIRED_USE="
 	^^ ( elogind systemd )
 " # Theoretically "?? ( elogind systemd )" is fine too, lacking some functionality at runtime,
@@ -48,7 +36,7 @@ DEPEND="
 		>=net-libs/gnome-online-accounts-3.51.0:=
 	)
 	>=media-libs/libpulse-2.0[glib]
-	>=gui-libs/gtk-4.17.1:4[X?,wayland]
+	>=gui-libs/gtk-4.17.1:4[wayland]
 	>=gui-libs/libadwaita-1.8_alpha:1
 	>=sys-apps/accountsservice-23.11.69
 	>=x11-misc/colord-0.1.34:0=
@@ -73,10 +61,6 @@ DEPEND="
 		>=net-libs/libnma-1.10.2
 		>=net-misc/networkmanager-1.52.0[modemmanager]
 		>=net-misc/modemmanager-0.7.990:=
-	)
-	X? (
-		>=x11-libs/libX11-1.8
-		>=x11-libs/libXi-1.2
 	)
 	bluetooth? ( net-wireless/gnome-bluetooth:3= )
 	input_devices_wacom? ( >=dev-libs/libwacom-1.4:= )
@@ -121,10 +105,6 @@ RDEPEND="${DEPEND}
 	)
 	>=gnome-extra/tecla-47.0
 	dev-libs/libinput
-	X? (
-		>=x11-drivers/xf86-input-libinput-0.19.0
-		input_devices_wacom? ( >=x11-drivers/xf86-input-wacom-0.33.0 )
-	)
 "
 # PDEPEND to avoid circular dependency; gnome-session-check-accelerated called by info panel
 # gnome-session-2.91.6-r1 also needed so that 10-user-dirs-update is run at login
@@ -142,6 +122,8 @@ BDEPEND="${PYTHON_DEPS}
 	dev-util/gdbus-codegen
 	dev-util/glib-utils
 	>=sys-devel/gettext-0.19.8
+	app-admin/system-config-printer
+	net-print/cups-pk-helper
 	virtual/pkgconfig
 	test? (
 		$(python_gen_any_dep '
@@ -150,14 +132,10 @@ BDEPEND="${PYTHON_DEPS}
 		x11-apps/setxkbmap
 	)
 "
-
 PATCHES=(
-	# Makes some panels and dependencies optional
-	# https://bugzilla.gnome.org/686840, 697478, 700145
 	# Fix some absolute paths to be appropriate for Gentoo
-	"${WORKDIR}"/patches/
+	"${FILESDIR}/0005-Fix-absolute-paths-to-be-dependent-on-build-configur.patch"
 )
-
 python_check_deps() {
 	use test || return 0
 	python_has_version "dev-python/python-dbusmock[${PYTHON_USEDEP}]"
@@ -176,23 +154,23 @@ src_prepare() {
 }
 
 src_configure() {
+	# -Werror=strict-aliasing
+	# https://bugs.gentoo.org/889008
+	# https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2563
+	#
+	# Do not trust with LTO either
+	append-flags -fno-strict-aliasing
+	filter-lto
+
 	local emesonargs=(
-		$(meson_use bluetooth)
-		$(meson_use cups)
 		-Ddeprecated-declarations=disabled
 		-Ddocumentation=true # manpage
 		-Dlocation-services=$(usex geolocation enabled disabled)
-		-Dgoa=$(usex gnome-online-accounts enabled disabled)
 		$(meson_use ibus)
-		$(meson_use kerberos)
-		$(meson_use networkmanager network_manager)
 		-Dprivileged_group=wheel
 		-Dsnap=false
 		$(meson_use test tests)
-		$(meson_use input_devices_wacom wacom)
-		# bashcompletions installed to $datadir/bash-completion/completions by v3.28.2,
-		# which is the same as $(get_bashcompdir)
-		$(meson_use X x11)
+		-Dprofile=default
 		-Dmalcontent=false # unpackaged
 		-Ddistributor_logo=/usr/share/pixmaps/gnome-control-center-gentoo-logo.svg
 		-Ddark_mode_distributor_logo=/usr/share/pixmaps/gnome-control-center-gentoo-logo-dark.svg
