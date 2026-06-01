@@ -19,5 +19,5 @@ media-libs/glycin vala
 media-fonts/noto -extra
 media-fonts/fonts-meta -emoji
 net-libs/gnome-online-accounts ms365
-
+net-libs/ngtcp2 gnutls
 
