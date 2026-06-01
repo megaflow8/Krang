@@ -165,7 +165,6 @@ src_prepare() {
 
 src_configure() {
 	local emesonargs=(
-		$(meson_use bluetooth)
 		$(meson_use cups)
 		-Ddeprecated-declarations=disabled
 		-Ddocumentation=true # manpage
@@ -173,7 +172,6 @@ src_configure() {
 		-Dgoa=$(usex gnome-online-accounts enabled disabled)
 		$(meson_use ibus)
 		$(meson_use kerberos)
-		$(meson_use networkmanager network_manager)
 		-Dprivileged_group=wheel
 		-Dsnap=false
 		$(meson_use test tests)
