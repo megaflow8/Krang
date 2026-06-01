@@ -169,7 +169,6 @@ src_configure() {
 		-Ddeprecated-declarations=disabled
 		-Ddocumentation=true # manpage
 		-Dlocation-services=$(usex geolocation enabled disabled)
-		-Dgoa=$(usex gnome-online-accounts enabled disabled)
 		$(meson_use ibus)
 		$(meson_use kerberos)
 		-Dprivileged_group=wheel
