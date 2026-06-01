@@ -16,7 +16,7 @@ LICENSE="GPL-2+ CC-BY-SA-2.5"
 SLOT="2"
 KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~x86"
 
-IUSE="+bluetooth +cups debug elogind +gnome-online-accounts +ibus input_devices_wacom kerberos +geolocation networkmanager systemd test X"
+IUSE="+cups debug elogind +gnome-online-accounts +ibus kerberos +geolocation systemd test X"
 REQUIRED_USE="
 	^^ ( elogind systemd )
 " # Theoretically "?? ( elogind systemd )" is fine too, lacking some functionality at runtime,
@@ -57,17 +57,15 @@ DEPEND="
 		>=net-fs/samba-4.0.0[client]
 	)
 	ibus? ( >=app-i18n/ibus-1.5.2 )
-	networkmanager? (
-		>=net-libs/libnma-1.10.2
-		>=net-misc/networkmanager-1.52.0[modemmanager]
-		>=net-misc/modemmanager-0.7.990:=
-	)
+	>=net-libs/libnma-1.10.2
+	>=net-misc/networkmanager-1.52.0[modemmanager]
+	>=net-misc/modemmanager-0.7.990:=
 	X? (
 		>=x11-libs/libX11-1.8
 		>=x11-libs/libXi-1.2
 	)
-	bluetooth? ( net-wireless/gnome-bluetooth:3= )
-	input_devices_wacom? ( >=dev-libs/libwacom-1.4:= )
+	net-wireless/gnome-bluetooth:3=
+	>=dev-libs/libwacom-1.4:=
 	kerberos? ( app-crypt/mit-krb5 )
 
 	x11-libs/cairo[glib]
@@ -174,7 +172,6 @@ src_configure() {
 		-Dprivileged_group=wheel
 		-Dsnap=false
 		$(meson_use test tests)
-		$(meson_use input_devices_wacom wacom)
 		# bashcompletions installed to $datadir/bash-completion/completions by v3.28.2,
 		# which is the same as $(get_bashcompdir)
 		$(meson_use X x11)
