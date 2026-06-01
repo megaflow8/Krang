@@ -16,7 +16,7 @@ LICENSE="GPL-2+ CC-BY-SA-2.5"
 SLOT="2"
 KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~x86"
 
-IUSE="+cups debug elogind +gnome-online-accounts +ibus kerberos +geolocation systemd test"
+IUSE="cups debug elogind +gnome-online-accounts +ibus kerberos +geolocation systemd test"
 REQUIRED_USE="
 	^^ ( elogind systemd )
 " # Theoretically "?? ( elogind systemd )" is fine too, lacking some functionality at runtime,
@@ -60,10 +60,6 @@ DEPEND="
 	>=net-libs/libnma-1.10.2
 	>=net-misc/networkmanager-1.52.0[modemmanager]
 	>=net-misc/modemmanager-0.7.990:=
-	X? (
-		>=x11-libs/libX11-1.8
-		>=x11-libs/libXi-1.2
-	)
 	net-wireless/gnome-bluetooth:3=
 	>=dev-libs/libwacom-1.4:=
 	kerberos? ( app-crypt/mit-krb5 )
