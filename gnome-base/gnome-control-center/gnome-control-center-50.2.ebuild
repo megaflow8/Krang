@@ -109,13 +109,13 @@ RDEPEND="${DEPEND}
 	dev-libs/libinput
 	X? (
 		>=x11-drivers/xf86-input-libinput-0.19.0
-		input_devices_wacom? ( >=x11-drivers/xf86-input-wacom-0.33.0 )
+		>=x11-drivers/xf86-input-wacom-0.33.0
 	)
 "
 # PDEPEND to avoid circular dependency; gnome-session-check-accelerated called by info panel
 # gnome-session-2.91.6-r1 also needed so that 10-user-dirs-update is run at login
 PDEPEND=">=gnome-base/gnome-session-2.91.6-r1
-	networkmanager? ( gnome-extra/nm-applet )" # networking panel can call into nm-connection-editor
+	gnome-extra/nm-applet" # networking panel can call into nm-connection-editor
 
 # meson.build depends on python unconditionally
 BDEPEND="${PYTHON_DEPS}
