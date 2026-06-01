@@ -16,7 +16,7 @@ LICENSE="GPL-2+ CC-BY-SA-2.5"
 SLOT="2"
 KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~x86"
 
-IUSE="+cups debug elogind +gnome-online-accounts +ibus kerberos +geolocation systemd test X"
+IUSE="+cups debug elogind +gnome-online-accounts +ibus kerberos +geolocation systemd test"
 REQUIRED_USE="
 	^^ ( elogind systemd )
 " # Theoretically "?? ( elogind systemd )" is fine too, lacking some functionality at runtime,
@@ -107,10 +107,6 @@ RDEPEND="${DEPEND}
 	)
 	>=gnome-extra/tecla-47.0
 	dev-libs/libinput
-	X? (
-		>=x11-drivers/xf86-input-libinput-0.19.0
-		>=x11-drivers/xf86-input-wacom-0.33.0
-	)
 "
 # PDEPEND to avoid circular dependency; gnome-session-check-accelerated called by info panel
 # gnome-session-2.91.6-r1 also needed so that 10-user-dirs-update is run at login
@@ -174,7 +170,6 @@ src_configure() {
 		$(meson_use test tests)
 		# bashcompletions installed to $datadir/bash-completion/completions by v3.28.2,
 		# which is the same as $(get_bashcompdir)
-		$(meson_use X x11)
 		-Dmalcontent=false # unpackaged
 		-Ddistributor_logo=/usr/share/pixmaps/gnome-control-center-gentoo-logo.svg
 		-Ddark_mode_distributor_logo=/usr/share/pixmaps/gnome-control-center-gentoo-logo-dark.svg
