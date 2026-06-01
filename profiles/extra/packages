@@ -3,7 +3,6 @@
 *app-portage/gentoolkit
 *app-shells/bash-completion
 *games-util/game-device-udev-rules
-*net-firewall/ufw
 *sys-auth/rtkit
 *sys-kernel/gentoo-kernel
 *sys-fs/dosfstools
