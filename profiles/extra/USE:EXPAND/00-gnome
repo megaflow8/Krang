@@ -12,7 +12,7 @@ media-libs/libcamera -sdl
 x11-wm/mutter -screencast
 gnome-base/gvfs onedrive
 dev-libs/libdbusmenu -gtk gtk3
-gnome-extra/evolution-data-server gtk
+gnome-extra/evolution-data-server -oauth-gtk3
 app-crypt/gcr gtk
 gnome-base/gnome-control-center -X
 media-libs/glycin vala
