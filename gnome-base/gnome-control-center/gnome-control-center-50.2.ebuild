@@ -49,8 +49,10 @@ DEPEND="
 	>=app-crypt/gcr-4.1.0
 	>=dev-libs/libpwquality-1.2.2
 	>=sys-auth/polkit-0.114
-	>=net-print/cups-1.7[dbus]
-	>=net-fs/samba-4.0.0[client]
+	cups? (
+		>=net-print/cups-1.7[dbus]
+		>=net-fs/samba-4.0.0[client]
+	)
 	ibus? ( >=app-i18n/ibus-1.5.2 )
 		>=net-libs/libnma-1.10.2
 		>=net-misc/networkmanager-1.52.0[modemmanager]
@@ -127,6 +129,7 @@ BDEPEND="${PYTHON_DEPS}
 PATCHES=(
 	# Fix some absolute paths to be appropriate for Gentoo
 	"${FILESDIR}/0005-Fix-absolute-paths-to-be-dependent-on-build-configur.patch"
+	"${FILESDIR}/0002-exherbo-optionalise-cups-support.patch"
 )
 python_check_deps() {
 	use test || return 0
@@ -150,6 +153,7 @@ src_configure() {
 	# https://bugs.gentoo.org/889008
 
 	local emesonargs=(
+		$(meson_use cups)
 		-Ddeprecated-declarations=disabled
 		-Ddocumentation=true # manpage
 		-Dlocation-services=$(usex geolocation enabled disabled)
