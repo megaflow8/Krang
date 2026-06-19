@@ -1,3 +1,3 @@
 # Krang
 
-De profiel en gnome 50 ebuilds voor de container Krang
+De profiel en persoonlijke ebuilds voor de container Krang
