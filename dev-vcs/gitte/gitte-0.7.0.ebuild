@@ -1,0 +1,419 @@
+# Copyright 2026 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+EAPI=8
+CRATES="
+	adler2@2.0.1
+	aes@0.8.4
+	aho-corasick@1.1.4
+	android_system_properties@0.1.5
+	anyhow@1.0.102
+	ashpd@0.13.11
+	async-broadcast@0.7.2
+	async-recursion@1.1.1
+	async-trait@0.1.89
+	autocfg@1.5.1
+	base64@0.22.1
+	bitflags@2.11.1
+	block-buffer@0.10.4
+	block-padding@0.3.3
+	block@0.1.6
+	bstr@1.12.1
+	bumpalo@3.20.3
+	bytes@1.11.1
+	cairo-rs@0.22.0
+	cairo-sys-rs@0.22.0
+	cbc@0.1.2
+	cc@1.2.63
+	cfg-expr@0.20.8
+	cfg-if@1.0.4
+	cfg_aliases@0.2.1
+	chacha20@0.10.0
+	chrono@0.4.44
+	cipher@0.4.4
+	concurrent-queue@2.5.0
+	cookie@0.18.1
+	cookie_store@0.22.1
+	core-foundation-sys@0.8.7
+	cpufeatures@0.2.17
+	cpufeatures@0.3.0
+	crc32fast@1.5.0
+	crossbeam-utils@0.8.21
+	crypto-common@0.1.7
+	deranged@0.5.8
+	digest@0.10.7
+	dirs-sys@0.5.0
+	dirs@6.0.0
+	displaydoc@0.2.6
+	document-features@0.2.12
+	endi@1.1.1
+	enumflags2@0.7.12
+	enumflags2_derive@0.7.12
+	equivalent@1.0.2
+	errno@0.3.14
+	event-listener-strategy@0.5.4
+	event-listener@5.4.1
+	fastrand@2.4.1
+	field-offset@0.3.6
+	filetime@0.2.29
+	find-msvc-tools@0.1.9
+	flate2@1.1.9
+	flume@0.12.0
+	foldhash@0.1.5
+	form_urlencoded@1.2.2
+	fragile@2.1.0
+	fsevent-sys@4.1.0
+	futures-channel@0.3.32
+	futures-core@0.3.32
+	futures-executor@0.3.32
+	futures-io@0.3.32
+	futures-lite@2.6.1
+	futures-macro@0.3.32
+	futures-sink@0.3.32
+	futures-task@0.3.32
+	futures-util@0.3.32
+	futures@0.3.32
+	gdk-pixbuf-sys@0.22.0
+	gdk-pixbuf@0.22.0
+	gdk4-sys@0.11.2
+	gdk4@0.11.2
+	generic-array@0.14.7
+	getrandom@0.2.17
+	getrandom@0.3.4
+	getrandom@0.4.2
+	gettext-rs@0.7.7
+	gettext-sys@0.26.0
+	gio-sys@0.22.0
+	gio@0.22.6
+	git2@0.21.0
+	glib-macros@0.22.6
+	glib-sys@0.22.6
+	glib@0.22.7
+	gobject-sys@0.22.6
+	graphene-rs@0.22.0
+	graphene-sys@0.22.0
+	gsk4-sys@0.11.1
+	gsk4@0.11.1
+	gtk4-macros@0.11.0
+	gtk4-sys@0.11.3
+	gtk4@0.11.3
+	hashbrown@0.15.5
+	hashbrown@0.17.1
+	heck@0.5.0
+	hex@0.4.3
+	hkdf@0.12.4
+	hmac@0.12.1
+	http@1.4.1
+	httparse@1.10.1
+	iana-time-zone-haiku@0.1.2
+	iana-time-zone@0.1.65
+	icu_collections@2.2.0
+	icu_locale_core@2.2.0
+	icu_normalizer@2.2.0
+	icu_normalizer_data@2.2.0
+	icu_properties@2.2.0
+	icu_properties_data@2.2.0
+	icu_provider@2.2.0
+	id-arena@2.3.0
+	idna@1.1.0
+	idna_adapter@1.2.2
+	indexmap@2.14.0
+	inotify-sys@0.1.5
+	inotify@0.11.2
+	inout@0.1.4
+	itoa@1.0.18
+	jobserver@0.1.34
+	js-sys@0.3.99
+	kqueue-sys@1.1.2
+	kqueue@1.2.0
+	lazy_static@1.5.0
+	leb128fmt@0.1.0
+	libadwaita-sys@0.9.1
+	libadwaita@0.9.1
+	libc@0.2.186
+	libgit2-sys@0.18.5+1.9.4
+	libm@0.2.16
+	libredox@0.1.17
+	libz-sys@1.1.29
+	linux-raw-sys@0.12.1
+	litemap@0.8.2
+	litrs@1.0.0
+	locale_config@0.3.0
+	lock_api@0.4.14
+	log@0.4.30
+	lzma-sys@0.1.20
+	malloc_buf@0.0.6
+	md-5@0.10.6
+	memchr@2.8.1
+	memoffset@0.9.1
+	miniz_oxide@0.8.9
+	mio@1.2.1
+	nix@0.31.3
+	notify-types@2.1.0
+	notify@8.2.0
+	nu-ansi-term@0.50.3
+	num-bigint-dig@0.9.1
+	num-bigint@0.4.6
+	num-complex@0.4.6
+	num-conv@0.2.2
+	num-integer@0.1.46
+	num-iter@0.1.45
+	num-rational@0.4.2
+	num-traits@0.2.19
+	num@0.4.3
+	objc-foundation@0.1.1
+	objc@0.2.7
+	objc_id@0.1.1
+	once_cell@1.21.4
+	oo7@0.6.0
+	option-ext@0.2.0
+	ordered-stream@0.2.0
+	pango-sys@0.22.0
+	pango@0.22.6
+	pangocairo-sys@0.22.0
+	pangocairo@0.22.0
+	parking@2.2.1
+	pbkdf2@0.12.2
+	percent-encoding@2.3.2
+	pin-project-lite@0.2.17
+	pkg-config@0.3.33
+	potential_utf@0.1.5
+	powerfmt@0.2.0
+	ppv-lite86@0.2.21
+	prettyplease@0.2.37
+	proc-macro-crate@3.5.0
+	proc-macro2@1.0.106
+	quote@1.0.45
+	r-efi@5.3.0
+	r-efi@6.0.0
+	rand@0.10.1
+	rand@0.9.4
+	rand_chacha@0.9.0
+	rand_core@0.10.1
+	rand_core@0.9.5
+	redox_users@0.5.2
+	regex-automata@0.4.14
+	regex-syntax@0.8.10
+	regex@1.12.3
+	relm4-components@0.11.0
+	relm4-css@0.11.0
+	relm4-macros@0.11.0
+	relm4@0.11.0
+	ring@0.17.14
+	rustc_version@0.4.1
+	rustix@1.1.4
+	rustls-pki-types@1.14.1
+	rustls-webpki@0.103.13
+	rustls@0.23.40
+	rustversion@1.0.22
+	same-file@1.0.6
+	scopeguard@1.2.0
+	semver@1.0.28
+	serde@1.0.228
+	serde_bytes@0.11.19
+	serde_core@1.0.228
+	serde_derive@1.0.228
+	serde_json@1.0.150
+	serde_repr@0.1.20
+	serde_spanned@1.1.1
+	sha2@0.10.9
+	sharded-slab@0.1.7
+	shell-words@1.1.1
+	shellexpand@3.1.2
+	shlex@2.0.1
+	signal-hook-registry@1.4.8
+	simd-adler32@0.3.9
+	similar@3.1.1
+	slab@0.4.12
+	smallvec@1.15.1
+	socket2@0.6.4
+	spin@0.9.8
+	stable_deref_trait@1.2.1
+	subtle@2.6.1
+	syn@2.0.117
+	synstructure@0.13.2
+	system-deps@7.0.8
+	tar@0.4.46
+	target-lexicon@0.13.5
+	temp-dir@0.1.16
+	tempfile@3.27.0
+	thiserror-impl@2.0.18
+	thiserror@2.0.18
+	thread_local@1.1.9
+	time-core@0.1.8
+	time-macros@0.2.27
+	time@0.3.47
+	tinystr@0.8.3
+	tokio@1.52.3
+	toml@1.1.2+spec-1.1.0
+	toml_datetime@1.1.1+spec-1.1.0
+	toml_edit@0.25.12+spec-1.1.0
+	toml_parser@1.1.2+spec-1.1.0
+	toml_writer@1.1.1+spec-1.1.0
+	tracing-attributes@0.1.31
+	tracing-core@0.1.36
+	tracing-log@0.2.0
+	tracing-oslog@0.3.0
+	tracing-subscriber@0.3.23
+	tracing@0.1.44
+	tracker-macros@0.2.2
+	tracker@0.2.2
+	typed-path@0.12.3
+	typenum@1.20.1
+	uds_windows@1.2.1
+	unicode-ident@1.0.24
+	unicode-segmentation@1.13.3
+	unicode-xid@0.2.6
+	untrusted@0.9.0
+	ureq-proto@0.6.0
+	ureq@3.3.0
+	url@2.5.8
+	utf8-zero@0.8.1
+	utf8_iter@1.0.4
+	uuid@1.23.2
+	valuable@0.1.1
+	vcpkg@0.2.15
+	version-compare@0.2.1
+	version_check@0.9.5
+	walkdir@2.5.0
+	wasi@0.11.1+wasi-snapshot-preview1
+	wasip2@1.0.3+wasi-0.2.9
+	wasip3@0.4.0+wasi-0.3.0-rc-2026-01-06
+	wasm-bindgen-macro-support@0.2.122
+	wasm-bindgen-macro@0.2.122
+	wasm-bindgen-shared@0.2.122
+	wasm-bindgen@0.2.122
+	wasm-encoder@0.244.0
+	wasm-metadata@0.244.0
+	wasmparser@0.244.0
+	webpki-roots@1.0.7
+	winapi-i686-pc-windows-gnu@0.4.0
+	winapi-util@0.1.11
+	winapi-x86_64-pc-windows-gnu@0.4.0
+	winapi@0.3.9
+	windows-core@0.62.2
+	windows-implement@0.60.2
+	windows-interface@0.59.3
+	windows-link@0.2.1
+	windows-result@0.4.1
+	windows-strings@0.5.1
+	windows-sys@0.52.0
+	windows-sys@0.60.2
+	windows-sys@0.61.2
+	windows-targets@0.52.6
+	windows-targets@0.53.5
+	windows_aarch64_gnullvm@0.52.6
+	windows_aarch64_gnullvm@0.53.1
+	windows_aarch64_msvc@0.52.6
+	windows_aarch64_msvc@0.53.1
+	windows_i686_gnu@0.52.6
+	windows_i686_gnu@0.53.1
+	windows_i686_gnullvm@0.52.6
+	windows_i686_gnullvm@0.53.1
+	windows_i686_msvc@0.52.6
+	windows_i686_msvc@0.53.1
+	windows_x86_64_gnu@0.52.6
+	windows_x86_64_gnu@0.53.1
+	windows_x86_64_gnullvm@0.52.6
+	windows_x86_64_gnullvm@0.53.1
+	windows_x86_64_msvc@0.52.6
+	windows_x86_64_msvc@0.53.1
+	winnow@1.0.3
+	wit-bindgen-core@0.51.0
+	wit-bindgen-rust-macro@0.51.0
+	wit-bindgen-rust@0.51.0
+	wit-bindgen@0.51.0
+	wit-bindgen@0.57.1
+	wit-component@0.244.0
+	wit-parser@0.244.0
+	writeable@0.6.3
+	xattr@1.6.1
+	xz2@0.1.7
+	yoke-derive@0.8.2
+	yoke@0.8.2
+	zbus@5.16.0
+	zbus_macros@5.16.0
+	zbus_names@4.3.2
+	zerocopy-derive@0.8.50
+	zerocopy@0.8.50
+	zerofrom-derive@0.1.7
+	zerofrom@0.1.8
+	zeroize@1.8.2
+	zeroize_derive@1.4.3
+	zerotrie@0.2.4
+	zerovec-derive@0.11.3
+	zerovec@0.11.6
+	zip@8.6.0
+	zlib-rs@0.6.3
+	zmij@1.0.21
+	zopfli@0.8.3
+	zvariant@5.12.0
+	zvariant_derive@5.12.0
+	zvariant_utils@3.4.0
+"
+inherit cargo gnome2 meson xdg
+
+
+DESCRIPTION="A GTK4/libadwaita Git client for the GNOME desktop"
+HOMEPAGE="https://codeberg.org/ckruse/Gitte"
+SRC_URI="https://codeberg.org/ckruse/Gitte/archive/${PV}.tar.gz"
+SRC_URI+=" ${CARGO_CRATE_URIS}"
+S=${WORKDIR}/gitte
+
+RUST_MIN_VER="1.93"
+
+LICENSE=""
+# Dependent crate licenses
+LICENSE+="
+	Apache-2.0 Apache-2.0-with-LLVM-exceptions BSD CC0-1.0
+	CDLA-Permissive-2.0 ISC MIT MPL-2.0 Unicode-3.0 ZLIB
+"
+
+SLOT="0"
+
+KEYWORDS="~amd64"
+
+BDEPEND="
+	gnome-base/dconf
+	dev-libs/glib
+	media-libs/graphene
+	gui-libs/gtk
+	gui-libs/libadwaita
+	dev-libs/libgit2
+	net-libs/libssh2
+	dev-libs/openssl
+	x11-libs/pango
+	app-arch/xz-utils
+	virtual/zlib
+"
+
+DEPEND="
+	x11-libs/cairo
+	
+"
+DEPEND+="
+
+"
+QA_FLAGS_IGNORED="/usr/libexec/gitte/gitte-askpass /usr/bin/gitte"
+
+src_configure() {
+	local emesonargs=(
+	-Dcargo-home=cargo_home
+	)
+	meson_src_configure
+	ln -s "${CARGO_HOME}" "${BUILD_DIR}/cargo_home" || die
+}
+
+pkg_preinst() {
+	xdg_pkg_preinst
+}
+
+pkg_postinst() {
+	xdg_pkg_postinst
+	gnome2_schemas_update
+}
+
+pkg_postrm() {
+	xdg_pkg_postrm
+	gnome2_schemas_update
+}

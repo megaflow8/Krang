@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:foaf="http://xmlns.com/foaf/0.1/"
+	xmlns="http://usefulinc.com/ns/doap#">
+
+  <name xml:lang="en">Gitte</name>
+  <shortdesc xml:lang="en">A GTK4/libadwaita Git GUI</shortdesc>
+  <description xml:lang="en">Gitte is a desktop Git GUI for the GNOME platform, built with GTK4, libadwaita and Rust using the Relm4 component framework.</description>
+  <programming-language>Rust</programming-language>
+
+  <homepage rdf:resource="https://codeberg.org/ckruse/Gitte" />
+  <bug-database rdf:resource="https://codeberg.org/ckruse/Gitte/issues" />
+  <license rdf:resource="http://usefulinc.com/doap/licenses/agpl" />
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Christian Kruse</foaf:name>
+      <foaf:homepage rdf:resource="https://wwwtech.de/" />
+    </foaf:Person>
+  </maintainer>
+</Project>

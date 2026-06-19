@@ -21,13 +21,10 @@ LINGUAS="-* nl en"
 L10N="-* nl en en-US"
 
 # Zet de standaart Use vlags aan/uit
-USE="${USE} -gpm -dvd -cdda -qt6 -man -cdr -sysprof -gui -gnome-keyring -vulkan -iptables -cups"
-USE="${USE} modules-compress modules-sign dist-kernel nftables secureboot homed tpm cryptsetup"
-USE="${USE} pgo vaapi v4l lm-sensors ffmpeg liblc3"
+USE="${USE} -gpm -dvd -cdda -qt6 -man -cdr -sysprof -gui -gnome-keyring -iptables -cups"
+USE="${USE} modules-compress modules-sign dist-kernel nftables secureboot cryptsetup"
+USE="${USE} pgo v4l lm-sensors ffmpeg"
 USE="${USE} flatpak gtk3 gtk4 fpm ftp"
 
 # Zet de standaart lincense op
 ACCEPT_LICENSE="* -@EULA"
-
-# Zet Abi op 64
-ABI_X86="-* 64"
