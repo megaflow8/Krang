@@ -1,3 +1,0 @@
-app-admin/sudo -sendmail
-app-crypt/certbot certbot-nginx
-app-arch/xz-utils -pgo
