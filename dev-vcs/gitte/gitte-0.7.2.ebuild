@@ -3,8 +3,7 @@
 
 EAPI=8
 CRATES="
-CRATES="
-	adler2@2.0.1
+adler2@2.0.1
 	aes@0.8.4
 	aho-corasick@1.1.4
 	android_system_properties@0.1.5
@@ -353,13 +352,13 @@ CRATES="
 	zvariant_utils@3.4.0
 "
 
-"
 inherit cargo gnome2 meson xdg
 
 
 DESCRIPTION="A GTK4/libadwaita Git client for the GNOME desktop"
 HOMEPAGE="https://codeberg.org/ckruse/Gitte"
 SRC_URI="https://codeberg.org/ckruse/Gitte/archive/${PV}.tar.gz"
+SRC_URI+=""
 
 S=${WORKDIR}/gitte
 
