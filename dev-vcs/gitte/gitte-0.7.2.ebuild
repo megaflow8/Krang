@@ -358,7 +358,7 @@ inherit cargo gnome2 meson xdg
 DESCRIPTION="A GTK4/libadwaita Git client for the GNOME desktop"
 HOMEPAGE="https://codeberg.org/ckruse/Gitte"
 SRC_URI="https://codeberg.org/ckruse/Gitte/archive/${PV}.tar.gz"
-SRC_URI+=""
+SRC_URI+=" ${CARGO_CRATE_URIS}"
 
 S=${WORKDIR}/gitte
 
