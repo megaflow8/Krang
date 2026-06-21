@@ -37,6 +37,7 @@ src_prepare() {
 }
 
 src_configure() {
+	local emesonargs=()
 	meson_src_configure
 }
 
