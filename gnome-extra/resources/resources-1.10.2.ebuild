@@ -201,12 +201,11 @@ CRATES="
 	yansi@1.0.1
 "
 
-inherit cargo gnome2 meson xdg
+inherit cargo gnome2-utils meson xdg
 
-
-DESCRIPTION=""
+DESCRIPTION="Keep an eye on system resources (CPU, Memory, GPU, Disk, Network)"
 HOMEPAGE="https://apps.gnome.org/app/net.nokyan.Resources/"
-SRC_URI="https://github.com/nokyan/resources/archive/refs/tags/v${PV}.tar.gz"
+SRC_URI="https://github.com/nokyan/resources/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
 SRC_URI+=" ${CARGO_CRATE_URIS}"
 
 RUST_MIN_VER="1.85.0"
@@ -220,13 +219,15 @@ LICENSE+="
 SLOT="0"
 KEYWORDS="~amd64"
 
+IUSE="+systemd"
+
 BDEPEND="
 	virtual/pkgconfig
 	>=dev-build/meson-1.8.0
 	dev-libs/appstream
 	dev-libs/appstream-glib
-	sys-apps/systemd
 	sys-auth/polkit
+	systemd? ( sys-apps/systemd )
 "
 
 DEPEND="
@@ -234,14 +235,20 @@ DEPEND="
 	media-libs/graphene
 "
 # meson.build file
-DEPEND+="
+RDEPEND+="
 	>=dev-libs/glib-2.75.0:2
 	>=gui-libs/gtk-4.17.1:4
 	>=gui-libs/libadwaita-1.8_alpha:1
 	>=x11-libs/cairo-1.14.0
-
-"
+	"
 QA_FLAGS_IGNORED="/usr/libexec/resources/resources-kill /usr/libexec/resources/resources-adjust /usr/libexec/resources/resources-processes /usr/bin/resources"
+
+src_prepare() {
+	default
+	if ! use systemd; then
+		die "sys-process/resources unconditionally requires systemd to build and run."
+	fi
+}
 
 src_configure() {
 	local emesonargs=(
@@ -264,3 +271,7 @@ pkg_postrm() {
 	xdg_pkg_postrm
 	gnome2_schemas_update
 }
+	elog "Resources can optionally use sys-apps/dmidecode to read"
+	elog "detailed motherboard and hardware information."
+	elog "If you want this functionality, please install it manually via:"
+	elog "  emerge sys-apps/dmidecode"

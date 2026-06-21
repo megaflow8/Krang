@@ -3,16 +3,34 @@
 
 EAPI=8
 
-inherit gnome2-utils meson xdg
+PYTHON_COMPAT=( python3_{11..14} )
+
+inherit gnome2-utils meson python-single-r1  xdg
 
 DESCRIPTION="Tweak various aspects of GNOME"
 HOMEPAGE="https://gitlab.gnome.org/TheEvilSkeleton/Refine"
-SRC_URI="https://gitlab.gnome.org/TheEvilSkeleton/Refine/-/archive/${PV}/Refine-${PV}.tar.bz2"
+SRC_URI="https://gitlab.gnome.org/TheEvilSkeleton/Refine/-/archive/${PV}/Refine-${PV}.tar.bz2 -> ${P}.tar.bz2"
 LICENSE="GPL-3+"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~x86"
+KEYWORDS="~amd64"
+REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 IUSE=""
 
+RDEPEND="
+	${PYTHON_DEPS}
+	dev-libs/glib:2
+	gui-libs/gtk:4
+	gui-libs/libadwaita:1
+	$(python_gen_cond_dep '
+		dev-python/pygobject:3[${PYTHON_USEDEP}]
+	')
+"
+DEPEND="${RDEPEND}"
+BDEPEND="
+	dev-util/blueprint-compiler
+	dev-util/glib-utils
+	virtual/pkgconfig
+"
 src_prepare() {
 	default
 	xdg_environment_reset
@@ -20,10 +38,6 @@ src_prepare() {
 
 src_configure() {
 	meson_src_configure
-}
-
-src_install() {
-	meson_src_install
 }
 
 pkg_postinst() {
