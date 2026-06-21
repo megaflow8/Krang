@@ -41,6 +41,14 @@ src_configure() {
 	meson_src_configure
 }
 
+src_install() {
+	# Eerst installeren we de app via meson
+	meson_src_install
+
+	# Hier corrigeren we het foute Python-pad in het geïnstalleerde bestand
+	python_fix_shebang "${ED}/usr/bin/refine"
+}
+
 pkg_postinst() {
 	xdg_pkg_postinst
 	gnome2_schemas_update
