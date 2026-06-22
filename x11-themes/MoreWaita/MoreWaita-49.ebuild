@@ -6,18 +6,15 @@ EAPI=8
 inherit xdg meson
 
 DESCRIPTION="An expanded Adwaita-styled companion icon theme"
-HOMEPAGE="https://github.com"
+HOMEPAGE="https://github.com/somepaulo/MoreWaita"
+SRC_URI="https://github.com/somepaulo/MoreWaita/archive/refs/tags/v${PV}.tar.gz"
+#EGIT_REPO_URI="https://github.com/somepaulo/MoreWaita"
 
-LICENSE="GPL-3"
+LICENSE="GPL-3+"
 SLOT="0"
+KEYWORDS=""
 
-if [[ ${PV} == 9999 ]]; then 
-	inherit git-r3
-	EGIT_REPO_URI="https://github.com"
-else
-	SRC_URI="https://github.com/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
-fi
-
+# This ebuild does not install binaries
 RESTRICT="binchecks strip"
 RDEPEND="x11-themes/adwaita-icon-theme"
+
