@@ -14,6 +14,7 @@ LICENSE="LGPL-2.1"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
+# This ebuild does not install binaries
 RESTRICT="binchecks strip"
 
 src_install() {
