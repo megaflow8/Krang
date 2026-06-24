@@ -49,6 +49,5 @@ src_configure() {
 	filter-lto
 
 	econf \
-		--disable-static \
 		$(use_with test system-doctest)
 }
