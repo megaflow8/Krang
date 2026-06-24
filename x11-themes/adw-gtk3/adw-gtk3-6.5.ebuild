@@ -12,9 +12,8 @@ S=${WORKDIR}
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~arm64"
 
-# This ebuild does not install binaries
 RESTRICT="binchecks strip"
 
 src_install() {

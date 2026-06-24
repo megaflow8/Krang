@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-  <maintainer type="project">
-    <email>gnome@gentoo.org</email>
-    <name>Gentoo GNOME Desktop</name>
+  <maintainer type="person">
+    <name>Julien Roy</name>
+    <email>julien@jroy.ca</email>
   </maintainer>
-  <stabilize-allarches/>
+  <maintainer type="person">
+    <name>Björn</name>
+    <email>bjorn.megaflow@gmail.com</email>
+  </maintainer>
   <upstream>
-    <remote-id type="gnome-gitlab">GNOME/adwaita-icon-theme</remote-id>
+    <remote-id type="github">lassekongo83/adw-gtk3</remote-id>
   </upstream>
 </pkgmetadata>

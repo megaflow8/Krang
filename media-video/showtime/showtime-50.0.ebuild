@@ -3,7 +3,7 @@
 
 EAPI=8
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{11..14} )
+PYTHON_COMPAT=( python3_{11..15} )
 PYTHON_REQ_USE="threads(+)"
 
 inherit gnome.org gnome2-utils meson xdg python-single-r1
@@ -20,7 +20,7 @@ REQUIRED_USE="
 "
 
 DEPEND="${PYTHON_DEPS}
-	>=x11-libs/gtk+-3.22.0:3[introspection]
+	>=gui-libs/gtk-4.18.0
 	>=dev-libs/gobject-introspection-1.54:=
 	>=dev-util/blueprint-compiler-0.17.0
 	>=media-plugins/gst-plugin-gtk4-0.13.4:1.0
@@ -57,8 +57,9 @@ src_configure() {
 }
 
 src_install() {
-	python_fix_shebang "${BUILD_DIR}/showtime"
 	meson_src_install
+	python_fix_shebang "${BUILD_DIR}/showtime"
+	python_optimize
 }
 
 pkg_postinst() {
