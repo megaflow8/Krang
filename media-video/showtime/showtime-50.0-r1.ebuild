@@ -24,7 +24,7 @@ DEPEND="${PYTHON_DEPS}
 	>=dev-libs/gobject-introspection-1.86.0:=
 	>=dev-util/blueprint-compiler-0.17
 	>=media-plugins/gst-plugin-gtk4-0.13.4:1.0
-	>=dev-python/pygobject:3
+	dev-python/pygobject:3
 "
 
 RDEPEND="${DEPEND}
