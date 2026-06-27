@@ -21,7 +21,7 @@ REQUIRED_USE="
 
 DEPEND="${PYTHON_DEPS}
 	>=gui-libs/gtk-4.18.0:4
-	>=dev-libs/gobject-introspection:=
+	>=dev-libs/gobject-introspection-1.86.0:=
 	>=dev-util/blueprint-compiler-0.17
 	>=media-plugins/gst-plugin-gtk4:1.0
 	>=dev-python/pygobject:3
