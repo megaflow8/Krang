@@ -31,7 +31,7 @@ RDEPEND="${DEPEND}
 	>=media-plugins/gst-plugins-gtk-1.21.1:1.0
 	>=media-plugins/gst-plugins-meta-1.21.1:1.0
 	>=media-plugins/gst-plugins-taglib-1.21.1:1.0
-	>=gui-libs/libadwaita-1.8.alpha:1
+	>=gui-libs/libadwaita-1.8.alpha
 	x11-themes/adwaita-icon-theme
 "
 
