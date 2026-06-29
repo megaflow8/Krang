@@ -23,7 +23,7 @@ L10N="-* nl en en-US"
 # Zet de standaard Use vlags aan/uit
 USE="${USE} -gpm -dvd -cdda -qt6 -man -cdr -sysprof -gui -gnome-keyring -iptables -cups"
 USE="${USE} modules-compress modules-sign dist-kernel nftables secureboot cryptsetup"
-USE="${USE} v4l lm-sensors ffmpeg flatpak gtk3 gtk4 fpm ftp"
+USE="${USE} v4l lm-sensors ffmpeg flatpak gtk3 gtk4 fpm ftpukify"
 
 # Zet de standaart lincense op
 ACCEPT_LICENSE="* -@EULA"
