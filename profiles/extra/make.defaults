@@ -12,7 +12,7 @@ VIDEO_CARDS="-* nvidia amdgpu radeonsi radeon"
 
 # Zet portage Log's aan en ruimt ze na een week op
 
-FEATURES="${FEATURES} clean-logs"
+FEATURES="${FEATURES} clean-logs parallel-fetch parallel-install sandbox candy"
 PORTAGE_LOGDIR="/var/log/portage"
 
 # zet de taal op nl_BE
@@ -22,14 +22,15 @@ L10N="-* nl en en-US"
 
 # Zet de standaard Use vlags aan/uit
 USE="${USE} -css -cdrom -gpm -dvd -dvdr -cdr -cdda -a52 -qt6 -man -cdr -sysprof -gui -gnome-keyring -iptables -cups -jack -scanner -startup-notification"
-USE="${USE} modules-compress modules-sign dist-kernel nftables secureboot cryptsetup"
-USE="${USE} v4l lm-sensors ffmpeg flatpak gtk3 gtk4 fpm ftp ukify"
-USE="${USE} ssl alsa nvme bash-completion lm-sensors hddtemp"
-USE="${USE} spell aspell"
-USE="${USE}  fontconfig joystick"
+USE="${USE} modules-compress modules-sign dist-kernel nftables secureboot cryptsetup ukify"
+USE="${USE} v4l lm-sensors flatpak gtk3 gtk4 fpm ftp fontconfig"
+USE="${USE} lm-sensors hddtemp joystick"
 USE="${USE} gstreamer ffmpeg x264 x265 vpx vorbis theora matroska dav1d"
 USE="${USE} gif svg jpeg webp png"
 USE="${USE} zlib bzip2 lzma zstd lz4 lzo zip rar"
 
 # Zet de standaart lincense op
 ACCEPT_LICENSE="* -@EULA"
+
+OFFICE_IMPLEMENTATION="libreoffice"
+LIBREOFFICE_EXTENSIONS="-*"
