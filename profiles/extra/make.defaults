@@ -1,36 +1,37 @@
-# zet cpu flags op hasswell
-
+# CPU flags (Haswell architecture)
 CPU_FLAGS_X86="aes avx avx2 bmi1 bmi2 f16c fma3 mmx mmxext pclmul popcnt rdrand sse sse2 sse3 sse4_1 sse4_2 ssse3"
 
-# Hoeft niet zichtbaar te zijn
-
-USE_EXPAND_HIDDEN="CPU_FLAGS PYTHON_TARGETS PYTHON_SINGLE_TARGET VIDEO_CARDS INPUT_DEVICES LLVM_TARGETS LLVM_SLOT"
-
-# Zet standaardt VGA optie's
-
-VIDEO_CARDS="-* nvidia amdgpu radeonsi radeon"
-
-# Zet portage Log's aan en ruimt ze na een week op
-
-FEATURES="${FEATURES} clean-logs parallel-fetch parallel-install sandbox candy"
+# Portage behavior & environment
+FEATURES="${FEATURES} candy clean-logs parallel-fetch parallel-install sandbox"
 PORTAGE_LOGDIR="/var/log/portage"
+USE_EXPAND_HIDDEN="CPU_FLAGS INPUT_DEVICES LLVM_SLOT LLVM_TARGETS PYTHON_SINGLE_TARGET PYTHON_TARGETS VIDEO_CARDS"
 
-# zet de taal op nl_BE
-
-LINGUAS="-* nl en"
-L10N="-* nl en en-US"
-
-# Zet de standaard Use vlags aan/uit
-USE="${USE} -css -cdrom -gpm -dvd -dvdr -cdr -cdda -a52 -qt6 -man -cdr -sysprof -gui -gnome-keyring -iptables -cups -jack -scanner -startup-notification"
-USE="${USE} modules-compress modules-sign dist-kernel nftables secureboot cryptsetup ukify"
-USE="${USE} v4l lm-sensors flatpak gtk3 gtk4 fpm ftp fontconfig"
-USE="${USE} lm-sensors hddtemp joystick"
-USE="${USE} gstreamer ffmpeg x264 x265 vpx vorbis theora matroska dav1d"
-USE="${USE} gif svg jpeg webp png"
-USE="${USE} zlib bzip2 lzma zstd lz4 lzo zip rar"
-
-# Zet de standaart lincense op
+# Localization & Licensing
 ACCEPT_LICENSE="* -@EULA"
+L10N="-* en en-US nl"
+LINGUAS="-* en nl"
 
-OFFICE_IMPLEMENTATION="libreoffice"
+# Hardware & Video drivers
+VIDEO_CARDS="-* amdgpu nvidia radeon radeonsi"
+
+# Office & Extensions
 LIBREOFFICE_EXTENSIONS="-*"
+OFFICE_IMPLEMENTATION="libreoffice"
+
+# Global USE flags overrides
+USE="${USE} -a52 -cdda -cdrom -cdr -css -cups -dvd -dvdr -gnome-keyring -gpm -gui -iptables -jack -man -qt6 -scanner -startup-notification -sysprof"
+
+# System, Kernel & Security
+USE="${USE} cryptsetup dist-kernel modules-compress modules-sign nftables secureboot ukify"
+
+# Desktop, UI & Graphics libraries
+USE="${USE} flatpak fontconfig fpm ftp gtk3 gtk4 lm-sensors v4l"
+USE="${USE} hddtemp joystick"
+
+# Multimedia, Codecs & Formats
+USE="${USE} dav1d ffmpeg gstreamer matroska theora vorbis vpx x264 x265"
+USE="${USE} gif jpeg png svg webp"
+
+# Compression & Archiving
+USE="${USE} bzip2 lz4 lzma lzo rar zip zlib zstd"
+
