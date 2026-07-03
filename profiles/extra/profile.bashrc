@@ -61,8 +61,12 @@ case "${CATEGORY}/${PN}" in
         CFLAGS="${CFLAGS} -flto=thin -Werror=odr -Werror=strict-aliasing"
         CXXFLAGS="${CXXFLAGS} -flto=thin -Werror=odr -Werror=strict-aliasing"
         
-        # Injecteer MOLD én begrens de ThinLTO-jobs tot 2 om OOM te voorkomen
-        LDFLAGS="${LDFLAGS} -flto=thin -fuse-ld=mold -Wl,--thinlto-jobs=2"
+        # Voeg hier mold, de jobs-limiet én pack-relative-relocs samen toe!
+        LDFLAGS="${LDFLAGS} -flto=thin -fuse-ld=mold -Wl,--thinlto-jobs=2 -Wl,-z,pack-relative-relocs"
+        
+        # En stel de Rustflags in voor eventuele Rust-onderdelen in de desktop stack (zoals in libadwaita/gtk)
+        export RUSTFLAGS="${RUSTFLAGS} -C link-arg=-Wl,-z,pack-relative-relocs"
         ;;
+
 esac
 
