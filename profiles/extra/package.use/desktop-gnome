@@ -1,0 +1,53 @@
+#
+# Copyright (C) 2022-2026 James Cherti
+# URL: https://github.com/jamescherti/jc-gentoo-portage
+#
+# Distributed under terms of the MIT license.
+#
+
+# gnome: Enable global GNOME support to ensure packages compile with appropriate
+# desktop environment hooks (e.g., configuration backends, native
+# notifications...).
+#
+# Explicit Exclusions:
+#   alternative credential manager is utilized.
+*/* gnome
+
+# Global configuration
+*/* -qt5 -qt6 wayland
+
+# Prune comic book archive formats from the primary document viewer
+app-text/papers -comics
+
+# Strip Indexing and Cache Bloat (Minimalist Tuning)
+app-misc/localsearch -jpeg -tiff -pdf -playlist -iso -cue -exif
+
+# Required by net-fs/samba to support modern encrypted network transport states
+net-libs/ngtcp2 gnutls
+
+# Exclude previewer, cloud, weather, and heavy multi-lingual input
+# layers from the desktop stack
+gnome-base/nautilus -previewer
+gnome-extra/evolution-data-server -weather
+
+# The machine pings an external server every few minutes, leaking your IP
+# address and uptime status to whoever hosts that endpoint. It prevents
+# unnecessary background HTTP requests, keeping your system network traffic
+# strictly bounded to things you explicitly execute.
+net-misc/networkmanager -concheck
+
+# Disable KDE
+*/* -kde -semantic-desktop
+
+# Flameshot dependencies
+# -linguist: No Qt Assistant (documentation viewer).
+dev-qt/qttools -assistant
+
+app-office/libreoffice -branding -bluetooth -qt6 -mariadb gtk3 -gtk4
+
+# LibreOffice requires Native Language Support (nls) to manage its extensive
+# string parsing and localized interface frameworks. It depends on
+# dev-libs/boost, but the current system flags have nls disabled globally or
+# per-package. Portage refuses to build LibreOffice until Boost is compiled with
+# nls support.
+dev-libs/boost nls
