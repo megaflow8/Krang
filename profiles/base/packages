@@ -6,3 +6,4 @@
 *sys-auth/rtkit
 *sys-kernel/gentoo-kernel
 *sys-fs/dosfstools
+*dev-libs/jemalloc

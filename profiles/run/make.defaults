@@ -1,0 +1,11 @@
+EAPI=9
+
+# Portage behavior & environment
+FEATURES="${FEATURES} getbinpkg candy clean-logs parallel-fetch parallel-install sandbox"
+PORTAGE_LOGDIR="/var/log/portage"
+
+# Client-specifieke installatie-opties (snel en efficiënt)
+EMERGE_DEFAULT_OPTS="${EMERGE_DEFAULT_OPTS} --with-bdeps=n --binpkg-respect-use=y --binpkg-changed-deps=y --usepkg-exclude='acct-*/* virtual/* */*-bin'"
+
+# Verberg AL deze flag-groepen in de emerge output van de clients
+USE_EXPAND_HIDDEN="CPU_FLAGS PYTHON_TARGETS PYTHON_SINGLE_TARGET VIDEO_CARDS INPUT_DEVICES LLVM_TARGETS LLVM_SLOT"

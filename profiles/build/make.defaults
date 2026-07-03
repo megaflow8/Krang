@@ -1,0 +1,7 @@
+# Portage Features & Binary Packages
+FEATURES="${FEATURES} binpkg-multi-instance binpkg-signing buildpkg gpg-keepalive multilib-strict"
+EMERGE_DEFAULT_OPTS="${EMERGE_DEFAULT_OPTS} --buildpkg-exclude='*/*-bin acct-group/* acct-user/* app-eselect/* dev-perl/* games-util/steam-launcher media-sound/spotify sys-kernel/linux-firmware virtual/*'"
+
+# Logging & Elogs
+PORTAGE_ELOG_CLASSES="error info log qa warn"
+PORTAGE_ELOG_SYSTEM="save"

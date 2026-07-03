@@ -1,1 +1,2 @@
-amd64	llvm	stable
+amd64	run	stable
+amd64	build	deprecated
