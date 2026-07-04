@@ -55,7 +55,7 @@ case "${CATEGORY}/${PN}" in
         
         # Voorkom dubbele flags en forceer de LLD linker met ThinLTO jobs
         LDFLAGS=$(echo "${LDFLAGS}" | sed -E -e 's/-fuse-ld=(mold|lld)//g' -e 's/-flto=thin//g' -e 's/-Wl,--thinlto-jobs=[0-9]+//g' -e 's/-Wl,-z,pack-relative-relocs//g')
-        LDFLAGS="${LDFLAGS} -flto=thin -fuse-ld=lld -Wl,--thinlto-jobs=2 -Wl,-z,pack-relative-relocs"
+        LDFLAGS="${LDFLAGS} -fuse-ld=lld -Wl,--thinlto-jobs=2 -Wl,-z,pack-relative-relocs"
 
         if [[ ! "${RUSTFLAGS}" =~ "pack-relative-relocs" ]]; then
             export RUSTFLAGS="${RUSTFLAGS} -C link-arg=-Wl,-z,pack-relative-relocs"
