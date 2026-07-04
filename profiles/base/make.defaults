@@ -21,7 +21,6 @@ USE="${USE} cryptsetup dist-kernel modules-compress modules-sign nftables secure
 
 # Desktop, UI & Graphics libraries
 USE="${USE} flatpak fontconfig fpm ftp gtk3 gtk4 lm-sensors v4l"
-USE="${USE} hddtemp joystick"
 
 # Multimedia, Codecs & Formats
 USE="${USE} dav1d ffmpeg gstreamer matroska theora vorbis vpx x264 x265"

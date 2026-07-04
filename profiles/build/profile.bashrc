@@ -27,7 +27,7 @@ case "${CATEGORY}/${PN}" in
     # ==============================================================================
     # DE GRAFISCHE CORE-STACK: ThinLTO + -O3 + STANDAARD LLD (TIJDELIJK ZONDER MOLD)
     # ==============================================================================
-    media-libs/mesa|dev-libs/glib|x11-libs/gtk+|gui-libs/gtk|gui-libs/libadwaita)
+    LTO_LIST_FILE="${FILESDIR}/lto_packages.txt"
         CC="clang"
         CXX="clang++"
         CPP="clang-cpp"
@@ -56,7 +56,7 @@ case "${CATEGORY}/${PN}" in
         fi
         ;;
         
-    sys-libs/glibc|app-emulation/wine*)
+    sys-libs/glibc|sys-devel/binutils)
         CC="gcc"
         CXX="g++"
         CPP="gcc -E"
