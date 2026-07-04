@@ -35,7 +35,7 @@ case "${CATEGORY}/${PN}" in
     media-libs/vulkan-loader|media-libs/libjxl|media-libs/libavif|media-libs/openjpeg| \
     x11-wm/mutter|gnome-base/gnome-shell|gui-libs/gtk|x11-libs/gtk+| \
     gui-libs/libadwaita|media-libs/harfbuzz|media-libs/freetype|x11-libs/cairo| \
-    x11-libs/pango|dev-db/sqlite|dev-libs/glib)
+    x11-libs/pango|dev-db/sqlite|dev-libs/glib|sys-apps/portage)
 
         CC="clang"
         CXX="clang++"
