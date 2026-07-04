@@ -23,22 +23,18 @@ esac
 # ==============================================================================
 # 3. DYNAMISCHE LTO & MULTIMEDIA OPTIMALISATIE VIA TEXT-FILE
 # ==============================================================================
-# ==============================================================================
-# 3. DYNAMISCHE LTO & MULTIMEDIA OPTIMALISATIE VIA TEXT-FILE
-# ==============================================================================
-# Vind het tekstbestand in exact dezelfde map als deze profile.bashrc
-LTO_LIST_FILE="$(dirname "${BASH_SOURCE[0]}")/lto_packages.txt"
+LTO_LIST_FILE="$(dirname "${BASH_SOURCE}")/lto_packages.txt"
 
 if [ -f "${LTO_LIST_FILE}" ]; then
     # Lees regels, filter witruimtes/commentaar/lege regels, voeg samen met |
     LTO_PACKAGES=$(grep -v '^#' "${LTO_LIST_FILE}" | grep -v '^$' | tr -d ' ' | tr '\n' '|' | sed 's/|$//')
     
-    # Gebruik een flexibelere match zodat dev-lang/python altijd matcht
     IS_LTO_PACKAGE=0
     case "${CATEGORY}/${PN}" in
-        www-client/chromium|net-libs/nodejs) ;; # Sla over, deze hebben hun eigen case hierboven
+        www-client/chromium|net-libs/nodejs) ;; # Eigen logica hierboven
         *)
-            if [[ "${CATEGORY}/${PN}" =~ ^(${LTO_PACKAGES})$ ]]; then
+            # Match de basisnaam én sta optionele versienummers (zoals -3.12) toe
+            if echo "${CATEGORY}/${PN}" | grep -xE "(${LTO_PACKAGES})(-[0-9].*)?" >/dev/null; then
                 IS_LTO_PACKAGE=1
             fi
             ;;
