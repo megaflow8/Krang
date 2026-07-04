@@ -23,15 +23,28 @@ esac
 # ==============================================================================
 # 3. DYNAMISCHE LTO & MULTIMEDIA OPTIMALISATIE VIA TEXT-FILE
 # ==============================================================================
-# We zoeken lto_packages.txt in dezelfde map als waar deze profile.bashrc staat
-LTO_LIST_FILE="${FILESDIR}/lto_packages.txt"
+# ==============================================================================
+# 3. DYNAMISCHE LTO & MULTIMEDIA OPTIMALISATIE VIA TEXT-FILE
+# ==============================================================================
+# Vind het tekstbestand in exact dezelfde map als deze profile.bashrc
+LTO_LIST_FILE="$(dirname "${BASH_SOURCE[0]}")/lto_packages.txt"
 
 if [ -f "${LTO_LIST_FILE}" ]; then
     # Lees regels, filter witruimtes/commentaar/lege regels, voeg samen met |
     LTO_PACKAGES=$(grep -v '^#' "${LTO_LIST_FILE}" | grep -v '^$' | tr -d ' ' | tr '\n' '|' | sed 's/|$//')
     
-    # Controleer of het huidige pakket matcht met de dynamische lijst
-    if [[ "${CATEGORY}/${PN}" =~ ^(${LTO_PACKAGES})$ ]]; then
+    # Gebruik een flexibelere match zodat dev-lang/python altijd matcht
+    IS_LTO_PACKAGE=0
+    case "${CATEGORY}/${PN}" in
+        www-client/chromium|net-libs/nodejs) ;; # Sla over, deze hebben hun eigen case hierboven
+        *)
+            if [[ "${CATEGORY}/${PN}" =~ ^(${LTO_PACKAGES})$ ]]; then
+                IS_LTO_PACKAGE=1
+            fi
+            ;;
+    esac
+
+    if [ "${IS_LTO_PACKAGE}" -eq 1 ]; then
         CC="clang"
         CXX="clang++"
         CPP="clang-cpp"
