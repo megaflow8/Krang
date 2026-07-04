@@ -26,15 +26,14 @@ esac
 LTO_LIST_FILE="$(dirname "${BASH_SOURCE}")/lto_packages.txt"
 
 if [ -f "${LTO_LIST_FILE}" ]; then
-    # Lees regels, filter witruimtes/commentaar/lege regels, voeg samen met |
-    LTO_PACKAGES=$(grep -v '^#' "${LTO_LIST_FILE}" | grep -v '^$' | tr -d ' ' | tr '\n' '|' | sed 's/|$//')
-    
     IS_LTO_PACKAGE=0
+    
+    # Sla zware stacks over die hierboven al hun eigen case hebben
     case "${CATEGORY}/${PN}" in
-        www-client/chromium|net-libs/nodejs) ;; # Eigen logica hierboven
+        www-client/chromium|net-libs/nodejs) ;;
         *)
-            # Match de basisnaam én sta optionele versienummers (zoals -3.12) toe
-            if echo "${CATEGORY}/${PN}" | grep -xE "(${LTO_PACKAGES})(-[0-9].*)?" >/dev/null; then
+            # Zoek of de exacte CATEGORY/PN (of PN los) voorkomt in het bestand
+            if grep -q -E "^(${CATEGORY}/)?${PN}([[:space:]]|$)" "${LTO_LIST_FILE}"; then
                 IS_LTO_PACKAGE=1
             fi
             ;;
