@@ -21,25 +21,22 @@ case "${CATEGORY}/${PN}" in
 esac
 
 # ==============================================================================
-# 3. DYNAMISCHE LTO & MULTIMEDIA OPTIMALISATIE VIA TEXT-FILE
+# 3. DE MULTIMEDIA & GRAPHICS LTO STACK (HARDCODED CASE)
 # ==============================================================================
-LTO_LIST_FILE="$(dirname "${BASH_SOURCE}")/lto_packages.txt"
+case "${CATEGORY}/${PN}" in
+    media-video/ffmpeg|media-libs/x264|media-libs/x265|media-libs/dav1d| \
+    media-libs/libvpx|media-libs/libaom|media-libs/flac|media-libs/opus| \
+    media-libs/opusfile|media-libs/libvorbis|media-libs/libogg|media-gfx/imagemagick| \
+    media-libs/libjpeg-turbo|media-libs/libpng|media-libs/libwebp|app-arch/zstd| \
+    app-arch/lz4|media-libs/soxr|app-arch/xz-utils|app-shells/bash| \
+    sys-devel/binutils|dev-lang/python|dev-lang/luajit|dev-lang/lua| \
+    dev-lang/spidermonkey|llvm-core/llvm|llvm-core/clang|media-video/pipewire| \
+    media-video/wireplumber|media-libs/gstreamer|dev-libs/wayland|x11-base/xwayland| \
+    media-libs/vulkan-loader|media-libs/libjxl|media-libs/libavif|media-libs/openjpeg| \
+    x11-wm/mutter|gnome-base/gnome-shell|gui-libs/gtk|x11-libs/gtk+| \
+    gui-libs/libadwaita|media-libs/harfbuzz|media-libs/freetype|x11-libs/cairo| \
+    x11-libs/pango|dev-db/sqlite|dev-libs/glib)
 
-if [ -f "${LTO_LIST_FILE}" ]; then
-    IS_LTO_PACKAGE=0
-    
-    # Sla zware stacks over die hierboven al hun eigen case hebben
-    case "${CATEGORY}/${PN}" in
-        www-client/chromium|net-libs/nodejs) ;;
-        *)
-            # Zoek of de exacte CATEGORY/PN (of PN los) voorkomt in het bestand
-            if grep -q -E "^(${CATEGORY}/)?${PN}([[:space:]]|$)" "${LTO_LIST_FILE}"; then
-                IS_LTO_PACKAGE=1
-            fi
-            ;;
-    esac
-
-    if [ "${IS_LTO_PACKAGE}" -eq 1 ]; then
         CC="clang"
         CXX="clang++"
         CPP="clang-cpp"
@@ -49,8 +46,8 @@ if [ -f "${LTO_LIST_FILE}" ]; then
         
         # Alleen CFLAGS upgraden en injecteren als het nog niet is gebeurd
         if [[ ! "${CFLAGS}" =~ "-flto=thin" ]]; then
-            CFLAGS=$(echo "${CFLAGS}" | sed 's/-O2/-O3/g')
-            CXXFLAGS=$(echo "${CXXFLAGS}" | sed 's/-O2/-O3/g')
+            CFLAGS=$(echo "${CFLAGS}" | sed -E -e 's/-O2/-O3/g' -e 's/-Werror=strict-aliasing//g')
+            CXXFLAGS=$(echo "${CXXFLAGS}" | sed -E -e 's/-O2/-O3/g' -e 's/-Werror=strict-aliasing//g')
             
             CFLAGS="${CFLAGS} -flto=thin -Werror=odr -Werror=strict-aliasing"
             CXXFLAGS="${CXXFLAGS} -flto=thin -Werror=odr -Werror=strict-aliasing"
@@ -63,8 +60,8 @@ if [ -f "${LTO_LIST_FILE}" ]; then
         if [[ ! "${RUSTFLAGS}" =~ "pack-relative-relocs" ]]; then
             export RUSTFLAGS="${RUSTFLAGS} -C link-arg=-Wl,-z,pack-relative-relocs"
         fi
-    fi
-fi
+        ;;
+esac
 
 # ==============================================================================
 # 4. EXCLUSIES & FALLBACKS (GCC/O2 FORCED)
