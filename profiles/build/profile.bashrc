@@ -9,25 +9,29 @@ if [ -f "/usr/lib64/libjemalloc.so" ]; then
     esac
 fi
 
-# 2. BEGRENS THREADS EN OPTIMALISEER STACKS
+# 2. CHROMIUM & CORE-STACK: BEGRENS THREADS VOOR 8GB RAM
 case "${CATEGORY}/${PN}" in
     www-client/chromium|net-libs/nodejs)
-        # Verwijder mold en eventuele oude lld/thinlto/pack-relative flags om dubbelen te voorkomen
         LDFLAGS=$(echo "${LDFLAGS}" | sed -E -e 's/-fuse-ld=(mold|lld)//g' -e 's/-Wl,--thinlto-jobs=[0-9]+//g' -e 's/-Wl,-z,pack-relative-relocs//g')
-        
-        # Voeg de flags proper één keer toe
         LDFLAGS="${LDFLAGS} -fuse-ld=lld -Wl,--thinlto-jobs=2 -Wl,-z,pack-relative-relocs"
-        
-        # Voeg RUSTFLAGS veilig toe zonder duplicatie
         if [[ ! "${RUSTFLAGS}" =~ "pack-relative-relocs" ]]; then
             export RUSTFLAGS="${RUSTFLAGS} -C link-arg=-Wl,-z,pack-relative-relocs"
         fi
         ;;
+esac
 
-    # ==============================================================================
-    # DE GRAFISCHE CORE-STACK: ThinLTO + -O3 + STANDAARD LLD (TIJDELIJK ZONDER MOLD)
-    # ==============================================================================
-    LTO_LIST_FILE="${FILESDIR}/lto_packages.txt"
+# ==============================================================================
+# 3. DYNAMISCHE LTO & MULTIMEDIA OPTIMALISATIE VIA TEXT-FILE
+# ==============================================================================
+# We zoeken lto_packages.txt in dezelfde map als waar deze profile.bashrc staat
+LTO_LIST_FILE="${FILESDIR}/lto_packages.txt"
+
+if [ -f "${LTO_LIST_FILE}" ]; then
+    # Lees regels, filter witruimtes/commentaar/lege regels, voeg samen met |
+    LTO_PACKAGES=$(grep -v '^#' "${LTO_LIST_FILE}" | grep -v '^$' | tr -d ' ' | tr '\n' '|' | sed 's/|$//')
+    
+    # Controleer of het huidige pakket matcht met de dynamische lijst
+    if [[ "${CATEGORY}/${PN}" =~ ^(${LTO_PACKAGES})$ ]]; then
         CC="clang"
         CXX="clang++"
         CPP="clang-cpp"
@@ -35,7 +39,7 @@ case "${CATEGORY}/${PN}" in
         NM="llvm-nm"
         RANLIB="llvm-ranlib"
         
-        # Alleen CFLAGS/CXXFLAGS injecteren en upgraden als het nog niet is gebeurd
+        # Alleen CFLAGS upgraden en injecteren als het nog niet is gebeurd
         if [[ ! "${CFLAGS}" =~ "-flto=thin" ]]; then
             CFLAGS=$(echo "${CFLAGS}" | sed 's/-O2/-O3/g')
             CXXFLAGS=$(echo "${CXXFLAGS}" | sed 's/-O2/-O3/g')
@@ -44,33 +48,33 @@ case "${CATEGORY}/${PN}" in
             CXXFLAGS="${CXXFLAGS} -flto=thin -Werror=odr -Werror=strict-aliasing"
         fi
         
-        # TIJDELIJKE FIX: Vervang mold door lld en voorkom dubbele flags
-        if [[ ! "${LDFLAGS}" =~ "-fuse-ld=lld" ]]; then
-            # Strip mold en bestaande thinlto/jobs/pack-relative flags voor de zekerheid
-            LDFLAGS=$(echo "${LDFLAGS}" | sed -E -e 's/-fuse-ld=(mold|lld)//g' -e 's/-flto=thin//g' -e 's/-Wl,--thinlto-jobs=[0-9]+//g' -e 's/-Wl,-z,pack-relative-relocs//g')
-            LDFLAGS="${LDFLAGS} -flto=thin -fuse-ld=lld -Wl,--thinlto-jobs=2 -Wl,-z,pack-relative-relocs"
-        fi
+        # Voorkom dubbele flags en forceer de LLD linker met ThinLTO jobs
+        LDFLAGS=$(echo "${LDFLAGS}" | sed -E -e 's/-fuse-ld=(mold|lld)//g' -e 's/-flto=thin//g' -e 's/-Wl,--thinlto-jobs=[0-9]+//g' -e 's/-Wl,-z,pack-relative-relocs//g')
+        LDFLAGS="${LDFLAGS} -flto=thin -fuse-ld=lld -Wl,--thinlto-jobs=2 -Wl,-z,pack-relative-relocs"
 
         if [[ ! "${RUSTFLAGS}" =~ "pack-relative-relocs" ]]; then
             export RUSTFLAGS="${RUSTFLAGS} -C link-arg=-Wl,-z,pack-relative-relocs"
         fi
-        ;;
-        
-    sys-libs/glibc|sys-devel/binutils)
+    fi
+fi
+
+# ==============================================================================
+# 4. EXCLUSIES & FALLBACKS (GCC/O2 FORCED)
+# ==============================================================================
+case "${CATEGORY}/${PN}" in
+    sys-libs/glibc|app-emulation/wine*)
         CC="gcc"
         CXX="g++"
         CPP="gcc -E"
-        # Rigoureuze opschoning van LTO, O3 en linkers voor stabiliteit
         CFLAGS=$(echo "${CFLAGS}" | sed -E -e 's/-flto(=thin)?//g' -e 's/-O3/-O2/g')
         CXXFLAGS=$(echo "${CXXFLAGS}" | sed -E -e 's/-flto(=thin)?//g' -e 's/-O3/-O2/g')
         LDFLAGS=$(echo "${LDFLAGS}" | sed -E -e 's/-flto(=thin)?//g' -e 's/-fuse-ld=(mold|lld)//g' -e 's/-Wl,--thinlto-jobs=[0-9]+//g')
         ;;
+        
+    media-libs/glycin)
+        if [[ ! "${FEATURES}" =~ "-test" ]]; then
+            export FEATURES="${FEATURES} -test"
+        fi
+        ;;
 esac
-
-# Glycin specifieke fix voor headless/TTY-loze containers
-if [ "${CATEGORY}/${PN}" = "media-libs/glycin" ]; then
-    if [[ ! "${FEATURES}" =~ "-test" ]]; then
-        export FEATURES="${FEATURES} -test"
-    fi
-fi
 
