@@ -57,9 +57,9 @@ src_configure() {
 }
 
 src_install() {
-	meson_src_install
 	python_fix_shebang "${BUILD_DIR}/showtime"
 	python_optimize
+	meson_src_install
 }
 
 pkg_postinst() {
