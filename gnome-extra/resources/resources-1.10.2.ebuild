@@ -244,6 +244,11 @@ QA_FLAGS_IGNORED="
 	/usr/libexec/resources/resources-processes
 	/usr/libexec/resources/resources-adjust
 "
+src_prepare() {
+	default
+	# Zorg dat Cargo de binaries niet vooraf stript
+	sed -i -e '/strip = true/d' Cargo.toml || die
+}
 
 src_configure() {
 	local emesonargs=(
