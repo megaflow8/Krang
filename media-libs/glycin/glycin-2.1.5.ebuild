@@ -4,7 +4,11 @@
 EAPI=8
 
 CRATES="
+	glycin@3.1.0
+	glycin-common@1.0.4
+	glycin-utils@4.1.0
 "
+
 RUST_MIN_VER="1.92"
 
 inherit cargo gnome.org meson vala
