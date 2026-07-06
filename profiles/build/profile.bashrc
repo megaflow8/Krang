@@ -49,8 +49,9 @@ case "${CATEGORY}/${PN}" in
             CFLAGS=$(echo "${CFLAGS}" | sed -E -e 's/-O2/-O3/g' -e 's/-Werror=strict-aliasing//g')
             CXXFLAGS=$(echo "${CXXFLAGS}" | sed -E -e 's/-O2/-O3/g' -e 's/-Werror=strict-aliasing//g')
             
-            CFLAGS="${CFLAGS} -flto=thin -Werror=odr -Werror=strict-aliasing"
-            CXXFLAGS="${CXXFLAGS} -flto=thin -Werror=odr -Werror=strict-aliasing"
+            # -Wno-unused-command-line-argument toegevoegd om de Clang linker warnings te negeren
+            CFLAGS="${CFLAGS} -flto=thin -Werror=odr -Werror=strict-aliasing -Wno-unused-command-line-argument"
+            CXXFLAGS="${CXXFLAGS} -flto=thin -Werror=odr -Werror=strict-aliasing -Wno-unused-command-line-argument"
         fi
         
         # Voorkom dubbele flags en forceer de LLD linker met ThinLTO jobs

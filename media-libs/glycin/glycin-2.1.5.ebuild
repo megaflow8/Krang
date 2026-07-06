@@ -4,16 +4,6 @@
 EAPI=8
 
 CRATES="
-	glycin@3.1.0
-	glycin-common@1.0.4
-	glycin-utils@4.1.0
-"
-# These should be in the gentoo crate dist
-CRATES+="
-	libglycin-gtk4-rebind@0.1.0
-	libglycin-gtk4-rebind-sys@0.1.0
-	libglycin-rebind@0.1.0
-	libglycin-rebind-sys@0.1.0
 "
 RUST_MIN_VER="1.92"
 
