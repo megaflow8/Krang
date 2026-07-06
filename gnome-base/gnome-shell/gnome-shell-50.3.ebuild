@@ -152,7 +152,7 @@ src_configure() {
 	local emesonargs=(
 		$(meson_use pipewire camera_monitor)
 		-Dextensions_tool=true
-		-Dextensions_app=true
+		-Dextensions_app=false
 		$(meson_use gtk-doc gtk_doc)
 		-Dman=true
 		$(meson_use test tests)
