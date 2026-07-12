@@ -136,10 +136,10 @@ CRATES="
 	zmij@1.0.21
 "
 
-inherit cargo meson
+inherit cargo meson optfeature xdg
 
-DESCRIPTION=""
-HOMEPAGE=""
+DESCRIPTION="GStreamer video and audio file thumbnailer"
+HOMEPAGE="https://gitlab.gnome.org/GNOME/gst-thumbnailers"
 SRC_URI="https://gitlab.gnome.org/GNOME/gst-thumbnailers/-/archive/${PV}/gst-thumbnailers-${PV}.tar.bz2
 	${CARGO_CRATE_URIS}
 "
@@ -150,6 +150,11 @@ LICENSE="GPL-3+"
 LICENSE+=" Apache-2.0 Apache-2.0-with-LLVM-exceptions MIT Unicode-3.0"
 SLOT="0"
 KEYWORDS="~amd64"
+
+DEPEND="
+	>=media-libs/gstreamer-1.26.0
+	>=media-libs/glycin-2.0.0
+"
 
 QA_FLAGS_IGNORED="/usr/bin/gst-video-thumbnailer /usr/bin/gst-audio-thumbnailer"
 
@@ -163,4 +168,14 @@ src_configure() {
 
 src_install() {
 	meson_src_install
+}
+
+pkg_postinst() {
+	xdg_pkg_postinst
+
+optfeature "Extra media decoders" media-plugins/gst-plugins-libav media-libs/gst-plugins-bad media-libs/gst-plugins-ugly
+}
+
+pkg_postrm() {
+	xdg_pkg_postrm
 }
