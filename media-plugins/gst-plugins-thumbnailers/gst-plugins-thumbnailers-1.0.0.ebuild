@@ -172,7 +172,7 @@ src_install() {
 
 pkg_postinst() {
 	optfeature "Extra media decoders" \
-	media-plugins/gst-plugins-libav \
-	media-libs/gst-plugins-bad \
-	media-libs/gst-plugins-ugly
+		media-plugins/gst-plugins-libav \
+		media-libs/gst-plugins-bad \
+		media-libs/gst-plugins-ugly
 }
