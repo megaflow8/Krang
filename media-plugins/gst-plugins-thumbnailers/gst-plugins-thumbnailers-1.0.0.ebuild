@@ -136,7 +136,7 @@ CRATES="
 	zmij@1.0.21
 "
 
-inherit cargo meson optfeature xdg
+inherit cargo meson optfeature
 
 DESCRIPTION="GStreamer video and audio file thumbnailer"
 HOMEPAGE="https://gitlab.gnome.org/GNOME/gst-thumbnailers"
@@ -171,11 +171,8 @@ src_install() {
 }
 
 pkg_postinst() {
-	xdg_pkg_postinst
-
-optfeature "Extra media decoders" media-plugins/gst-plugins-libav media-libs/gst-plugins-bad media-libs/gst-plugins-ugly
-}
-
-pkg_postrm() {
-	xdg_pkg_postrm
+	optfeature "Extra media decoders" \
+	media-plugins/gst-plugins-libav \
+	media-libs/gst-plugins-bad \
+	media-libs/gst-plugins-ugly
 }
