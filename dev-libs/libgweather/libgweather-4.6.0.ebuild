@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-PYTHON_COMPAT=( python3_{11..14} )
+PYTHON_COMPAT=( python3_{11..15} )
 
 inherit gnome.org gnome2-utils meson python-any-r1 vala xdg
 
@@ -11,6 +11,7 @@ HOMEPAGE="https://gitlab.gnome.org/GNOME/libgweather"
 
 LICENSE="GPL-2+"
 SLOT="4/4-0" # subslot = 4-(libgweather-4 soname suffix)
+KEYWORDS="~amd64"
 
 IUSE="gtk-doc +introspection test +vala"
 RESTRICT="!test? ( test )"
@@ -18,8 +19,6 @@ REQUIRED_USE="
 	vala? ( introspection )
 	gtk-doc? ( introspection )
 "
-
-KEYWORDS="~alpha ~amd64 ~arm arm64 ~loong ~ppc ~ppc64 ~riscv ~sparc x86"
 
 RDEPEND="
 	>=dev-libs/glib-2.68.0:2

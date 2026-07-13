@@ -2,16 +2,16 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-PYTHON_COMPAT=( python3_{11..14} )
+PYTHON_COMPAT=( python3_{11..15} )
 
-inherit bash-completion-r1 flag-o-matic gnome.org gnome2-utils linux-info meson python-any-r1 systemd vala xdg
+inherit shell-completion flag-o-matic gnome.org gnome2-utils linux-info meson python-any-r1 systemd vala xdg
 
 DESCRIPTION="Low-footprint RDF triple store with SPARQL 1.1 interface"
 HOMEPAGE="https://gnome.pages.gitlab.gnome.org/tinysparql"
 
 LICENSE="GPL-2+ LGPL-2.1+"
 SLOT="3/0" # libtracker-sparql-3.0 soname version
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~sparc ~x86"
+KEYWORDS="~amd64"
 IUSE="dbus gtk-doc +localsearch stemmer systemd test vala zeroconf"
 RESTRICT="!test? ( test )"
 
@@ -29,6 +29,7 @@ RDEPEND="
 	dbus? ( >=sys-apps/dbus-1.3.2 )
 	zeroconf? ( net-dns/avahi )
 	systemd? ( >=sys-apps/systemd-2.42 )
+	app-shells/bash-completion
 "
 DEPEND="${RDEPEND}"
 BDEPEND="

@@ -205,7 +205,7 @@ inherit cargo meson optfeature xdg
 
 DESCRIPTION="Keep an eye on system resources (CPU, Memory, GPU, Disk, Network)"
 HOMEPAGE="https://apps.gnome.org/app/net.nokyan.Resources/"
-SRC_URI="https://gnome.org{PV}/resources-v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://gitlab.gnome.org/GNOME/Incubator/resources/-/archive/v${PV}/resources-v${PV}.tar.bz2"
 SRC_URI+=" ${CARGO_CRATE_URIS}"
 
 RUST_MIN_VER="1.85.0"
