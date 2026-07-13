@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{11..14} )
+PYTHON_COMPAT=( python3_{11..15} )
 PYTHON_REQ_USE="xml(+)"
 inherit meson python-any-r1 systemd vala xdg
 
@@ -13,7 +13,7 @@ SRC_URI="https://gitlab.freedesktop.org/geoclue/${PN}/-/archive/${PV}/${P}.tar.b
 
 LICENSE="LGPL-2.1+ GPL-2+"
 SLOT="2.0"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~loong ~mips ~ppc ~ppc64 ~riscv ~sparc ~x86"
+KEYWORDS="~amd64"
 IUSE="+introspection gtk-doc modemmanager selinux vala zeroconf"
 REQUIRED_USE="vala? ( introspection )"
 
@@ -66,4 +66,3 @@ src_configure() {
 	)
 	meson_src_configure
 }
-

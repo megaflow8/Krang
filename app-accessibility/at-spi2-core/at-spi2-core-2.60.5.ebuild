@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{11..14} )
+PYTHON_COMPAT=( python3_{11..15} )
 
 inherit gnome.org meson-multilib python-r1 systemd virtualx xdg
 
@@ -12,7 +12,7 @@ HOMEPAGE="https://gitlab.gnome.org/GNOME/at-spi2-core"
 
 LICENSE="LGPL-2.1+"
 SLOT="2"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~loong ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86 ~x64-macos"
+KEYWORDS="~amd64"
 IUSE="X dbus-broker gtk-doc +introspection systemd"
 REQUIRED_USE="
 	${PYTHON_REQUIRED_USE}
