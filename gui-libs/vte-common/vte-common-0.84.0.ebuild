@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-PYTHON_COMPAT=( python3_{11..14} )
+PYTHON_COMPAT=( python3_{11..15} )
 GNOME_ORG_MODULE="vte"
 
 inherit flag-o-matic gnome.org meson python-any-r1
@@ -17,9 +17,7 @@ LICENSE="LGPL-3+ GPL-3+"
 
 SLOT="2.91" # vte_api_version in meson.build
 
-KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~sparc ~x86"
-
-IUSE="systemd"
+KEYWORDS="~amd64"
 
 DEPEND="
 	|| ( >=gui-libs/gtk-4.0.1:4 >=x11-libs/gtk+-3.24.22:3 )
@@ -29,7 +27,6 @@ DEPEND="
 	>=dev-libs/glib-2.60:2
 	>=x11-libs/pango-1.22.0
 	>=dev-libs/libpcre2-10.21
-	systemd? ( >=sys-apps/systemd-220:= )
 	>=app-arch/lz4-1.9
 	x11-libs/pango
 "
@@ -65,7 +62,6 @@ src_configure() {
 		-Dgtk3=false
 		-Dgtk4=false
 		-Dicu=false
-		$(meson_use systemd _systemd)
 		-Dvapi=false
 	)
 	meson_src_configure
@@ -77,9 +73,7 @@ src_install() {
 	insinto /etc/profile.d/
 	newins "${BUILD_DIR}"/src/vte.sh vte-${SLOT}.sh
 	newins "${BUILD_DIR}"/src/vte.csh vte-${SLOT}.csh
-	if  use systemd; then
-		insinto /usr/lib/systemd/user/vte-spawn-.scode.d/
-		newins "${S}"/src/vte-spawn-.scope.conf defaults.conf
-	fi
+	insinto /usr/lib/systemd/user/vte-spawn-.scode.d/
+	newins "${S}"/src/vte-spawn-.scope.conf defaults.conf
 	einstalldocs
 }

@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-PYTHON_COMPAT=( python3_{11..14} )
+PYTHON_COMPAT=( python3_{11..15} )
 
 inherit flag-o-matic gnome.org meson python-any-r1 vala xdg
 
@@ -13,8 +13,8 @@ HOMEPAGE="https://gitlab.gnome.org/GNOME/vte"
 LICENSE="LGPL-3+ GPL-3+"
 SLOT="2.91-gtk4" # vte_api_version + "-gtk4" in meson.build
 
-KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~x86"
-IUSE="X +crypt debug gtk-doc +icu +introspection systemd +vala wayland"
+KEYWORDS="~amd64"
+IUSE="X +crypt debug gtk-doc +icu +introspection +vala wayland"
 REQUIRED_USE="
 	gtk-doc? ( introspection )
 	vala? ( introspection )
@@ -32,13 +32,12 @@ DEPEND="
 	>=x11-libs/pango-1.22.0
 	>=dev-libs/libpcre2-10.21:=
 	>=dev-cpp/simdutf-6.2.0
-	systemd? ( >=sys-apps/systemd-220:= )
 	>=app-arch/lz4-1.9
 	introspection? ( >=dev-libs/gobject-introspection-1.82.0-r2:= )
 	x11-libs/pango[introspection?]
 "
 RDEPEND="${DEPEND}
-	~gui-libs/vte-common-${PV}[systemd?]
+	!x11-libs/vte
 "
 BDEPEND="
 	${PYTHON_DEPS}
@@ -81,7 +80,6 @@ src_configure() {
 		-Dgtk3=false
 		-Dgtk4=true
 		$(meson_use icu)
-		$(meson_use systemd _systemd)
 		$(meson_use vala vapi)
 	)
 	meson_src_configure
@@ -96,9 +94,7 @@ src_install() {
 	rm "${ED}"/usr/libexec/vte-urlencode-cwd || die
 	rm "${ED}"/etc/profile.d/vte.sh || die
 	rm "${ED}"/etc/profile.d/vte.csh || die
-	if use systemd; then
-		rm "${ED}"/usr/lib/systemd/user/vte-spawn-.scope.d/defaults.conf || die
-	fi
+	rm "${ED}"/usr/lib/systemd/user/vte-spawn-.scope.d/defaults.conf || die
 	if use gtk-doc; then
 		mkdir -p "${ED}"/usr/share/gtk-doc/ || die
 		mv "${ED}"/usr/share/doc/vte-${SLOT} "${ED}"/usr/share/gtk-doc/ || die

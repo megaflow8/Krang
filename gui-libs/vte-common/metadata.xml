@@ -5,9 +5,6 @@
     <email>gnome@gentoo.org</email>
     <name>Gentoo GNOME Desktop</name>
   </maintainer>
-  <use>
-    <flag name="systemd">Support moving terminal child processes to their own systemd user scopes to avoid terminal getting killed due to child causing OOM</flag>
-  </use>
   <upstream>
     <remote-id type="gnome-gitlab">GNOME/vte</remote-id>
   </upstream>

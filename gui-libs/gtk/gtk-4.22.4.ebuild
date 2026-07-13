@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-PYTHON_COMPAT=( python3_{11..14} )
+PYTHON_COMPAT=( python3_{11..15} )
 inherit flag-o-matic gnome.org gnome2-utils meson optfeature python-any-r1 toolchain-funcs virtualx xdg
 
 DESCRIPTION="GTK is a multi-platform toolkit for creating graphical user interfaces"
@@ -15,7 +15,7 @@ REQUIRED_USE="
 	gtk-doc? ( introspection )
 	test? ( introspection )
 "
-KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~sparc ~x86"
+KEYWORDS="~amd64"
 IUSE="aqua broadway cloudproviders colord cups examples gstreamer gtk-doc +introspection sysprof test vulkan wayland +X cpu_flags_x86_f16c"
 
 # librsvg for svg icons and "!8541 Use librsvg for symbolics that we

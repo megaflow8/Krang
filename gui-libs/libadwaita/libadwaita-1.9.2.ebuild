@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{11..14} )
+PYTHON_COMPAT=( python3_{11..15} )
 inherit gnome.org meson python-any-r1 vala virtualx xdg
 
 DESCRIPTION="Building blocks for modern GNOME applications"
@@ -11,7 +11,7 @@ HOMEPAGE="https://gnome.pages.gitlab.gnome.org/libadwaita/ https://gitlab.gnome.
 
 LICENSE="LGPL-2.1+"
 SLOT="1"
-KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~x86"
+KEYWORDS="~amd64"
 
 IUSE="doc examples +introspection test +vala"
 REQUIRED_USE="
