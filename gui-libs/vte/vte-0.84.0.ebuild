@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -31,13 +31,14 @@ DEPEND="
 	icu? ( dev-libs/icu:= )
 	>=x11-libs/pango-1.22.0
 	>=dev-libs/libpcre2-10.21:=
-	>=dev-cpp/simdutf-6.2.0
+	>=dev-cpp/simdutf-6.2.0:=
+	>=sys-apps/systemd-220:=
 	>=app-arch/lz4-1.9
 	introspection? ( >=dev-libs/gobject-introspection-1.82.0-r2:= )
 	x11-libs/pango[introspection?]
 "
 RDEPEND="${DEPEND}
-	!x11-libs/vte
+	~gui-libs/vte-common-${PV}
 "
 BDEPEND="
 	${PYTHON_DEPS}
@@ -70,7 +71,7 @@ src_configure() {
 
 	local emesonargs=(
 		-Da11y=true
-		#-Dapp-hidden=true
+		-Dapp-hidden=true
 		$(meson_use debug)
 		$(meson_use gtk-doc docs)
 		$(meson_use introspection gir)
@@ -80,6 +81,7 @@ src_configure() {
 		-Dgtk3=false
 		-Dgtk4=true
 		$(meson_use icu)
+		-D_systemd
 		$(meson_use vala vapi)
 	)
 	meson_src_configure
@@ -94,7 +96,7 @@ src_install() {
 	rm "${ED}"/usr/libexec/vte-urlencode-cwd || die
 	rm "${ED}"/etc/profile.d/vte.sh || die
 	rm "${ED}"/etc/profile.d/vte.csh || die
-	rm "${ED}"/usr/lib/systemd/user/vte-spawn-.scope.d/defaults.conf || die
+		rm "${ED}"/usr/lib/systemd/user/vte-spawn-.scope.d/defaults.conf || die
 	if use gtk-doc; then
 		mkdir -p "${ED}"/usr/share/gtk-doc/ || die
 		mv "${ED}"/usr/share/doc/vte-${SLOT} "${ED}"/usr/share/gtk-doc/ || die

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors7
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -27,6 +27,7 @@ DEPEND="
 	>=dev-libs/glib-2.60:2
 	>=x11-libs/pango-1.22.0
 	>=dev-libs/libpcre2-10.21
+	>=sys-apps/systemd-220:=
 	>=app-arch/lz4-1.9
 	x11-libs/pango
 "
@@ -39,7 +40,7 @@ BDEPEND="
 "
 
 PATCHES=(
-	#"${FILESDIR}/vte-${PV}-fix-unknown-variable.patch"
+	"${FILESDIR}/vte-0.82.2-fix-unknown-variable.patch"
 )
 
 src_prepare() {
@@ -62,6 +63,7 @@ src_configure() {
 		-Dgtk3=false
 		-Dgtk4=false
 		-Dicu=false
+		-D_systemd # Hardcoded ingeschakeld, $(meson_use ...) is weg
 		-Dvapi=false
 	)
 	meson_src_configure
@@ -73,7 +75,9 @@ src_install() {
 	insinto /etc/profile.d/
 	newins "${BUILD_DIR}"/src/vte.sh vte-${SLOT}.sh
 	newins "${BUILD_DIR}"/src/vte.csh vte-${SLOT}.csh
-	insinto /usr/lib/systemd/user/vte-spawn-.scode.d/
-	newins "${S}"/src/vte-spawn-.scope.conf defaults.conf
+	if  use systemd; then
+		insinto /usr/lib/systemd/user/vte-spawn-.scode.d/
+		newins "${S}"/src/vte-spawn-.scope.conf defaults.conf
+	fi
 	einstalldocs
 }
