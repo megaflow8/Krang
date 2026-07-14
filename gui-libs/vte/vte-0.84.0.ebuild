@@ -81,7 +81,7 @@ src_configure() {
 		-Dgtk3=false
 		-Dgtk4=true
 		$(meson_use icu)
-		-D_systemd
+		-D_systemd=true
 		$(meson_use vala vapi)
 	)
 	meson_src_configure

@@ -59,7 +59,7 @@ src_configure() {
 		-Dgtk3=false
 		-Dgtk4=false
 		-Dicu=false
-		-D_systemd # Hardcoded ingeschakeld, $(meson_use ...) is weg
+		-D_systemd=true # Hardcoded ingeschakeld, $(meson_use ...) is weg
 		-Dvapi=false
 	)
 	meson_src_configure
