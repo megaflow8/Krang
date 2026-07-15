@@ -10,15 +10,12 @@ HOMEPAGE="https://gitlab.gnome.org/GNOME/gnome-online-accounts"
 
 LICENSE="LGPL-2+"
 SLOT="0/1"
-KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc64 ~riscv ~x86"
+KEYWORDS="~amd64"
 
 IUSE="debug doc gnome +introspection kerberos ms365 +vala"
 REQUIRED_USE="vala? ( introspection )"
 
-# libsoup used in goaoauthprovider
-# goa kerberos provider is incompatible with app-crypt/heimdal, see
-# https://bugzilla.gnome.org/show_bug.cgi?id=692250
-# json-glib-0.16 needed for bug #485092
+# Kerberos provider vereist specifiek MIT-Kerberos (incompatibel met Heimdal)
 RDEPEND="
 	>=dev-libs/glib-2.67.4:2
 	sys-apps/dbus
@@ -36,7 +33,7 @@ RDEPEND="
 		app-crypt/mit-krb5
 	)
 "
-# goa-daemon can launch gnome-control-center
+
 PDEPEND="gnome? ( >=gnome-base/gnome-control-center-3.2[gnome-online-accounts(+)] )"
 
 DEPEND="${RDEPEND}
@@ -45,7 +42,6 @@ DEPEND="${RDEPEND}
 	>=dev-util/gdbus-codegen-2.80.5-r1
 	>=sys-devel/gettext-0.19.8
 	virtual/pkgconfig
-
 	gnome-base/gnome-common
 "
 BDEPEND="doc? ( dev-util/gi-docgen )"
@@ -56,7 +52,6 @@ src_prepare() {
 }
 
 src_configure() {
-	# TODO: Give users a way to set the G/FB/Windows Live secrets
 	local emesonargs=(
 		-Dgoabackend=true
 		-Dexchange=true
@@ -72,6 +67,23 @@ src_configure() {
 		-Dman=true
 		$(meson_use vala vapi)
 	)
+
+	# Sta gebruikers toe om eigen Google API credentials mee te geven via make.conf / env
+	if [[ -n ${GOA_GOOGLE_CLIENT_ID} && -n ${GOA_GOOGLE_CLIENT_SECRET} ]]; then
+		emesonargs+=(
+			-Dgoogle_client_id="${GOA_GOOGLE_CLIENT_ID}"
+			-Dgoogle_client_secret="${GOA_GOOGLE_CLIENT_SECRET}"
+		)
+	fi
+
+	# Sta gebruikers toe om eigen Microsoft Azure / 365 credentials mee te geven
+	if [[ -n ${GOA_MICROSOFT_CLIENT_ID} && -n ${GOA_MICROSOFT_CLIENT_SECRET} ]]; then
+		emesonargs+=(
+			-Dmicrosoft_client_id="${GOA_MICROSOFT_CLIENT_ID}"
+			-Dmicrosoft_client_secret="${GOA_MICROSOFT_CLIENT_SECRET}"
+		)
+	fi
+
 	meson_src_configure
 }
 
