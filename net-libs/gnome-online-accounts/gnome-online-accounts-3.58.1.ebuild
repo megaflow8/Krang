@@ -56,6 +56,7 @@ src_configure() {
 
 	# Schakel de irritante typedef-waarschuwingen van Clang uit
 	append-cflags -Wno-typedef-redefinition
+	append-cflags -Wno-deprecated-declarations
 
 	local emesonargs=(
 		-Dgoabackend=true
