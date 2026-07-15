@@ -239,10 +239,10 @@ RDEPEND+="
 	>=x11-libs/cairo-1.14.0
 	"
 QA_FLAGS_IGNORED="
-	/usr/bin/resources
-	/usr/libexec/resources/resources-kill
-	/usr/libexec/resources/resources-processes
-	/usr/libexec/resources/resources-adjust
+	usr/bin/resources
+	usr/libexec/resources/resources-kill
+	usr/libexec/resources/resources-processes
+	usr/libexec/resources/resources-adjust
 "
 src_prepare() {
 	default
