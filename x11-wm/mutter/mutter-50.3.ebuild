@@ -103,7 +103,6 @@ src_configure() {
 	local emesonargs=(
 		-Dgles2=true
 		-Dlogind=true
-		-Dsystemd=true
 		-Dnative_backend=true
 		-Dsound_player=true
 		-Dstartup_notification=false
