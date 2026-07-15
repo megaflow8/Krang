@@ -2,28 +2,28 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-PYTHON_COMPAT=( python3_{11..14} )
+PYTHON_COMPAT=( python3_{11..15} ) # Bijgewerkt naar Python 3.15
 inherit meson python-any-r1 systemd vala
 
 DESCRIPTION="D-Bus interfaces for querying and manipulating user account information"
 HOMEPAGE="https://www.freedesktop.org/wiki/Software/AccountsService/"
-SRC_URI="https://gitlab.freedesktop.org/accountsservice/accountsservice/-/archive/${PV}/accountsservice-${PV}.tar.gz"
+SRC_URI="https://gitlab.freedesktop.org/accountsservice/accountsservice/-/archive/${PV}/accountsservice-${PV}.tar.bz2"
 
 LICENSE="GPL-3+"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 arm arm64 ~loong ppc ppc64 ~riscv ~sparc x86"
+KEYWORDS="~amd64"
 
-IUSE="doc elogind gtk-doc +introspection selinux systemd test vala homed"
+# elogind en systemd vlaggen verwijderd uit IUSE
+IUSE="doc gtk-doc +introspection selinux test vala homed"
 RESTRICT="!test? ( test )"
-REQUIRED_USE="^^ ( elogind systemd )"
 
+# CDEPEND opgeschoond van elogind en systemd-vlag afhankelijkheid gemaakt
 CDEPEND="
 	>=dev-libs/glib-2.63.5:2
 	sys-auth/polkit
 	virtual/libcrypt:=
-	elogind? ( >=sys-auth/elogind-229.4 )
+	>=sys-apps/systemd-186:0=
 	introspection? ( >=dev-libs/gobject-introspection-1.82.0-r2:= )
-	systemd? ( >=sys-apps/systemd-186:0= )
 	homed? ( sys-apps/systemd[homed] )
 "
 DEPEND="${CDEPEND}
@@ -46,7 +46,7 @@ BDEPEND="
 	vala? ( $(vala_depend) )
 	test? (
 		$(python_gen_any_dep '
-			dev-python/python-dbusmock[${PYTHON_USEDEP}]
+		dev-python/python-dbusmock[${PYTHON_USEDEP}]
 		')
 	)
 "
@@ -80,7 +80,7 @@ src_configure() {
 		--localstatedir="${EPREFIX}/var"
 		-Dsystemdsystemunitdir="$(systemd_get_systemunitdir)"
 		-Dadmin_group="wheel"
-		$(meson_use elogind)
+		-Delogind=false # Expliciet op false gezet
 		$(meson_use introspection)
 		$(meson_use doc docbook)
 		$(meson_use gtk-doc gtk_doc)
