@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit gnome.org meson vala xdg flag-o-matic
+inherit flag-o-matic gnome.org meson vala xdg toolchain-funcs
 
 DESCRIPTION="GNOME framework for accessing online accounts"
 HOMEPAGE="https://gitlab.gnome.org/GNOME/gnome-online-accounts"
@@ -52,9 +52,11 @@ src_prepare() {
 }
 
 src_configure() {
-	append-cflags -Wno-typedef-redefinition
-	append-cflags -Wno-deprecated-declarations
-
+	if tc-is-clang; then
+		append-cflags -Wno-typedef-redefinition
+		append-cflags -Wno-deprecated-declarations
+	fi
+	
 	if use debug; then
 		EMESON_BUILDTYPE=debug
 	fi
