@@ -56,7 +56,7 @@ src_configure() {
 		append-cflags -Wno-typedef-redefinition
 		append-cflags -Wno-deprecated-declarations
 	fi
-	
+
 	if use debug; then
 		EMESON_BUILDTYPE=debug
 	fi

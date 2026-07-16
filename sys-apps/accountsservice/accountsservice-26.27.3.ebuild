@@ -2,8 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-PYTHON_COMPAT=( python3_{11..15} ) # Bijgewerkt naar Python 3.15
-inherit meson python-any-r1 systemd vala
+PYTHON_COMPAT=( python3_{11..15} )
+inherit meson systemd vala python-any-r1
 
 DESCRIPTION="D-Bus interfaces for querying and manipulating user account information"
 HOMEPAGE="https://www.freedesktop.org/wiki/Software/AccountsService/"
@@ -17,16 +17,17 @@ KEYWORDS="~amd64"
 IUSE="doc gtk-doc +introspection selinux test vala homed"
 RESTRICT="!test? ( test )"
 
-# CDEPEND opgeschoond van elogind en systemd-vlag afhankelijkheid gemaakt
-CDEPEND="
+RDEPEND="
 	>=dev-libs/glib-2.63.5:2
 	sys-auth/polkit
 	virtual/libcrypt:=
 	>=sys-apps/systemd-186:0=
-	introspection? ( >=dev-libs/gobject-introspection-1.82.0-r2:= )
+	introspection? ( >=dev-libs/gobject-introspection-1.82.0 )
 	homed? ( sys-apps/systemd[homed] )
+	selinux? ( sec-policy/selinux-accountsd )
 "
-DEPEND="${CDEPEND}
+DEPEND="
+	${RDEPEND}
 	sys-apps/dbus
 "
 BDEPEND="
@@ -46,14 +47,10 @@ BDEPEND="
 	vala? ( $(vala_depend) )
 	test? (
 		$(python_gen_any_dep '
-		dev-python/python-dbusmock[${PYTHON_USEDEP}]
+			dev-python/python-dbusmock[${PYTHON_USEDEP}]
 		')
 	)
 "
-RDEPEND="${CDEPEND}
-	selinux? ( sec-policy/selinux-accountsd )
-"
-
 PATCHES=(
 	"${FILESDIR}"/${PN}-22.04.62-gentoo-system-users.patch
 )
