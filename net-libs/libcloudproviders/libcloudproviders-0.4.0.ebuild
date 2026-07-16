@@ -11,7 +11,7 @@ HOMEPAGE="https://gitlab.gnome.org/World/libcloudproviders"
 LICENSE="LGPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="gtk-doc +introspection vala"
+IUSE="doc +introspection vala debug"
 REQUIRED_USE="vala? ( introspection )"
 
 DEPEND="
@@ -22,7 +22,7 @@ BDEPEND="
 	>=dev-util/gdbus-codegen-2.80.5-r1
 	dev-util/glib-utils
 	virtual/pkgconfig
-	gtk-doc? (
+	doc? (
 		dev-util/gi-docgen
 		dev-libs/gobject-introspection
 		)
@@ -42,7 +42,7 @@ src_configure() {
 		EMESON_BUILDTYPE=debug
 	fi
 	local emesonargs=(
-		$(meson_use gtk-doc documentation)
+		$(meson_use doc documentation)
 		-Dinstalled-tests=false
 		$(meson_use introspection)
 		$(meson_use vala vapigen)
