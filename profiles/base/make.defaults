@@ -17,7 +17,7 @@ OFFICE_IMPLEMENTATION="libreoffice"
 USE="${USE} -a52 -cdda -cdrom -cdr -css -cups -dvd -dvdr -gnome-keyring -gpm -gui -iptables -jack -man -qt6 -scanner -startup-notification -sysprof"
 
 # System, Kernel & Security
-USE="${USE} cryptsetup dist-kernel modules-compress modules-sign nftables secureboot ukify"
+USE="${USE} cryptsetup dist-kernel modules-compress modules-sign nftables secureboot ukify homed"
 
 # Desktop, UI & Graphics libraries
 USE="${USE} flatpak fontconfig fpm ftp gtk3 gtk4 lm-sensors v4l"
