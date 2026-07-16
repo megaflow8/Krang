@@ -82,14 +82,6 @@ src_configure() {
 		)
 	fi
 
-	# Sta gebruikers toe om eigen Microsoft Azure / 365 credentials mee te geven
-	if [[ -n ${GOA_MICROSOFT_CLIENT_ID} && -n ${GOA_MICROSOFT_CLIENT_SECRET} ]]; then
-		emesonargs+=(
-			-Dmicrosoft_client_id="${GOA_MICROSOFT_CLIENT_ID}"
-			-Dmicrosoft_client_secret="${GOA_MICROSOFT_CLIENT_SECRET}"
-		)
-	fi
-
 	meson_src_configure
 }
 
