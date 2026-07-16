@@ -52,11 +52,12 @@ src_prepare() {
 }
 
 src_configure() {
-	use debug && EMESON_BUILDTYPE=debug
-
-	# Schakel de irritante typedef-waarschuwingen van Clang uit
 	append-cflags -Wno-typedef-redefinition
 	append-cflags -Wno-deprecated-declarations
+
+	if use debug; then
+		EMESON_BUILDTYPE=debug
+	fi
 
 	local emesonargs=(
 		-Dgoabackend=true

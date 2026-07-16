@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit gnome.org vala meson
+inherit gnome.org vala meson flag-o-matic
 
 DESCRIPTION="DBus API that allows cloud storage sync clients to expose their services"
 HOMEPAGE="https://gitlab.gnome.org/World/libcloudproviders"
@@ -22,7 +22,10 @@ BDEPEND="
 	>=dev-util/gdbus-codegen-2.80.5-r1
 	dev-util/glib-utils
 	virtual/pkgconfig
-	gtk-doc? ( dev-util/gtk-doc )
+	gtk-doc? (
+		dev-util/gi-docgen
+		dev-libs/gobject-introspection
+		)
 	vala? ( $(vala_depend) )
 "
 
@@ -32,8 +35,14 @@ src_prepare() {
 }
 
 src_configure() {
+	append-cflags -Wno-typedef-redefinition
+	append-cflags -Wno-deprecated-declarations
+
+	if use debug; then
+		EMESON_BUILDTYPE=debug
+	fi
 	local emesonargs=(
-		$(meson_use gtk-doc enable-gtk-doc)
+		$(meson_use gtk-doc documentation)
 		-Dinstalled-tests=false
 		$(meson_use introspection)
 		$(meson_use vala vapigen)
