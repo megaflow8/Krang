@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit gnome.org gnome2-utils meson systemd xdg
+inherit flag-o-matic gnome.org gnome2-utils meson systemd xdg toolchain-funcs
 
 DESCRIPTION="Backend implementation for xdg-desktop-portal using GNOME"
 HOMEPAGE="https://gitlab.gnome.org/GNOME/xdg-desktop-portal-gnome"
@@ -33,6 +33,15 @@ BDEPEND="
 "
 
 src_configure() {
+	if tc-is-clang; then
+	append-cflags -Wno-typedef-redefinition
+	append-cflags -Wno-deprecated-declarations
+	fi
+
+	if use debug; then
+		EMESON_BUILDTYPE=debug
+	fi
+
 	local emesonargs=(
 		-Dsystemduserunitdir="$(systemd_get_userunitdir)"
 	)
