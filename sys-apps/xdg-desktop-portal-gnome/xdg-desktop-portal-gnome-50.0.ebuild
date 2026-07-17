@@ -10,29 +10,26 @@ HOMEPAGE="https://gitlab.gnome.org/GNOME/xdg-desktop-portal-gnome"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~x86"
-IUSE="wayland X"
+KEYWORDS="~amd64"
 
 DEPEND="
 	dev-libs/glib:2
-	>=gnome-base/gsettings-desktop-schemas-47_alpha
+	>=gnome-base/gsettings-desktop-schemas-50
 	gnome-base/gnome-desktop:4=
-	>=gui-libs/libadwaita-1.7_alpha:1
+	>=gui-libs/libadwaita-1.9:1
 	media-libs/fontconfig
 	sys-apps/dbus
 	>=sys-apps/xdg-desktop-portal-1.19.1
 	>=sys-apps/xdg-desktop-portal-gtk-1.14.0
-	>=gui-libs/gtk-4.17.1:4[wayland?,X?]
-	X? ( x11-libs/libX11 )
-	wayland? ( dev-libs/wayland )
+	>=gui-libs/gtk-4.17.1:4[wayland]
+	dev-libs/wayland
 "
 RDEPEND="${DEPEND}"
 BDEPEND="
 	>=dev-util/gdbus-codegen-2.80.5-r1
 	sys-devel/gettext
 	virtual/pkgconfig
-
-	wayland? ( dev-util/wayland-scanner )
+	dev-util/wayland-scanner
 "
 
 src_configure() {
