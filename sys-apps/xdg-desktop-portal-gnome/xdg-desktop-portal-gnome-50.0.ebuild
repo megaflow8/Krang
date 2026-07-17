@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit flag-o-matic gnome.org gnome2-utils meson systemd xdg toolchain-funcs
+inherit flag-o-matic gnome.org gnome2-utils meson systemd toolchain-funcs
 
 DESCRIPTION="Backend implementation for xdg-desktop-portal using GNOME"
 HOMEPAGE="https://gitlab.gnome.org/GNOME/xdg-desktop-portal-gnome"
@@ -46,11 +46,9 @@ src_configure() {
 }
 
 pkg_postinst() {
-	xdg_pkg_postinst
 	gnome2_schemas_update
 }
 
 pkg_postrm() {
-	xdg_pkg_postrm
 	gnome2_schemas_update
 }
