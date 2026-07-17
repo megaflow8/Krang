@@ -38,10 +38,6 @@ src_configure() {
 	append-cflags -Wno-deprecated-declarations
 	fi
 
-	if use debug; then
-		EMESON_BUILDTYPE=debug
-	fi
-
 	local emesonargs=(
 		-Dsystemduserunitdir="$(systemd_get_userunitdir)"
 	)
