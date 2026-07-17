@@ -87,7 +87,7 @@ esac
 # 5. GNOME 50 / CLANG CLEAN-UP (DEMP IRRITANTE COMPILER-RUIS)
 # ==============================================================================
 case "${CATEGORY}" in
-    gnome-base|gui-libs|net-libs|app-accessibility)
+    gnome-base|gui-libs|net-libs|app-accessibility|app-util|app-utils|sys-apps)
         # Alleen toepassen als Clang de actieve compiler is
         if [[ ${CC} == *clang* ]]; then
             if [[ ! "${CFLAGS}" =~ "Wno-typedef-redefinition" ]]; then
