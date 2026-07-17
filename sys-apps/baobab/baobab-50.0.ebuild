@@ -44,11 +44,6 @@ src_configure() {
 		append-cflags -Wno-unused-function
 		append-cflags -Qunused-arguments
 	fi
-
-	# Baobab gebruikt standaard Meson opties, dus emesonargs kan leeg blijven
-	local emesonargs=(
-		-Dinstalled-tests=false
-	)
 	meson_src_configure
 }
 
