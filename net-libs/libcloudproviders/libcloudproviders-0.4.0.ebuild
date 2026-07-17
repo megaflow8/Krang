@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit flag-o-matic gnome.org vala meson toolchain-funcs
+inherit gnome.org vala meson
 
 DESCRIPTION="DBus API that allows cloud storage sync clients to expose their services"
 HOMEPAGE="https://gitlab.gnome.org/World/libcloudproviders"
@@ -35,15 +35,6 @@ src_prepare() {
 }
 
 src_configure() {
-	if tc-is-clang; then
-		append-cflags -Wno-typedef-redefinition
-		append-cflags -Wno-deprecated-declarations
-		append-cflags -Qunused-arguments
-	fi
-
-	if use debug; then
-		EMESON_BUILDTYPE=debug
-	fi
 	local emesonargs=(
 		$(meson_use doc documentation)
 		-Dinstalled-tests=false
