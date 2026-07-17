@@ -89,7 +89,7 @@ esac
 # Dit draait ALTIJD voor ELK pakket, mits Clang de actieve compiler is.
 if [[ ${CC} == *clang* ]]; then
     if [[ ! "${CFLAGS}" =~ "Wno-typedef-redefinition" ]]; then
-        CFLAGS="${CFLAGS} -Wno-typedef-redefinition -Wno-deprecated-declarations -Wno-unused-but-set-variable -Wno-unused-function -Qunused-arguments"
-        CXXFLAGS="${CXXFLAGS} -Wno-typedef-redefinition -Wno-deprecated-declarations -Wno-unused-but-set-variable -Wno-unused-function -Qunused-arguments"
+        CFLAGS="${CFLAGS} -Wno-typedef-redefinition -Wno-deprecated-declarations"
+        CXXFLAGS="${CXXFLAGS} -Wno-typedef-redefinition -Wno-deprecated-declarations"
     fi
 fi
