@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit gnome.org gnome2-utils meson vala
+inherit flag-o-matic gnome.org gnome2-utils meson vala toolchain-funcs
 
 DESCRIPTION="Disk usage browser for GNOME"
 HOMEPAGE="https://apps.gnome.org/Baobab/"
@@ -33,6 +33,23 @@ BDEPEND="
 src_prepare() {
 	default
 	vala_setup
+}
+
+src_configure() {
+	# Specifieke optimalisaties voor uw LLVM/Clang buildserver
+	if tc-is-clang; then
+		append-cflags -Wno-typedef-redefinition
+		append-cflags -Wno-deprecated-declarations
+		append-cflags -Wno-unused-but-set-variable
+		append-cflags -Wno-unused-function
+		append-cflags -Qunused-arguments
+	fi
+
+	# Baobab gebruikt standaard Meson opties, dus emesonargs kan leeg blijven
+	local emesonargs=(
+		-Dinstalled-tests=false
+	)
+	meson_src_configure
 }
 
 pkg_postinst() {
