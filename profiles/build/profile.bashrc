@@ -83,4 +83,17 @@ case "${CATEGORY}/${PN}" in
         fi
         ;;
 esac
-
+# ==============================================================================
+# 5. GNOME 50 / CLANG CLEAN-UP (DEMP IRRIANTE COMPILER-RUIS)
+# ==============================================================================
+case "${CATEGORY}" in
+    gnome-base|gui-libs|net-libs|app-accessibility)
+        # Alleen toepassen als Clang de actieve compiler is
+        if [[ ${CC} == *clang* ]]; then
+            if [[ ! "${CFLAGS}" =~ "Wno-typedef-redefinition" ]]; then
+                CFLAGS="${CFLAGS} -Wno-typedef-redefinition -Wno-deprecated-declarations -Qunused-arguments"
+                CXXFLAGS="${CXXFLAGS} -Wno-typedef-redefinition -Wno-deprecated-declarations -Qunused-arguments"
+            fi
+        fi
+        ;;
+esac
