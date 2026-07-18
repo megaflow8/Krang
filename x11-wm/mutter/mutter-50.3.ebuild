@@ -5,7 +5,7 @@ EAPI=8
 PYTHON_COMPAT=( python3_{11..15} )
 inherit gnome.org gnome2-utils meson python-any-r1 udev xdg
 
-DESCRIPTION="GNOME compositing window manager - Pure Wayland & Systemd Edition"
+DESCRIPTION="GNOME compositing window manager"
 HOMEPAGE="https://mutter.gnome.org"
 LICENSE="GPL-2+"
 
@@ -101,7 +101,7 @@ src_configure() {
 	use debug && EMESON_BUILDTYPE=debug
 
 	local emesonargs=(
-		-Dgles2=true
+		-Dgles2=false
 		-Dlogind=true
 		-Dnative_backend=true
 		-Dsound_player=true
