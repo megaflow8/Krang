@@ -101,7 +101,7 @@ src_configure() {
 	use debug && EMESON_BUILDTYPE=debug
 
 	local emesonargs=(
-		-Dgles2=false
+		-Dgles2=true
 		-Dlogind=true
 		-Dnative_backend=true
 		-Dsound_player=true
