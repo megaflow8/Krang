@@ -24,7 +24,7 @@ USE="${USE} flatpak fontconfig fpm ftp gtk3 gtk4 lm-sensors v4l"
 
 # Multimedia, Codecs & Formats
 USE="${USE} dav1d ffmpeg gstreamer matroska theora vorbis vpx x264 x265"
-USE="${USE} gif jpeg png svg webp"
+USE="${USE} gif jpeg png svg webp google"
 
 # Compression & Archiving
 USE="${USE} bzip2 lz4 lzma lzo rar zip zlib zstd"
