@@ -19,6 +19,7 @@ IUSE="ssl"
 RDEPEND="
 	dev-lang/perl
 	dev-perl/IO-Tty
+	dev-perl/Socket6
 	ssl? ( dev-perl/Net-SSLeay )
 "
 
