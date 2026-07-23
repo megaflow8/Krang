@@ -1,5 +1,5 @@
 BDEPEND=virtual/pkgconfig
-DEFINED_PHASES=install postinst
+DEFINED_PHASES=install postinst prepare
 DESCRIPTION=Web-based administration interface for Unix systems
 EAPI=8
 HOMEPAGE=https://www.webmin.com/
@@ -11,4 +11,4 @@ RDEPEND=dev-lang/perl dev-perl/IO-Tty ssl? ( dev-perl/Net-SSLeay )
 SLOT=0
 SRC_URI=https://www.webmin.com/download/webmin-2.652.tar.gz
 _eclasses_=toolchain-funcs	58a918e3a42d0156f010dcfd43725be5	systemd	a964c0cbe818b5729da1dbfcee5be861
-_md5_=a921c7fd1ab5ff8c4d662c74e776ed4d
+_md5_=a85aab462afac8e3f5c9bc0a97567c78

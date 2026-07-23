@@ -22,6 +22,18 @@ RDEPEND="
 	ssl? ( dev-perl/Net-SSLeay )
 "
 
+src_prepare() {
+	default
+
+	# 1. Verwijder FreeBSD/Solaris/Windows/macOS specifieke binaries en mappen
+	# Dit los de "Unresolved soname dependencies" QA waarschuwingen op!
+	ebegin "Opruimen van niet-Linux binaries"
+	find . -name "*.exe" -delete || die
+	find . -name "freebsd-mounts-*" -delete || die
+	find . -name "*.so" -delete || die
+	eend $?
+}
+
 src_install() {
 	# Installeer alle Webmin-bestanden in /usr/libexec/webmin
 	dodir /usr/libexec/webmin
@@ -29,7 +41,7 @@ src_install() {
 
 	# Maak het configuratie- en log-pad aan
 	dodir /etc/webmin
-	dodir /var/webmin
+	keepdir /var/webmin
 
 	# Installeer de systemd service unit
 	cat <<-EOF > "${T}/webmin.service"
