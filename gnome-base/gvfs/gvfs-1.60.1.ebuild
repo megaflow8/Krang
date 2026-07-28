@@ -13,7 +13,7 @@ LICENSE="LGPL-2+"
 SLOT="0"
 
 KEYWORDS="amd64"
-IUSE="afp archive bluray cdda cdr fuse +gcr google keyring gnome-online-accounts gphoto2 +http ios mtp nfs onedrive policykit samba +sftp systemd test +udev udisks zeroconf"
+IUSE="afp archive bluray cdda cdr fuse +gcr keyring gnome-online-accounts gphoto2 +http ios mtp nfs onedrive policykit samba +sftp systemd test +udev udisks zeroconf"
 RESTRICT="!test? ( test )"
 # elogind/systemd only relevant to udisks (in v1.38.1)
 REQUIRED_USE="
@@ -66,7 +66,6 @@ RDEPEND="
 		dev-libs/libcdio:0=
 		>=dev-libs/libcdio-paranoia-0.78.2:=
 	)
-	google? ( >=dev-libs/libgdata-0.18.0:=[crypt,gnome-online-accounts] )
 	onedrive? ( >=net-libs/msgraph-0.3.0:= )
 	gphoto2? ( >=media-libs/libgphoto2-2.5.0:= )
 	nfs? ( >=net-fs/libnfs-1.9.8:= )
@@ -115,7 +114,6 @@ src_configure() {
 		-Ddeprecated_apis=false
 		$(meson_use zeroconf dnssd)
 		$(meson_use gnome-online-accounts goa)
-		$(meson_use google)
 		$(meson_use gphoto2)
 		$(meson_use http)
 		$(meson_use mtp)
