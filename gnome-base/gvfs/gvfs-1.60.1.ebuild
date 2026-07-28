@@ -12,12 +12,12 @@ HOMEPAGE="https://gitlab.gnome.org/GNOME/gvfs"
 LICENSE="LGPL-2+"
 SLOT="0"
 
-KEYWORDS="~alpha amd64 arm arm64 ~loong ~mips ppc ppc64 ~riscv ~sparc x86"
-IUSE="afp archive bluray cdda cdr elogind fuse +gcr google keyring gnome-online-accounts gphoto2 +http ios mtp nfs onedrive policykit samba +sftp systemd test +udev udisks zeroconf"
+KEYWORDS="amd64"
+IUSE="afp archive bluray cdda cdr fuse +gcr google keyring gnome-online-accounts gphoto2 +http ios mtp nfs onedrive policykit samba +sftp systemd test +udev udisks zeroconf"
 RESTRICT="!test? ( test )"
 # elogind/systemd only relevant to udisks (in v1.38.1)
 REQUIRED_USE="
-	?? ( elogind systemd )
+	?? ( systemd )
 	cdda? ( udev )
 	google? ( gnome-online-accounts )
 	gphoto2? ( udev )
@@ -47,8 +47,7 @@ RDEPEND="
 		virtual/tmpfiles
 	)
 	udisks? ( >=sys-fs/udisks-1.97:2 )
-	systemd? ( >=sys-apps/systemd-206:0= )
-	elogind? ( >=sys-auth/elogind-229:0= )
+	>=sys-apps/systemd-206:0=
 	ios? (
 		>=app-pda/libimobiledevice-1.2:=
 		>=app-pda/libplist-1:=
@@ -131,7 +130,6 @@ src_configure() {
 		-Dgcrypt=${enable_gcrypt}
 		$(meson_use udev gudev)
 		$(meson_use keyring)
-		-Dlogind=${enable_logind}
 		-Dlibusb=${enable_libusb}
 		# wouldn't install any of it as of 1.38.1; some tests need it,
 		# but they aren't automated tests in 1.38.1
