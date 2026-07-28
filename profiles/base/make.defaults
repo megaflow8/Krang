@@ -14,7 +14,7 @@ LIBREOFFICE_EXTENSIONS="-*"
 OFFICE_IMPLEMENTATION="libreoffice"
 
 # Global USE flags overrides
-USE="${USE} -a52 -cdda -cdrom -cdr -css -cups -dvd -dvdr -gnome-keyring -gpm -gui -iptables -jack -man -qt6 -scanner -startup-notification -sysprof"
+USE="${USE} -a52 -cdda -cdrom -cdr -css -cups -dvd -dvdr -gnome-keyring -gpm -gui -iptables -jack -man -qt6 -scanner -startup-notification -sysprof jpeg2k lame qsv vaapi"
 
 # System, Kernel & Security
 USE="${USE} cryptsetup dist-kernel modules-compress modules-sign nftables secureboot ukify audit"
