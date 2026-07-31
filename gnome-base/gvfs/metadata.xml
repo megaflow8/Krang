@@ -14,8 +14,6 @@
     filesystems for applications not using GIO.
   </longdescription>
   <use>
-    <flag name="afp">Enables support for accessing AFP (Apple Filing Protocol) network shares</flag>
-    <flag name="archive">Enables support for accessing files in archives transparently via <pkg>app-arch/libarchive</pkg></flag>
     <flag name="bluray">Enable playback of Blu-ray filesystems using <pkg>media-libs/libbluray</pkg></flag>
     <flag name="fuse">Enables fuse mount points in $HOME/.gvfs for legacy application access</flag>
     <flag name="gcr">Enables keystore handling using <pkg>app-crypt/gcr</pkg></flag>
@@ -25,6 +23,7 @@
     <flag name="onedrive">Enable Onedrive backend via <pkg>net-libs/msgraph</pkg></flag>
     <flag name="sftp">Enable SFTP client support via <pkg>virtual/openssh</pkg></flag>
     <flag name="udev">Enable udev base replacement code for cdda feature</flag>
+    <flag name="gcrypt">Enable use of dev-libs/libgcrypt for various features</flag>
   </use>
   <upstream>
     <remote-id type="gnome-gitlab">GNOME/gvfs</remote-id>

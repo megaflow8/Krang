@@ -12,8 +12,8 @@ HOMEPAGE="https://gitlab.gnome.org/GNOME/gvfs"
 LICENSE="LGPL-2+"
 SLOT="0"
 
-KEYWORDS="amd64"
-IUSE="afp archive bluray cdda cdr fuse +gcr keyring gnome-online-accounts gphoto2 +http ios mtp nfs onedrive policykit samba +sftp systemd test +udev udisks zeroconf"
+KEYWORDS="~amd64"
+IUSE="bluray cdda fuse +gcr keyring gnome-online-accounts gphoto2 +http ios mtp nfs onedrive policykit samba +sftp systemd test +udev udisks zeroconf +gcrypt"
 RESTRICT="!test? ( test )"
 # elogind/systemd only relevant to udisks (in v1.38.1)
 REQUIRED_USE="
@@ -23,12 +23,12 @@ REQUIRED_USE="
 	mtp? ( udev )
 	onedrive? ( gnome-online-accounts )
 	udisks? ( udev )
+	?? ( gcrypt )
 "
 
 RDEPEND="
 	>=dev-libs/glib-2.83.0:2
 	>=gnome-base/gsettings-desktop-schemas-3.33.0
-	afp? ( >=dev-libs/libgcrypt-1.2.2:0= )
 	sys-apps/dbus
 	gcr? ( app-crypt/gcr:4= )
 	policykit? (
@@ -60,7 +60,6 @@ RDEPEND="
 		>=media-libs/libmtp-1.1.15:=
 	)
 	samba? ( >=net-fs/samba-4[client] )
-	archive? ( app-arch/libarchive:= )
 	cdda? (
 		dev-libs/libcdio:0=
 		>=dev-libs/libcdio-paranoia-0.78.2:=
@@ -82,18 +81,6 @@ BDEPEND="
 "
 
 src_configure() {
-	local enable_logind="false"
-	if use systemd || use elogind; then
-		enable_logind="true"
-	fi
-
-	# currently HAVE_GCRYPT and linkage only used with afp; check it on big
-	# bumps (grep for HAVE_GCRYPT and enable_gcrypt); adjust depends if changes
-	local enable_gcrypt="false"
-	if use afp; then
-		enable_gcrypt="true"
-	fi
-
 	# currently HAVE_LIBUSB and linkage only used with mtp; check it on big
 	# bumps (grep for HAVE_LIBUSB and enable_libusb); adjust depends if changes
 	local enable_libusb="false"
@@ -104,13 +91,10 @@ src_configure() {
 	local emesonargs=(
 		-Dsystemduserunitdir="$(systemd_get_userunitdir)"
 		-Dtmpfilesdir="${EPREFIX}"/usr/lib/tmpfiles.d
+		-Dprivileged_group=wheel
 		$(meson_use policykit admin)
 		$(meson_use ios afc)
-		$(meson_use afp)
-		$(meson_use archive)
-		$(meson_use cdr burn)
 		$(meson_use cdda)
-		-Ddeprecated_apis=false
 		$(meson_use zeroconf dnssd)
 		$(meson_use gnome-online-accounts goa)
 		$(meson_use gphoto2)
@@ -121,10 +105,11 @@ src_configure() {
 		$(meson_use sftp)
 		$(meson_use samba smb)
 		$(meson_use udisks udisks2)
+		-Dwsdd=false
 		$(meson_use bluray)
 		$(meson_use fuse)
 		$(meson_use gcr)
-		-Dgcrypt=${enable_gcrypt}
+		$(meson_use gcrypt gcrypt)
 		$(meson_use udev gudev)
 		$(meson_use keyring)
 		-Dlibusb=${enable_libusb}
@@ -134,10 +119,7 @@ src_configure() {
 		-Dinstalled_tests=false
 		-Dunit_tests=false
 		-Dman=true
-		-Dprivileged_group=wheel
-		# wsdd is currently masked
-		-Dwsdd=false
-	)
+		)
 	meson_src_configure
 }
 
