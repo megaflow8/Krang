@@ -19,7 +19,6 @@ RESTRICT="!test? ( test )"
 REQUIRED_USE="
 	?? ( systemd )
 	cdda? ( udev )
-	google? ( gnome-online-accounts )
 	gphoto2? ( udev )
 	mtp? ( udev )
 	onedrive? ( gnome-online-accounts )
