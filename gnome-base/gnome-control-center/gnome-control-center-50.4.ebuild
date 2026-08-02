@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-PYTHON_COMPAT=( python3_{11..14} )
+PYTHON_COMPAT=( python3_{11..15} )
 
 inherit gnome.org gnome2-utils meson python-any-r1 virtualx xdg
 
@@ -13,22 +13,13 @@ SRC_URI+=" https://dev.gentoo.org/~mattst88/distfiles/${PN}-gentoo-logo-dark.svg
 # Logo is CC-BY-SA-2.5
 LICENSE="GPL-2+ CC-BY-SA-2.5"
 SLOT="2"
-KEYWORDS="~amd64 ~arm arm64 ~loong ~ppc ~ppc64 ~riscv x86"
+KEYWORDS="~amd64"
 
-IUSE=" cups X debug elogind +ibus +geolocation systemd test wayland networkmanager"
+IUSE="cups X debug +ibus +geolocation systemd test wayland networkmanager"
 REQUIRED_USE="
-	^^ ( elogind systemd )
-" # Theoretically "?? ( elogind systemd )" is fine too, lacking some functionality at runtime,
-#   but needs testing if handled gracefully enough
-
+	?? ( systemd )" 
 RESTRICT="!test? ( test )"
 
-# kerberos unfortunately means mit-krb5; build fails with heimdal
-# display panel requires colord and gnome-settings-daemon[colord]
-# wacom panel requires gsd-enums.h from gsd at build time, probably also runtime support
-# printer panel requires cups and smbclient (the latter is not patched yet to be separately optional)
-# First block is toplevel meson.build deps in order of occurrence (plus deeper deps if in same conditional).
-# Second block is dependency() from subdir meson.builds, sorted by directory name occurrence order
 DEPEND="
 	x11-libs/gtk+:3
 	>=net-libs/gnome-online-accounts-3.51.0:=
@@ -73,26 +64,9 @@ DEPEND="
 
 	x11-libs/pango
 "
-# media-libs/libcanberra[pulseaudio,sound] needed for Speaker tests in
-# Settings/Sound/Output/Output Device, bug #814110
-# systemd/elogind USE flagged because package manager will potentially try to satisfy a
-# "|| ( systemd ( elogind openrc-settingsd)" via systemd if openrc-settingsd isn't already installed.
-# gnome-color-manager needed for gcm-calibrate and gcm-viewer calls from color panel
-# <gnome-color-manager-3.1.2 has file collisions with g-c-c-3.1.x
-#
-# mouse panel needs a concrete set of X11 drivers at runtime, bug #580474
-# Also we need newer driver versions to allow wacom and libinput drivers to
-# not collide
-#
-# system-config-printer provides org.fedoraproject.Config.Printing service and interface
-# cups-pk-helper provides org.opensuse.cupspkhelper.mechanism.all-edit policykit helper policy
 RDEPEND="${DEPEND}
 	media-libs/libcanberra[pulseaudio,sound(+)]
 	systemd? ( >=sys-apps/systemd-31 )
-	elogind? (
-		app-admin/openrc-settingsd
-		sys-auth/elogind
-	)
 	x11-themes/adwaita-icon-theme
 	>=gnome-extra/gnome-color-manager-3.1.2
 	cups? (
@@ -102,12 +76,9 @@ RDEPEND="${DEPEND}
 	>=gnome-extra/tecla-47.0
 	dev-libs/libinput
 "
-# PDEPEND to avoid circular dependency; gnome-session-check-accelerated called by info panel
-# gnome-session-2.91.6-r1 also needed so that 10-user-dirs-update is run at login
 PDEPEND=">=gnome-base/gnome-session-2.91.6-r1
-	networkmanager? ( gnome-extra/nm-applet )" # networking panel can call into nm-connection-editor
+	networkmanager? ( gnome-extra/nm-applet )" 
 
-# meson.build depends on python unconditionally
 BDEPEND="${PYTHON_DEPS}
 	dev-libs/libxslt
 	app-text/docbook-xsl-stylesheets
@@ -143,8 +114,6 @@ pkg_setup() {
 src_prepare() {
 	default
 	xdg_environment_reset
-	# Mark python tests with shebang executable, so that meson will launch them directly, instead
-	# of via its own python-single-r1 version, which might not match what we get from python_check_deps
 	chmod a+x tests/network/test-network-panel.py tests/datetime/test-datetime.py || die
 }
 
