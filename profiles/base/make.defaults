@@ -14,16 +14,16 @@ LIBREOFFICE_EXTENSIONS="-*"
 OFFICE_IMPLEMENTATION="libreoffice"
 
 # Global USE flags overrides
-USE="${USE} -a52 -cdda -cdrom -cdr -css -cups -dvd -dvdr -gnome-keyring -gpm -gui -iptables -jack -man -qt6 -scanner -startup-notification -sysprof jpeg2k lame qsv vaapi"
+USE="${USE} -a52 -cdda -cdrom -cdr -css -cups -dvd -dvdr -gnome-keyring -gpm -gui -iptables -jack -man -qt6 -scanner -startup-notification -sysprof"
 
 # System, Kernel & Security
-USE="${USE} cryptsetup dist-kernel modules-compress modules-sign nftables secureboot ukify audit"
+USE="${USE} cryptsetup dist-kernel modules-compress modules-sign nftables secureboot ukify audit lvm"
 
 # Desktop, UI & Graphics libraries
 USE="${USE} flatpak fontconfig fpm ftp gtk3 gtk4 lm-sensors v4l imagemagick"
 
 # Multimedia, Codecs & Formats
-USE="${USE} dav1d ffmpeg gstreamer matroska theora vorbis vpx x264 x265"
+USE="${USE} dav1d ffmpeg gstreamer matroska theora vorbis vpx x264 x265 jpeg2k lame qsv vaapi"
 USE="${USE} gif jpeg png svg webp google"
 
 # Compression & Archiving
