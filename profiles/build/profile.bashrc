@@ -11,7 +11,7 @@ fi
 
 # 2. CHROMIUM & CORE-STACK: BEGRENS THREADS VOOR 8GB RAM
 case "${CATEGORY}/${PN}" in
-    www-client/chromium|net-libs/nodejs|net-libs/webkit-gtk)
+    www-client/chromium|net-libs/nodejs|net-libs/webkit-gtk|www-client/firefox)
         LDFLAGS=$(echo "${LDFLAGS}" | sed -E -e 's/-fuse-ld=(mold|lld)//g' -e 's/-Wl,--thinlto-jobs=[0-9]+//g' -e 's/-Wl,-z,pack-relative-relocs//g')
         LDFLAGS="${LDFLAGS} -fuse-ld=lld -Wl,--thinlto-jobs=2 -Wl,-z,pack-relative-relocs"
         if [[ ! "${RUSTFLAGS}" =~ "pack-relative-relocs" ]]; then
