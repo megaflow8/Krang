@@ -3,7 +3,7 @@
 
 EAPI=8
 PYTHON_COMPAT=( python3_{12..15} )
-inherit meson xdg python-single-r1
+inherit meson gnome2 xdg python-single-r1
 
 DESCRIPTION="A translation app for GNOME"
 HOMEPAGE="https://github.com/dialect-app/dialect"
@@ -69,4 +69,14 @@ src_install() {
 	meson_src_install
 
 	python_fix_shebang "${ED}/usr/bin/dialect"
+}
+
+pkg_postinst() {
+	xdg_pkg_postinst
+	gnome2_schemas_update
+}
+
+pkg_postrm() {
+	xdg_pkg_postrm
+	gnome2_schemas_update
 }
