@@ -2,7 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-inherit meson xdg
+PYTHON_COMPAT=( python3_{12..15} )
+inherit meson xdg python-single-r1
 
 DESCRIPTION="A translation app for GNOME"
 HOMEPAGE="https://github.com/dialect-app/dialect"
@@ -10,8 +11,11 @@ SRC_URI="https://github.com/dialect-app/dialect/archive/refs/tags/${PV}.tar.gz -
 LICENSE="GPL-2+"
 SLOT="0"
 KEYWORDS="~amd64"
+REQUIRED_USE="${PYTHON_REQUIRED_USE}"
+IUSE="${PYTHON_IUSE}"
 
 DEPEND="
+	${PYTHON_DEPS}
 	dev-libs/glib:2
 	>=dev-libs/gobject-introspection-1.35.0
 	>=media-libs/gstreamer-1.18
@@ -24,6 +28,19 @@ DEPEND="
 RDEPEND="${DEPEND}"
 BDEPEND="
 	virtual/pkgconfig
+	$(python_gen_cond_dep '
+	>=dev-python/beautifulsoup4-4.14.3
+	>=dev-python/certifi-2026.4.22
+	>=dev-python/charset-normalizer-3.4.7
+	>=dev-python/click-8.1.8
+	>=dev-python/colorama-0.4.6
+	>=dev-python/gtts-2.5.4
+	>=dev-python/idna-3.14
+	>=dev-python/requests-2.33.1
+	>=dev-python/soupsieve-2.8.3
+	>=dev-python/typing-extensions-4.15.0
+	>=dev-python/urllib3-2.7.0
+	')
 "
 
 src_configure() {
