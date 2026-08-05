@@ -68,7 +68,7 @@ src_configure() {
 	meson_src_configure
 }
 src_install() {
-	meson_src_install
+	DESTDIR="${D}" meson_src_install
 
 	python_fix_shebang "${ED}/usr/bin/dialect"
 	python_optimize "${ED}/usr/share/dialect"
