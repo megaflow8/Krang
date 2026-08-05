@@ -9,7 +9,7 @@ DESCRIPTION="A translation app for GNOME"
 HOMEPAGE="https://github.com/dialect-app/dialect"
 SRC_URI="
 	https://github.com/dialect-app/dialect/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz
-	https://github.com/dialect-app/po -> ${P}-po.tar.gz
+	https://github.com/dialect-app/po/archive/refs/tags/${PV}.tar.gz -> ${P}-po.tar.gz
 "
 
 LICENSE="GPL-2+"
