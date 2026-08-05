@@ -7,7 +7,11 @@ inherit meson xdg python-single-r1
 
 DESCRIPTION="A translation app for GNOME"
 HOMEPAGE="https://github.com/dialect-app/dialect"
-SRC_URI="https://github.com/dialect-app/dialect/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="
+	https://github.com/dialect-app/dialect/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz
+	https://github.com/dialect-app/po -> ${P}-po.tar.gz
+"
+
 LICENSE="GPL-2+"
 SLOT="0"
 KEYWORDS="~amd64"
@@ -25,26 +29,36 @@ DEPEND="
 	app-text/libspelling:1
 	>=dev-python/pygobject-3.51:3
 "
-RDEPEND="${DEPEND}"
+RDEPEND="
+	${DEPEND}
+	$(python_gen_cond_dep '
+		>=dev-python/beautifulsoup4-4.14.3[${PYTHON_USEDEP}]
+		>=dev-python/certifi-2026.4.22[${PYTHON_USEDEP}]
+		>=dev-python/charset-normalizer-3.4.7[${PYTHON_USEDEP}]
+		>=dev-python/click-8.1.8[${PYTHON_USEDEP}]
+		>=dev-python/colorama-0.4.6[${PYTHON_USEDEP}]
+		>=dev-python/gtts-2.5.4[${PYTHON_USEDEP}]
+		>=dev-python/idna-3.14[${PYTHON_USEDEP}]
+		>=dev-python/requests-2.33.1[${PYTHON_USEDEP}]
+		>=dev-python/soupsieve-2.8.3[${PYTHON_USEDEP}]
+		>=dev-python/typing-extensions-4.15.0[${PYTHON_USEDEP}]
+		>=dev-python/urllib3-2.7.0[${PYTHON_USEDEP}]
+	')
+"
+
 BDEPEND="
 	virtual/pkgconfig
-	$(python_gen_cond_dep '
-	>=dev-python/beautifulsoup4-4.14.3
-	>=dev-python/certifi-2026.4.22
-	>=dev-python/charset-normalizer-3.4.7
-	>=dev-python/click-8.1.8
-	>=dev-python/colorama-0.4.6
-	>=dev-python/gtts-2.5.4
-	>=dev-python/idna-3.14
-	>=dev-python/requests-2.33.1
-	>=dev-python/soupsieve-2.8.3
-	>=dev-python/typing-extensions-4.15.0
-	>=dev-python/urllib3-2.7.0
-	')
 "
 
 src_configure() {
 	local emesonargs=()
 	-Dprofile=default
 	meson_src_configure
+}
+src_prepare() {
+	default
+	
+	# Verplaats de losse vertalingen naar de 'po' map die Meson verwacht
+	rm -rf po || die
+	mv "${WORKDIR}/po-${PV}" "${S}/po" || die
 }
