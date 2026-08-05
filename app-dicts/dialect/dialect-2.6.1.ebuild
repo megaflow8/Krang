@@ -3,7 +3,7 @@
 
 EAPI=8
 PYTHON_COMPAT=( python3_{12..15} )
-inherit meson gnome2 xdg python-single-r1
+inherit meson xdg python-single-r1
 
 DESCRIPTION="A translation app for GNOME"
 HOMEPAGE="https://github.com/dialect-app/dialect"
