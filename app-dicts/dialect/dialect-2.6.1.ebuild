@@ -50,15 +50,18 @@ BDEPEND="
 	virtual/pkgconfig
 "
 
-src_configure() {
-	local emesonargs=()
-	-Dprofile=default
-	meson_src_configure
-}
 src_prepare() {
 	default
+	xdg_environment_reset
 	
 	# Verplaats de losse vertalingen naar de 'po' map die Meson verwacht
 	rm -rf po || die
 	mv "${WORKDIR}/po-${PV}" "${S}/po" || die
+}
+
+src_configure() {
+	local emesonargs=(
+		-Dprofile=default
+	)
+	meson_src_configure
 }
