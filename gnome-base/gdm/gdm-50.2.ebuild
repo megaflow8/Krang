@@ -19,17 +19,13 @@ LICENSE="
 
 SLOT="0"
 
-KEYWORDS="~amd64 ~arm ~arm64 ~x86"
+KEYWORDS="~amd64"
 
-IUSE="audit debug bluetooth-sound branding elogind fprint plymouth selinux systemd test +X"
+IUSE="audit debug bluetooth-sound branding fprint plymouth selinux systemd test"
 
 RESTRICT="!test? ( test )"
-REQUIRED_USE="^^ ( elogind systemd )"
+REQUIRED_USE=" systemd "
 
-# dconf, dbus and g-s-d are needed at install time for dconf update
-# keyutils is automagic dep that makes autologin unlock login keyring
-# when all the passwords match (disk encryption, user pw and login keyring)
-# dbus-run-session used at runtime.
 COMMON_DEPEND="
 	virtual/udev
 	>=dev-libs/libgudev-232:=
@@ -38,36 +34,18 @@ COMMON_DEPEND="
 	>=sys-apps/accountsservice-0.6.35
 	sys-apps/keyutils:=
 	selinux? ( sys-libs/libselinux )
-
-	X? (
-		x11-libs/libxcb
-		x11-libs/libX11
-		x11-libs/libXau
-		x11-base/xorg-server[-minimal]
-		x11-libs/libXdmcp
-		>=x11-libs/gtk+-2.91.1:3
-	)
-
 	systemd? ( >=sys-apps/systemd-257:0=[pam] )
-	elogind? ( >=sys-auth/elogind-239.3[pam] )
-
 	plymouth? ( sys-boot/plymouth )
 	audit? ( sys-process/audit )
-
 	sys-libs/pam
-	sys-auth/pambase[elogind?,systemd?]
-
+	sys-auth/pambase[systemd?]
 	>=gnome-base/dconf-0.20
 	>=gnome-base/gnome-settings-daemon-3.1.4
 	gnome-base/gsettings-desktop-schemas
 	sys-apps/dbus
-
 	>=x11-misc/xdg-utils-1.0.2-r3
-
 	>=dev-libs/gobject-introspection-1.82.0-r2:=
 "
-# XXX: These deps are from session and desktop files in data/ directory
-# fprintd is used via dbus by gdm-fingerprint-extension
 RDEPEND="${COMMON_DEPEND}
 	acct-group/gdm
 	acct-user/gdm
@@ -76,10 +54,6 @@ RDEPEND="${COMMON_DEPEND}
 
 	fprint? ( sys-auth/fprintd[pam] )
 "
-# This is a 'workaround' built into gdm 49, as elogind does not yet have
-# 'working' userdb support in stable or testing.
-# https://github.com/elogind/elogind/issues/323
-RDEPEND+="elogind? ( acct-user/gdm-greeter )"
 DEPEND="${COMMON_DEPEND}
 	x11-base/xorg-proto
 "
@@ -97,10 +71,6 @@ DOC_CONTENTS="
 	To start GDM at boot with systemd, run:\n
 	# systemctl enable gdm.service\n
 	\n
-	To start GDM at boot with OpenRC, set DISPLAYMANAGER=\"gdm\"\n
-	in /etc/conf.d/display-manager and enable the display-manager service:\n
-	# rc-update add display-manager\n
-	\n
 	For passwordless login to unlock your keyring, you need to install
 	sys-auth/pambase with USE=gnome-keyring and set an empty password
 	on your keyring. Use app-crypt/seahorse for that.\n
@@ -114,8 +84,7 @@ src_prepare() {
 
 	# Show logo when branding is enabled
 	use branding && eapply "${FILESDIR}/${PN}-3.30.3-logo.patch"
-	eapply "${FILESDIR}/gdm-pam-openrc.patch"
-}
+	}
 
 src_configure() {
 	# --with-initial-vt=7 conflicts with plymouth, bug #453392
@@ -138,22 +107,10 @@ src_configure() {
 		$(meson_feature selinux)
 		$(meson_use systemd systemd-journal)
 		$(meson_use X x11-support)
-	)
-
-	if use elogind; then
-		emesonargs+=(
-			-Dinitial-vt=7 # TODO: Revisit together with startDM.sh and other xinit talks; also ignores plymouth possibility
-			-Dsystemdsystemunitdir=no
-			-Dsystemduserunitdir=no
+		-Dinitial-vt=1
+		-Dsystemdsystemunitdir="$(systemd_get_systemunitdir)"
+		-Dsystemduserunitdir="$(systemd_get_userunitdir)"
 		)
-	else
-		emesonargs+=(
-			-Dinitial-vt=1
-			-Dsystemdsystemunitdir="$(systemd_get_systemunitdir)"
-			-Dsystemduserunitdir="$(systemd_get_userunitdir)"
-		)
-	fi
-
 	meson_src_configure
 }
 
@@ -202,4 +159,3 @@ pkg_postrm() {
 	gnome2_schemas_update
 	udev_reload
 }
- 
