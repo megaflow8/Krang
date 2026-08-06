@@ -122,8 +122,8 @@ src_prepare() {
 	sed -e "s:python\.full_path():'/usr/bin/env ${EPYTHON}':" -i src/meson.build || die
 	rm -rf subprojects/libshew || die
 	mv "${WORKDIR}/libshew-main" "${S}/subprojects/libshew" || die
-	rm -rf subprojects/libgnome-volume-control-master || die
-	mv "${WORKDIR}/libgnome-volume-control-master" "${S}/subprojects/libgnome-volume-control-master" || die
+	rm -rf subprojects/gvc || die
+	mv "${WORKDIR}/libgnome-volume-control-master" "${S}/subprojects/gvc" || die
 }
 
 src_configure() {
