@@ -115,10 +115,6 @@ BDEPEND="
 		x11-wm/mutter[test]
 	)
 "
-PATCHES=(
-	"${FILESDIR}"/0001-Fix-build-with-libical-4.patch # Allow controlling audio-video-properties build
-)
-
 src_prepare() {
 	default
 	xdg_environment_reset
