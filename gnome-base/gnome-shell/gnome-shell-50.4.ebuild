@@ -123,8 +123,8 @@ src_prepare() {
 	xdg_environment_reset
 	# Hack in correct python shebang
 	sed -e "s:python\.full_path():'/usr/bin/env ${EPYTHON}':" -i src/meson.build || die
-	rm -rf libshew || die
-	mv "${WORKDIR}/libshew-main" "${S}/libshew" || die
+	rm -rf subprojects/libshew || die
+	mv "${WORKDIR}/libshew-main" "${S}/subprojects/libshew" || die
 }
 
 src_configure() {
