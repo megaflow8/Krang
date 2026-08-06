@@ -8,6 +8,7 @@ inherit flag-o-matic gnome.org gnome2-utils meson optfeature python-single-r1 vi
 
 DESCRIPTION="Provides core UI functions for the GNOME desktop"
 HOMEPAGE="https://gitlab.gnome.org/GNOME/gnome-shell"
+SRC_URI+=" https://gitlab.gnome.org/GNOME/libshew/-/archive/main/libshew-main.tar.gz -> ${P}-libshew.tar.gz"
 
 LICENSE="GPL-2+ LGPL-2+"
 SLOT="0"
@@ -89,7 +90,7 @@ RDEPEND="${DEPEND}
 	media-fonts/adwaita-fonts
 
 	sys-apps/xdg-desktop-portal-gnome
-	webkit? ( net-libs/webkit-gtk:4.1[introspection] )
+	webkit? ( net-libs/webkit-gtk:6[introspection] )
 "
 # avoid circular dependency, see bug #546134
 PDEPEND="
@@ -113,11 +114,17 @@ BDEPEND="
 		x11-wm/mutter[test]
 	)
 "
+PATCHES=(
+	"${FILESDIR}"/0001-Fix-build-with-libical-4.patch # Allow controlling audio-video-properties build
+)
+
 src_prepare() {
 	default
 	xdg_environment_reset
 	# Hack in correct python shebang
 	sed -e "s:python\.full_path():'/usr/bin/env ${EPYTHON}':" -i src/meson.build || die
+	rm -rf libshew || die
+	mv "${WORKDIR}/libshew-${PV}" "${S}/libshew" || die
 }
 
 src_configure() {
