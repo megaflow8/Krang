@@ -8,7 +8,8 @@ inherit flag-o-matic gnome.org gnome2-utils meson optfeature python-single-r1 vi
 
 DESCRIPTION="Provides core UI functions for the GNOME desktop"
 HOMEPAGE="https://gitlab.gnome.org/GNOME/gnome-shell"
-SRC_URI+=" https://gitlab.gnome.org/GNOME/libshew/-/archive/main/libshew-main.tar.gz -> ${P}-libshew.tar.gz"
+SRC_URI+=" https://gitlab.gnome.org/GNOME/libshew/-/archive/main/libshew-main.tar.gz -> ${P}-libshew.tar.gz
+	https://gitlab.gnome.org/GNOME/libgnome-volume-control/-/archive/master/libgnome-volume-control-master.tar.gz -> ${P}-libgnome-volume-control-master.tar.gz"
 
 LICENSE="GPL-2+ LGPL-2+"
 SLOT="0"
