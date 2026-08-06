@@ -68,7 +68,7 @@ esac
 # 4. EXCLUSIES & FALLBACKS (GCC/O2 FORCED)
 # ==============================================================================
 case "${CATEGORY}/${PN}" in
-    sys-libs/glibc|app-emulation/wine*|net-firewall/ipset)
+    sys-libs/glibc|app-emulation/wine*|net-firewall/ipset|app-metrics/pcp)
         CC="gcc"
         CXX="g++"
         CPP="gcc -E"
