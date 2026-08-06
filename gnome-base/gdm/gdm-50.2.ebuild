@@ -106,7 +106,6 @@ src_configure() {
 		-Drun-dir=/run/gdm
 		$(meson_feature selinux)
 		$(meson_use systemd systemd-journal)
-		$(meson_use X x11-support)
 		-Dinitial-vt=1
 		-Dsystemdsystemunitdir="$(systemd_get_systemunitdir)"
 		-Dsystemduserunitdir="$(systemd_get_userunitdir)"
