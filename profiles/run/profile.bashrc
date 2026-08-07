@@ -18,10 +18,9 @@ case "${CATEGORY}" in
         ;;
 esac
 
-# 3. FAST COLD START VOOR RUST DESKTOP APPS
-case "${CATEGORY}/${PN}" in
-    */*resources*|gui-apps/resources|gui-util/resources)
-        export RUSTFLAGS=$(echo "${RUSTFLAGS}" | sed -e 's/-C lto=thin//g' -e 's/-C lto=fat//g')
-        export RUSTFLAGS="${RUSTFLAGS} -C link-arg=-Wl,-z,pack-relative-relocs"
-        ;;
-esac
+if [[ ${CC} == *clang* ]]; then
+    if [[ ! "${CFLAGS}" =~ "Wno-typedef-redefinition" ]]; then
+        CFLAGS="${CFLAGS} -Wno-typedef-redefinition -Wno-deprecated-declarations"
+        CXXFLAGS="${CXXFLAGS} -Wno-typedef-redefinition -Wno-deprecated-declarations"
+    fi
+fi

@@ -1,9 +1,8 @@
-# Krang/profiles/build/profile.bashrc (BUILD SERVER ONLY)
-
 # 1. JEMALLOC RAM BESPARING & SNELHEID
 if [ -f "/usr/lib64/libjemalloc.so" ]; then
     case "${CATEGORY}/${PN}" in
-        dev-lang/python|sys-apps/portage|llvm-core/clang|llvm-core/llvm|sys-devel/llvm|sys-devel/clang)
+        dev-lang/python|sys-apps/portage|llvm-core/clang|llvm-core/llvm|sys-devel/llvm|sys-devel/clang \
+        |mail-client/evolution|x11-libs/gdk-pixbuf|gnome-base/librsvg)
             export LD_PRELOAD="/usr/lib64/libjemalloc.so"
             ;;
     esac
@@ -11,7 +10,7 @@ fi
 
 # 2. CHROMIUM & CORE-STACK: BEGRENS THREADS VOOR 8GB RAM
 case "${CATEGORY}/${PN}" in
-    www-client/chromium|net-libs/nodejs|net-libs/webkit-gtk|www-client/firefox)
+    www-client/chromium|net-libs/nodejs|net-libs/webkit-gtk)
         LDFLAGS=$(echo "${LDFLAGS}" | sed -E -e 's/-fuse-ld=(mold|lld)//g' -e 's/-Wl,--thinlto-jobs=[0-9]+//g' -e 's/-Wl,-z,pack-relative-relocs//g')
         LDFLAGS="${LDFLAGS} -fuse-ld=lld -Wl,--thinlto-jobs=2 -Wl,-z,pack-relative-relocs"
         if [[ ! "${RUSTFLAGS}" =~ "pack-relative-relocs" ]]; then
@@ -20,9 +19,7 @@ case "${CATEGORY}/${PN}" in
         ;;
 esac
 
-# ==============================================================================
-# 3. DE MULTIMEDIA & GRAPHICS LTO STACK (HARDCODED CASE)
-# ==============================================================================
+#3. ZET LTO AAN CLANG EN RUST
 case "${CATEGORY}/${PN}" in
     media-video/ffmpeg|media-libs/x264|media-libs/x265|media-libs/dav1d| \
     media-libs/libvpx|media-libs/libaom|media-libs/flac|media-libs/opus| \
@@ -35,23 +32,16 @@ case "${CATEGORY}/${PN}" in
     media-libs/vulkan-loader|media-libs/libjxl|media-libs/libavif|media-libs/openjpeg| \
     x11-wm/mutter|gnome-base/gnome-shell|gui-libs/gtk|x11-libs/gtk+| \
     gui-libs/libadwaita|media-libs/harfbuzz|media-libs/freetype|x11-libs/cairo| \
-    x11-libs/pango|dev-db/sqlite|dev-libs/glib|sys-apps/portage|www-client/epiphany)
+    x11-libs/pango|dev-db/sqlite|dev-libs/glib|sys-apps/portage|www-client/epiphany| \
+    mail-client/evolution)
 
-        CC="clang"
-        CXX="clang++"
-        CPP="clang-cpp"
-        AR="llvm-ar"
-        NM="llvm-nm"
-        RANLIB="llvm-ranlib"
-        
-        # Alleen CFLAGS upgraden en injecteren als het nog niet is gebeurd
         if [[ ! "${CFLAGS}" =~ "-flto=thin" ]]; then
             CFLAGS=$(echo "${CFLAGS}" | sed -E -e 's/-O2/-O3/g' -e 's/-Werror=strict-aliasing//g')
             CXXFLAGS=$(echo "${CXXFLAGS}" | sed -E -e 's/-O2/-O3/g' -e 's/-Werror=strict-aliasing//g')
             
             # -Wno-unused-command-line-argument toegevoegd om de Clang linker warnings te negeren
-            CFLAGS="${CFLAGS} -flto=thin -Werror=odr -Werror=strict-aliasing -Wno-unused-command-line-argument"
-            CXXFLAGS="${CXXFLAGS} -flto=thin -Werror=odr -Werror=strict-aliasing -Wno-unused-command-line-argument"
+            CFLAGS="${CFLAGS} -flto=thin -Werror=odr -Werror=strict-aliasing -Wno-unused-command-line-argument -Wno-typedef-redefinition -Wno-deprecated-declarations"
+            CXXFLAGS="${CXXFLAGS} -flto=thin -Werror=odr -Werror=strict-aliasing -Wno-unused-command-line-argument -Wno-typedef-redefinition -Wno-deprecated-declarations"
         fi
         
         # Voorkom dubbele flags en forceer de LLD linker met ThinLTO jobs
@@ -64,9 +54,15 @@ case "${CATEGORY}/${PN}" in
         ;;
 esac
 
-# ==============================================================================
-# 4. EXCLUSIES & FALLBACKS (GCC/O2 FORCED)
-# ==============================================================================
+case "${CATEGORY}/${PN}" in
+    gnome-extra/resources|media-gfx/loupe|app-text/papers|media-plugins/gst-plugins-thumbnailers|gnome-base/librsvg| \
+    dev-lang/spidermonkey|media-libs/glycin|media-libs/glycin-loaders|media-plugins/gst-plugin-gtk4|www-apps/nextcloud-notify_push)
+        export RUSTFLAGS=$(echo "${RUSTFLAGS}" | sed -e 's/-C lto=thin//g' -e 's/-C lto=fat//g')
+        export RUSTFLAGS="${RUSTFLAGS} -C link-arg=-Wl,-z,pack-relative-relocs"
+        ;;
+esac
+
+# 4. BOUW MET GCC EN ZET LTO UIT
 case "${CATEGORY}/${PN}" in
     sys-libs/glibc|app-emulation/wine*|net-firewall/ipset|app-metrics/pcp)
         CC="gcc"
@@ -83,13 +79,3 @@ case "${CATEGORY}/${PN}" in
         fi
         ;;
 esac
-# ==============================================================================
-# 5. GLOBALE CLANG CLEAN-UP (BUITEN DE CASE-BLOKKEN)
-# ==============================================================================
-# Dit draait ALTIJD voor ELK pakket, mits Clang de actieve compiler is.
-if [[ ${CC} == *clang* ]]; then
-    if [[ ! "${CFLAGS}" =~ "Wno-typedef-redefinition" ]]; then
-        CFLAGS="${CFLAGS} -Wno-typedef-redefinition -Wno-deprecated-declarations"
-        CXXFLAGS="${CXXFLAGS} -Wno-typedef-redefinition -Wno-deprecated-declarations"
-    fi
-fi
