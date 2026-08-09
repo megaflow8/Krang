@@ -42,9 +42,8 @@ src_install() {
 	emake DESTDIR="${ED}" install
 
 	python_fix_shebang "${ED}/usr/share/libre-menu-editor/main.py"
-
+	python_optimize "${ED}/usr/share/libre-menu-editor/modules"
 	fperms +x /usr/share/libre-menu-editor/main.py
-
 	dosym ../share/libre-menu-editor/main.py /usr/bin/libre-menu-editor
 
 	sed -i -e "s|Exec=.*|Exec=libre-menu-editor|" \
