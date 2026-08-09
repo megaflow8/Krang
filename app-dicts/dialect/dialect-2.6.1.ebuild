@@ -27,11 +27,11 @@ DEPEND="
 	>=gui-libs/libadwaita-1.7:1
 	net-libs/libsoup:3.0
 	app-text/libspelling:1
-	>=dev-python/pygobject-3.51:3
-"
+	"
 RDEPEND="
 	${DEPEND}
 	$(python_gen_cond_dep '
+		>=dev-python/pygobject-3.51:3[${PYTHON_USEDEP}]
 		>=dev-python/beautifulsoup4-4.14.3[${PYTHON_USEDEP}]
 		>=dev-python/certifi-2026.4.22[${PYTHON_USEDEP}]
 		>=dev-python/charset-normalizer-3.4.7[${PYTHON_USEDEP}]
@@ -56,28 +56,21 @@ src_prepare() {
 	default
 	xdg_environment_reset
 	
-	# Verplaats de losse vertalingen naar de 'po' map die Meson verwacht
 	rm -rf po || die
 	mv "${WORKDIR}/po-${PV}" "${S}/po" || die
 }
 
 src_configure() {
+	python_setup
+
 	local emesonargs=(
 		-Dprofile=default
 	)
 	meson_src_configure
 }
 src_install() {
-	DESTDIR="${D}" meson_src_install
-
+	#DESTDIR="${D}" meson_src_install
+	meson_src_install
 	python_fix_shebang "${ED}/usr/bin/dialect"
 	python_optimize "${ED}/usr/share/dialect"
-}
-
-pkg_postinst() {
-	xdg_pkg_postinst
-}
-
-pkg_postrm() {
-	xdg_pkg_postrm
 }
