@@ -155,7 +155,7 @@ RESTRICT="test"
 RDEPEND="
 	>=media-libs/gstreamer-1.26.0:1.0
 	>=media-libs/gst-plugins-base-1.26.0:1.0
-	>=media-libs/glycin-2.0.0
+	>=media-libs/glycin-2.0.0:2
 	dev-libs/glib:2
 "
 DEPEND="${RDEPEND}"

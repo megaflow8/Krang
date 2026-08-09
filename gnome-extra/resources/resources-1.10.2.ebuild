@@ -227,16 +227,14 @@ BDEPEND="
 	sys-auth/polkit
 "
 
-DEPEND="
-	x11-libs/cairo
-	media-libs/graphene
-"
-# meson.build file
+DEPEND="${RDEPEND}"
+
 RDEPEND+="
 	>=dev-libs/glib-2.75.0:2
 	>=gui-libs/gtk-4.17.1:4
 	>=gui-libs/libadwaita-1.8_alpha:1
 	>=x11-libs/cairo-1.14.0
+	media-libs/graphene
 	"
 QA_FLAGS_IGNORED="
 	usr/bin/resources
