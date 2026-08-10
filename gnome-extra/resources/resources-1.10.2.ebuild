@@ -207,6 +207,7 @@ DESCRIPTION="Keep an eye on system resources (CPU, Memory, GPU, Disk, Network)"
 HOMEPAGE="https://apps.gnome.org/app/net.nokyan.Resources/"
 SRC_URI="https://gitlab.gnome.org/GNOME/Incubator/resources/-/archive/v${PV}/resources-v${PV}.tar.bz2"
 SRC_URI+=" ${CARGO_CRATE_URIS}"
+S=v${WORKDIR}
 
 RUST_MIN_VER="1.85.0"
 
