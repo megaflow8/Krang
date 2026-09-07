@@ -64,7 +64,7 @@ esac
 
 # 4. BOUW MET GCC EN ZET LTO UIT
 case "${CATEGORY}/${PN}" in
-    sys-libs/glibc|app-emulation/wine*|net-firewall/ipset|app-metrics/pcp)
+    sys-libs/glibc|app-emulation/wine*|net-firewall/ipset|app-metrics/pcp|dev-cpp/gtkmm)
         CC="gcc"
         CXX="g++"
         CPP="gcc -E"
