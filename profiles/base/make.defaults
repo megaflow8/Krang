@@ -17,10 +17,10 @@ OFFICE_IMPLEMENTATION="libreoffice"
 USE="${USE} -a52 -cdda -cdrom -cdr -css -cups -dvd -dvdr -gnome-keyring -gpm -gui -iptables -jack -man -qt6 -scanner -startup-notification -sysprof"
 
 # System, Kernel & Security
-USE="${USE} cryptsetup dist-kernel modules-compress modules-sign nftables secureboot ukify audit lvm smart homed"
+USE="${USE} cryptsetup dist-kernel modules-compress modules-sign nftables secureboot ukify audit lvm smart"
 
 # Desktop, UI & Graphics libraries
-USE="${USE} flatpak fontconfig fpm ftp gtk3 gtk4 lm-sensors v4l imagemagick"
+USE="${USE} flatpak fontconfig fpm ftp gtk3 gtk4 lm-sensors v4l imagemagick nfs"
 
 # Multimedia, Codecs & Formats
 USE="${USE} dav1d ffmpeg gstreamer matroska theora vorbis vpx x264 x265 jpeg2k lame qsv vaapi"
