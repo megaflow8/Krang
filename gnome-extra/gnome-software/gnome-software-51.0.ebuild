@@ -52,10 +52,6 @@ BDEPEND="
 	)
 "
 
-PATCHES=(
-	"${FILESDIR}/Disable-gs-self-test-flatpak.patch"
-)
-
 src_prepare() {
 	default
 	xdg_environment_reset
@@ -68,6 +64,7 @@ src_prepare() {
 src_configure() {
 	local emesonargs=(
 		$(meson_use test tests)
+		$(meson_use test installed_tests)
 		-Dman=true
 		-Dpackagekit=false
 		# -Dpackagekit_autoremove
@@ -78,26 +75,21 @@ src_configure() {
 		$(meson_use flatpak)
 		-Dmalcontent=false
 		-Drpm_ostree=false
-		-Dwebapps=true
-		-Ddefault_featured_apps=true
-		-Dhardcoded_curated=true
-		-Dhardcoded_foss_webapps=true
-		-Dhardcoded_proprietary_webapps=true
+		-Dwebapps=false
+		-Ddefault_featured_apps=false
+		-Dhardcoded_curated=false
+		-Dhardcoded_foss_webapps=false
+		-Dhardcoded_proprietary_webapps=false
 		$(meson_use udev gudev)
 		-Dapt=false
 		$(meson_use snap)
 		-Dexternal_appstream=false
 		$(meson_use gtk-doc gtk_doc)
-		-Dhardcoded_curated=true
-		# TODO: Will this be beneficial to us with flatpak at least? If
-		# enabled, it shows some apps under installed (probably merely due to
-		# /usr/share/app-info presence), but launching and removal of them is
-		# broken
-		-Ddefault_featured_apps=false
 		-Dmogwai=false #TODO?
 		$(meson_feature sysprof)
 		-Dprofile=''
 		-Dopensuse-distro-upgrade=false
+		-Dsystemd-sysupdate=false
 	)
 	meson_src_configure
 }
