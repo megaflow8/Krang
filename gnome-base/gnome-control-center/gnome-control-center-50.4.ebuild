@@ -17,7 +17,7 @@ KEYWORDS="~amd64"
 
 IUSE="cups X debug +ibus +geolocation systemd test wayland networkmanager"
 REQUIRED_USE="
-	?? ( systemd )" 
+	?? ( systemd )"
 RESTRICT="!test? ( test )"
 
 DEPEND="
