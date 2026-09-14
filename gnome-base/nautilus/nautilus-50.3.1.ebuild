@@ -18,7 +18,7 @@ REQUIRED_USE="doc? ( introspection )"
 
 DEPEND="
 	>=dev-libs/glib-2.84.0:2
-	>=media-libs/gexiv2-0.14.2
+	>=media-libs/gexiv2-0.16.0
 	gstreamer? ( media-libs/gstreamer:1.0
 		media-libs/gst-plugins-base:1.0
 		media-plugins/gst-plugins-thumbnailers )
