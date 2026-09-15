@@ -211,7 +211,7 @@ CRATES="
 	zmij@1.0.23
 "
 
-inherit cargo meson optfeature xdg gnome2
+inherit cargo meson optfeature xdg gnome2-utils
 
 DESCRIPTION="Keep an eye on system resources (CPU, Memory, GPU, Disk, Network)"
 HOMEPAGE="https://apps.gnome.org/app/net.nokyan.Resources/"
@@ -274,10 +274,12 @@ src_install() {
 
 pkg_postinst() {
 	xdg_pkg_postinst
+	gnome2_schemas_update
 
 optfeature "read detailed motherboard and hardware information" sys-apps/dmidecode
 }
 
 pkg_postrm() {
 	xdg_pkg_postrm
+	gnome2_schemas_update
 }
