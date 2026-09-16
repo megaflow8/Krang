@@ -1,4 +1,4 @@
-BDEPEND=dev-util/itstool virtual/pkgconfig || ( >=dev-lang/rust-bin-1.85:* >=dev-lang/rust-1.85:* ) app-arch/xz-utils >=app-portage/elt-patches-20250306 >=dev-build/meson-1.2.3 app-alternatives/ninja dev-build/meson-format-array
+BDEPEND=dev-util/itstool virtual/pkgconfig || ( >=dev-lang/rust-bin-1.93:* >=dev-lang/rust-1.93:* ) app-arch/xz-utils >=app-portage/elt-patches-20250306 >=dev-build/meson-1.2.3 app-alternatives/ninja dev-build/meson-format-array
 DEFINED_PHASES=compile configure install postinst postrm preinst prepare setup test unpack
 DEPEND=x11-libs/cairo[X?] media-libs/glycin-loaders dev-libs/glib:2 sys-devel/gettext media-libs/graphene x11-libs/pango[X?] media-libs/fontconfig >=gui-libs/gtk-4.16.0:4[X?,wayland?] >=gui-libs/libadwaita-1.7.0:1 >=dev-libs/libgweather-4.0.0:4= >=media-libs/lcms-2.12.0:2[jpeg?,tiff?] >=sys-libs/libseccomp-2.5.0
 DESCRIPTION=View images
@@ -13,4 +13,4 @@ RDEPEND=x11-libs/cairo[X?] media-libs/glycin-loaders dev-libs/glib:2 sys-devel/g
 SLOT=0
 SRC_URI=mirror://gnome/sources/loupe/51/loupe-51.0.tar.xz https://binhost.h97i.org/Crates/loupe-51.0.0-crates.tar.xz
 _eclasses_=toolchain-funcs	58a918e3a42d0156f010dcfd43725be5	flag-o-matic	fd3558f73f6503093adee69adf41020d	multiprocessing	45d0620f25c2f063ad6276ecd9ed9399	rust	71b6825bd86e342e1540c76cc6fe864b	rust-toolchain	76468983281b0a7fc167ca224f84ecfd	cargo	bff30f59ca59b09857b787ac644b2e4c	gnome.org	e1b4f392dbfedfb8974b71b017937f08	libtool	6a96cd90e5da8c7c615015479f46f1a4	xdg-utils	42869b3c8d86a70ef3cf75165a395e09	gnome2-utils	a8cf148ec7f5ae0b1f1d33ae5f7f9e88	xdg	3ef49a87c52c8b77c476351195dfe575	gnome2	26fd01914b36038dc8e964ff4bd03a95	ninja-utils	d063ea1900a793f93eb095010d6d9156	eapi9-pipestatus	d2c134036ac31c3085aebc9147f572bd	python-utils-r1	85d8fb641bb0e79b1ae893556e9c57bc	sysroot	4c36abaf94ebd3ab32f8abea9a444121	meson	4d3a148e5931f2930e970884bcb4c77d
-_md5_=0c6abd45921f181be510fa86d87c5463
+_md5_=e119c3d3ab19eed87dc930cc2d28bbd5

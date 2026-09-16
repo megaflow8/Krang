@@ -8,7 +8,7 @@ EAPI=8
 CRATES="
 "
 
-RUST_MIN_VER="1.85"
+RUST_MIN_VER="1.93"
 
 inherit cargo gnome.org gnome2 meson xdg
 
