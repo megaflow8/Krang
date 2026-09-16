@@ -13,11 +13,12 @@ LICENSE="GPL-2+"
 SLOT="0/$(($(ver_cut 1) - 32))"
 KEYWORDS="~amd64"
 
-IUSE="bash-completion debug gtk-doc input_devices_wacom +introspection screencast sysprof test udev +xwayland video_cards_nvidia"
+IUSE="bash-completion debug gtk-doc input_devices_wacom +introspection screencast sysprof test +udev +xwayland"
 
 REQUIRED_USE="
 	gtk-doc? ( introspection )
 	test? ( screencast )"
+
 RESTRICT="!test? ( test )"
 
 RDEPEND="
@@ -52,7 +53,6 @@ RDEPEND="
 		>=dev-libs/libgudev-238
 	)
 	xwayland? ( >=x11-base/xwayland-23.2.1[libei(+)] )
-	video_cards_nvidia? ( gui-libs/egl-wayland )
 	input_devices_wacom? ( >=dev-libs/libwacom-0.13:= )
 	screencast? ( >=media-video/pipewire-1.2.0:= )
 	introspection? ( >=dev-libs/gobject-introspection-1.82.0-r2:= )
