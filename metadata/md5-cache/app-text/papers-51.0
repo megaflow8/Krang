@@ -1,0 +1,18 @@
+BDEPEND=virtual/pkgconfig >=dev-build/meson-1.8.0 dev-util/blueprint-compiler dev-libs/appstream dev-libs/appstream-glib doc? ( dev-util/gi-docgen ) || ( >=dev-lang/rust-bin-1.92:* >=dev-lang/rust-1.92:* ) app-arch/xz-utils >=app-portage/elt-patches-20250306 >=dev-build/meson-1.2.3 app-alternatives/ninja dev-build/meson-format-array
+DEFINED_PHASES=compile configure install postinst postrm preinst prepare setup test unpack
+DEPEND=x11-libs/cairo x11-libs/gdk-pixbuf[introspection?] sys-devel/gettext media-libs/graphene media-libs/libraw x11-libs/pango[introspection?] >=dev-libs/glib-2.75.0:2 >=gui-libs/gtk-4.17.1:4 >=gui-libs/libadwaita-1.8_alpha:1 media-libs/exempi:2 >=x11-libs/cairo-1.14.0 virtual/zlib:= sysprof? ( dev-util/sysprof-capture:4 ) nautilus? ( >=gnome-base/nautilus-43 ) introspection? ( >=dev-libs/gobject-introspection-1.82.0-r2 ) spell? ( >=app-text/libspelling-0.2 ) comics? ( >=app-arch/libarchive-3.6.0 ) djvu? ( >=app-text/djvu-3.5.22 ) >=app-text/poppler-25.07.0[cairo] x11-libs/cairo tiff? ( >=media-libs/tiff-4 )
+DESCRIPTION=A document viewer for the GNOME desktop
+EAPI=8
+HOMEPAGE=https://apps.gnome.org/Papers
+IDEPEND=dev-util/desktop-file-utils x11-misc/shared-mime-info
+INHERIT=cargo gnome.org gnome2 meson xdg
+IUSE=+comics djvu doc gnome-keyring introspection nautilus +spell sysprof test tiff debug
+KEYWORDS=amd64 ~arm64 ~ppc64 ~riscv ~x86
+LICENSE=GPL-2+ MIT Apache-2.0 Apache-2.0-with-LLVM-exceptions BSD-2 BSD MIT Unicode-3.0 ZLIB
+RDEPEND=x11-libs/cairo x11-libs/gdk-pixbuf[introspection?] sys-devel/gettext media-libs/graphene media-libs/libraw x11-libs/pango[introspection?] >=dev-libs/glib-2.75.0:2 >=gui-libs/gtk-4.17.1:4 >=gui-libs/libadwaita-1.8_alpha:1 media-libs/exempi:2 >=x11-libs/cairo-1.14.0 virtual/zlib:= sysprof? ( dev-util/sysprof-capture:4 ) nautilus? ( >=gnome-base/nautilus-43 ) introspection? ( >=dev-libs/gobject-introspection-1.82.0-r2 ) spell? ( >=app-text/libspelling-0.2 ) comics? ( >=app-arch/libarchive-3.6.0 ) djvu? ( >=app-text/djvu-3.5.22 ) >=app-text/poppler-25.07.0[cairo] x11-libs/cairo tiff? ( >=media-libs/tiff-4 ) gnome-keyring? ( app-crypt/libsecret )
+REQUIRED_USE=doc? ( introspection )
+RESTRICT=!test? ( test )
+SLOT=0/ppsd4.0.6-ppsv4.0.5
+SRC_URI=mirror://gnome/sources/papers/51/papers-51.0.tar.xz https:/binhost.h97i.org/Crates/papers-document-0.1.0-crates.tar.xz
+_eclasses_=toolchain-funcs	58a918e3a42d0156f010dcfd43725be5	flag-o-matic	fd3558f73f6503093adee69adf41020d	multiprocessing	45d0620f25c2f063ad6276ecd9ed9399	rust	71b6825bd86e342e1540c76cc6fe864b	rust-toolchain	76468983281b0a7fc167ca224f84ecfd	cargo	bff30f59ca59b09857b787ac644b2e4c	gnome.org	e1b4f392dbfedfb8974b71b017937f08	libtool	6a96cd90e5da8c7c615015479f46f1a4	xdg-utils	42869b3c8d86a70ef3cf75165a395e09	gnome2-utils	a8cf148ec7f5ae0b1f1d33ae5f7f9e88	xdg	3ef49a87c52c8b77c476351195dfe575	gnome2	26fd01914b36038dc8e964ff4bd03a95	ninja-utils	d063ea1900a793f93eb095010d6d9156	eapi9-pipestatus	d2c134036ac31c3085aebc9147f572bd	python-utils-r1	85d8fb641bb0e79b1ae893556e9c57bc	sysroot	4c36abaf94ebd3ab32f8abea9a444121	meson	4d3a148e5931f2930e970884bcb4c77d
+_md5_=519355824b29b62c0f1835319c912047
