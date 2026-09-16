@@ -102,8 +102,6 @@ src_configure() {
 
 	local emesonargs=(
 		-Dgles2=true
-		-Dlogind=true
-		-Dnative_backend=true
 		-Dsound_player=true
 		-Dstartup_notification=false
 		-Dlibgnome_desktop=false
@@ -113,7 +111,6 @@ src_configure() {
 
 		$(meson_use xwayland)
 		$(meson_use screencast remote_desktop)
-		$(meson_use udev)
 		-Dudev_dir=$(get_udevdir)
 		$(meson_use input_devices_wacom libwacom)
 		$(meson_use introspection)
@@ -125,19 +122,6 @@ src_configure() {
 		$(meson_use sysprof profiler)
 		$(meson_use bash-completion bash_completion)
 	)
-
-	# NVIDIA switches blijven dynamisch via de USE-vlag functioneren
-	if use video_cards_nvidia; then
-		emesonargs+=(
-			-Degl_device=true
-			-Dwayland_eglstream=true
-		)
-	else
-		emesonargs+=(
-			-Degl_device=false
-			-Dwayland_eglstream=false
-		)
-	fi
 
 	meson_src_configure
 }
