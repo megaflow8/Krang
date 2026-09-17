@@ -36,7 +36,7 @@ RDEPEND="
 	>=media-libs/gst-plugins-base-1.24.11:1.0
 	>=media-libs/gst-plugins-good-1.24.11:1.0
 
-	python? ( >=dev-python/pygobject-3.50.0:3
-	flatpak? (>=dev-libs/appstream-glib-0.8.4)
+	python? ( >=dev-python/pygobject-3.50.0:3 )
+	flatpak? ( >=dev-libs/appstream-glib-0.8.4 )
 "
 BDEPEND=""
