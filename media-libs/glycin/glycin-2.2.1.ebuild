@@ -21,7 +21,7 @@ inherit cargo gnome.org meson vala
 
 DESCRIPTION="Sandboxed and extendable image loading library"
 HOMEPAGE="https://gnome.pages.gitlab.gnome.org/glycin"
-SRC_URI+=" https://github.com/gentoo-crate-dist/glycin/releases/download/${PV}/${P}-crates.tar.xz ${CARGO_CRATE_URIS}"
+SRC_URI+=" https://binhost.h97i.org/Crates/libglycin-2.2.0-crates.tar.xz ${CARGO_CRATE_URIS}"
 
 # Dependent crate licenses
 LICENSE+="
