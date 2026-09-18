@@ -91,7 +91,7 @@ DEPEND="${RDEPEND}
 "
 BDEPEND="verify-sig? ( sec-keys/openpgp-keys-tpm )"
 
-DOCS=( AUTHORS NEWS README.md RELEASE )
+DOCS=( NEWS README.md RELEASE )
 VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/tpm.asc
 
 multilib_src_configure() {

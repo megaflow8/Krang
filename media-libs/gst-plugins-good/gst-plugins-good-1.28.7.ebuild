@@ -25,7 +25,7 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 BDEPEND="verify-sig? ( sec-keys/openpgp-keys-tpm )"
 
-DOCS=( AUTHORS ChangeLog NEWS README.md RELEASE )
+DOCS=( ChangeLog NEWS README.md RELEASE )
 VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/tpm.asc
 
 
