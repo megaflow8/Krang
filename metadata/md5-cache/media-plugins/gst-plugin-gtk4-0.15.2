@@ -1,0 +1,15 @@
+BDEPEND=dev-util/cargo-c || ( >=dev-lang/rust-bin-1.74.1:* >=dev-lang/rust-1.74.1:* )
+DEFINED_PHASES=compile configure install setup test unpack
+DEPEND=dev-libs/glib >=gui-libs/gtk-4.16:4 >=media-libs/gstreamer-1.24:1.0 >=media-libs/gst-plugins-base-1.24:1.0[egl=,gles2=,opengl=,wayland=,X=]
+DESCRIPTION=GStreamer GTK 4 sink element
+EAPI=8
+HOMEPAGE=https://lib.rs/crates/gst-plugin-gtk4 https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs/
+INHERIT=cargo rust-toolchain toolchain-funcs
+IUSE=+egl +gles2 opengl wayland +X debug
+KEYWORDS=amd64 arm64
+LICENSE=MPL-2.0 Apache-2.0-with-LLVM-exceptions MIT Unicode-3.0
+RDEPEND=dev-libs/glib >=gui-libs/gtk-4.16:4 >=media-libs/gstreamer-1.24:1.0 >=media-libs/gst-plugins-base-1.24:1.0[egl=,gles2=,opengl=,wayland=,X=]
+SLOT=1.0
+SRC_URI=https://crates.io/api/v1/crates/gst-plugin-gtk4/0.15.2/download -> gst-plugin-gtk4-0.15.2.crate https://binhost.h97i.org/Crates/gst-plugin-gtk4-0.15.2-crates.tar.xz
+_eclasses_=toolchain-funcs	58a918e3a42d0156f010dcfd43725be5	flag-o-matic	fd3558f73f6503093adee69adf41020d	multiprocessing	45d0620f25c2f063ad6276ecd9ed9399	rust	71b6825bd86e342e1540c76cc6fe864b	rust-toolchain	76468983281b0a7fc167ca224f84ecfd	cargo	bff30f59ca59b09857b787ac644b2e4c
+_md5_=d36614397c4e24d63051d874e1648bb7
