@@ -195,12 +195,6 @@ src_configure() {
 		#xwayland_grab_default_access_rules
 	)
 
-	if use elogind || use systemd; then
-		emesonargs+=(
-			-Dlogind=true
-		)
-	fi
-
 	if use video_cards_nvidia; then
 		emesonargs+=(
 			-Degl_device=true
