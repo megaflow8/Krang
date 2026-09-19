@@ -1,17 +1,17 @@
-# Copyright 1999-2025 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-PYTHON_COMPAT=( python3_{11..14} )
+PYTHON_COMPAT=( python3_{12..14} )
 
-inherit gnome.org gnome2-utils meson python-any-r1 virtualx xdg systemd
+inherit gnome.org gnome2-utils meson python-any-r1 virtualx xdg
 
 DESCRIPTION="Password and keyring managing daemon"
 HOMEPAGE="https://gitlab.gnome.org/GNOME/gnome-keyring"
 
 LICENSE="GPL-2+ LGPL-2+"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 arm arm64 ~loong ~mips ppc ppc64 ~riscv ~sparc x86"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~loong ~mips ~ppc ~ppc64 ~riscv ~sparc ~x86"
 IUSE="caps pam selinux +ssh-agent systemd test"
 RESTRICT="!test? ( test )"
 
@@ -47,17 +47,10 @@ BDEPEND="
 PATCHES=(
 	# From Fedora:
 	# https://gitlab.gnome.org/GNOME/gnome-keyring/-/issues/137
-	#"${FILESDIR}/${PN}-48.0-collection-registering.patch"
-
-	# https://gitlab.gnome.org/GNOME/gnome-keyring/-/merge_requests/96
-	# "${FILESDIR}/${PN}-48.0-gkm_marshal-header.patch"
-
-	# bug #964549
-	# https://gitlab.gnome.org/GNOME/gnome-keyring/-/merge_requests/101
-	#"${FILESDIR}/gnome-keyring-48.0-disable-libcap-ng-automagic.patch"
+	"${FILESDIR}/${PN}-48.0-collection-registering.patch"
 
 	# bug #964367
-	#"${FILESDIR}/gnome-keyring-48.0-fix-pam-install.patch"
+	"${FILESDIR}/gnome-keyring-48.0-fix-pam-install.patch"
 )
 
 pkg_setup() {
@@ -72,8 +65,6 @@ src_configure() {
 		$(meson_feature systemd)
 		$(meson_use pam)
 	)
-	-Dsystemduserunitdir="$(systemd_get_userunitdir)"
-
 	meson_src_configure
 }
 
@@ -93,13 +84,20 @@ src_test() {
 }
 
 pkg_postinst() {
-	systemd_reenable gnome-keyring-daemon.socket
+	# cap_ipc_lock only needed if building with libcap-ng, but that breaks with glib-2.70
+	# Never install as suid root, this breaks dbus activation, see bug
+	# #513870, https://gitlab.gnome.org/GNOME/gnome-keyring/-/issues/77
 
 	xdg_pkg_postinst
 	gnome2_schemas_update
+	if ! [[ $(eselect pinentry show | grep "pinentry-gnome3") ]] ; then
+		ewarn "Please select pinentry-gnome3 as default pinentry provider:"
+		ewarn " # eselect pinentry set pinentry-gnome3"
+	fi
 }
 
 pkg_postrm() {
 	xdg_pkg_postrm
 	gnome2_schemas_update
 }
+ 
