@@ -22,7 +22,7 @@ else
 fi
 
 IUSE="bash-completion debug devkit gnome gtk-doc input_devices_wacom +introspection
-screencast selinux sysprof systemd test video_cards_nvidia +xwayland"
+screencast selinux sysprof systemd test +xwayland"
 
 # native backend requires a logind provider
 REQUIRED_USE="
@@ -78,7 +78,6 @@ RDEPEND="
 	>=dev-libs/libinput-1.30.0:=
 
 	xwayland? ( >=x11-base/xwayland-23.2.1[libei(+)] )
-	video_cards_nvidia? ( gui-libs/egl-wayland )
 	>=virtual/libudev-232-r1:=
 	>=dev-libs/libgudev-238
 	systemd? ( sys-apps/systemd )
@@ -165,11 +164,9 @@ src_configure() {
 	local emesonargs=(
 		-Degl=true
 		-Dfonts=true
-		-Dnative_backend=true
 		-Dopengl=true
 		$(meson_use screencast remote_desktop)
 		$(meson_use gnome libgnome_desktop)
-		-Dudev=true
 		-Dudev_dir=$(get_udevdir)
 		$(meson_use input_devices_wacom libwacom)
 		-Dsound_player=true
@@ -194,18 +191,6 @@ src_configure() {
 		# Xgrab access (mostly virtual managers and remote desktops)
 		#xwayland_grab_default_access_rules
 	)
-
-	if use video_cards_nvidia; then
-		emesonargs+=(
-			-Degl_device=true
-			-Dwayland_eglstream=true
-		)
-	else
-		emesonargs+=(
-			-Degl_device=false
-			-Dwayland_eglstream=false
-		)
-	fi
 
 	meson_src_configure
 }
