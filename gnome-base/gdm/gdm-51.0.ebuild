@@ -104,7 +104,6 @@ src_prepare() {
 
 	# Show logo when branding is enabled
 	use branding && eapply "${FILESDIR}/${PN}-3.30.3-logo.patch"
-	eapply "${FILESDIR}/gdm-pam-openrc.patch"
 }
 
 src_configure() {
