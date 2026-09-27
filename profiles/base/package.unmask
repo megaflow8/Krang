@@ -1,2 +1,4 @@
 media-libs/gexiv2
 gnome-base/nautilus
+app-misc/localsearch
+app-misc/tinysparql
