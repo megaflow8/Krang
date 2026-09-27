@@ -34,7 +34,7 @@ COMMON_DEPEND="
 	>=dev-libs/libgudev-232:=
 	>=dev-libs/glib-2.68:2
 	>=dev-libs/json-glib-1.2.0
-	>=sys-apps/accountsservice-0.6.35:=
+	>=sys-apps/accountsservice-26.27.3:=
 	sys-auth/polkit
 	sys-apps/keyutils:=
 	selinux? ( sys-libs/libselinux )
