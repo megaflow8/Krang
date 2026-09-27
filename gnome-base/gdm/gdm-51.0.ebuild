@@ -19,7 +19,7 @@ LICENSE="
 
 SLOT="0"
 
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~x86"
 
 IUSE="audit debug branding fprint plymouth selinux systemd test video_cards_nvidia +X"
 
@@ -64,7 +64,6 @@ RDEPEND="${COMMON_DEPEND}
 	acct-group/gdm
 	acct-user/gdm
 	>=gnome-base/gnome-shell-50
-	x11-apps/xhost
 
 	fprint? ( sys-auth/fprintd[pam] )
 
@@ -74,9 +73,9 @@ RDEPEND="${COMMON_DEPEND}
 			sys-apps/acl
 		)
 	)
+	X? ( x11-apps/xhost )
 "
 DEPEND="${COMMON_DEPEND}
-	x11-base/xorg-proto
 "
 BDEPEND="
 	dev-util/gdbus-codegen
@@ -105,6 +104,7 @@ src_prepare() {
 
 	# Show logo when branding is enabled
 	use branding && eapply "${FILESDIR}/${PN}-3.30.3-logo.patch"
+	eapply "${FILESDIR}/gdm-pam-openrc.patch"
 }
 
 src_configure() {
@@ -115,17 +115,16 @@ src_configure() {
 		-Dgdm-xsession=true
 		-Dgroup=gdm
 		$(meson_feature audit libaudit)
+		-Dlogind-provider=systemd
 		-Dpam-mod-dir=$(getpam_mod_dir)
 		$(meson_feature plymouth)
 		-Drun-dir=/run/gdm
 		$(meson_feature selinux)
 		$(meson_use systemd systemd-journal)
-		$(meson_use X x11-support)
 		-Dinitial-vt=1
 		-Dsystemdsystemunitdir="$(systemd_get_systemunitdir)"
 		-Dsystemduserunitdir="$(systemd_get_userunitdir)"
 		)
-
 	meson_src_configure
 }
 
