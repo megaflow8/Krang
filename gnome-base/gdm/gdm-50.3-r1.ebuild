@@ -19,12 +19,12 @@ LICENSE="
 
 SLOT="0"
 
-KEYWORDS="~amd64 ~arm ~arm64 ~riscv ~x86"
+KEYWORDS="~amd64"
 
-IUSE="audit debug branding elogind fprint plymouth selinux systemd test video_cards_nvidia +X"
+IUSE="audit debug branding fprint plymouth selinux systemd test video_cards_nvidia +X"
 
 RESTRICT="!test? ( test )"
-REQUIRED_USE="^^ ( elogind systemd )"
+REQUIRED_USE="^^ ( systemd )"
 
 # dconf, dbus and g-s-d are needed at install time for dconf update
 # keyutils is automagic dep that makes autologin unlock login keyring
@@ -42,13 +42,12 @@ COMMON_DEPEND="
 	X? ( x11-libs/libXau )
 
 	systemd? ( >=sys-apps/systemd-257:0=[pam] )
-	elogind? ( >=sys-auth/elogind-239.3[pam] )
 
 	plymouth? ( sys-boot/plymouth )
 	audit? ( sys-process/audit )
 
 	sys-libs/pam
-	sys-auth/pambase[elogind?,systemd?]
+	sys-auth/pambase[systemd?]
 
 	>=gnome-base/dconf-0.20
 	>=gnome-base/gnome-settings-daemon-3.1.4
@@ -76,10 +75,6 @@ RDEPEND="${COMMON_DEPEND}
 		)
 	)
 "
-# This is a 'workaround' built into gdm 49, as elogind does not yet have
-# 'working' userdb support in stable or testing.
-# https://github.com/elogind/elogind/issues/323
-RDEPEND+="elogind? ( acct-user/gdm-greeter )"
 DEPEND="${COMMON_DEPEND}
 	x11-base/xorg-proto
 "
@@ -97,10 +92,6 @@ DOC_CONTENTS="
 	To start GDM at boot with systemd, run:\n
 	# systemctl enable gdm.service\n
 	\n
-	To start GDM at boot with OpenRC, set DISPLAYMANAGER=\"gdm\"\n
-	in /etc/conf.d/display-manager and enable the display-manager service:\n
-	# rc-update add display-manager\n
-	\n
 	For passwordless login to unlock your keyring, you need to install
 	sys-auth/pambase with USE=gnome-keyring and set an empty password
 	on your keyring. Use app-crypt/seahorse for that.\n
@@ -114,16 +105,9 @@ src_prepare() {
 
 	# Show logo when branding is enabled
 	use branding && eapply "${FILESDIR}/${PN}-3.30.3-logo.patch"
-	eapply "${FILESDIR}/gdm-pam-openrc.patch"
 }
 
 src_configure() {
-	# --with-initial-vt=7 conflicts with plymouth, bug #453392
-	# gdm-3.30 now reaps (stops) the login screen when the login VT isn't active, which
-	# saves on memory. However this means if we don't start on VT1, gdm doesn't start up
-	# before user manually goes to VT7. Thus as-is we can not keep gdm away from VT1,
-	# so lets try always having it in VT1 and see if that is an issue for people before
-	# hacking up workarounds for the initial start case.
 	local emesonargs=(
 		--localstatedir /var
 
@@ -131,28 +115,16 @@ src_configure() {
 		-Dgdm-xsession=true
 		-Dgroup=gdm
 		$(meson_feature audit libaudit)
-		-Dlogind-provider=$(usex systemd systemd elogind)
 		-Dpam-mod-dir=$(getpam_mod_dir)
 		$(meson_feature plymouth)
 		-Drun-dir=/run/gdm
 		$(meson_feature selinux)
 		$(meson_use systemd systemd-journal)
 		$(meson_use X x11-support)
-	)
-
-	if use elogind; then
-		emesonargs+=(
-			-Dinitial-vt=7 # TODO: Revisit together with startDM.sh and other xinit talks; also ignores plymouth possibility
-			-Dsystemdsystemunitdir=no
-			-Dsystemduserunitdir=no
+		-Dinitial-vt=1
+		-Dsystemdsystemunitdir="$(systemd_get_systemunitdir)"
+		-Dsystemduserunitdir="$(systemd_get_userunitdir)"
 		)
-	else
-		emesonargs+=(
-			-Dinitial-vt=1
-			-Dsystemdsystemunitdir="$(systemd_get_systemunitdir)"
-			-Dsystemduserunitdir="$(systemd_get_userunitdir)"
-		)
-	fi
 
 	meson_src_configure
 }
