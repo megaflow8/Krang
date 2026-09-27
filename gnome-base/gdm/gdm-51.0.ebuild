@@ -21,7 +21,7 @@ SLOT="0"
 
 KEYWORDS="~amd64 ~x86"
 
-IUSE="audit debug branding fprint plymouth selinux systemd test video_cards_nvidia +X"
+IUSE="audit debug branding fprint plymouth selinux systemd test X"
 
 RESTRICT="!test? ( test )"
 REQUIRED_USE="^^ ( systemd )"
@@ -68,11 +68,8 @@ RDEPEND="${COMMON_DEPEND}
 	fprint? ( sys-auth/fprintd[pam] )
 
 	systemd? (
-		video_cards_nvidia? (
-			x11-drivers/nvidia-drivers
 			sys-apps/acl
 		)
-	)
 	X? ( x11-apps/xhost )
 "
 DEPEND="${COMMON_DEPEND}
@@ -132,7 +129,7 @@ src_install() {
 
 	# Ensure that gdm-greeter-XXX dynamic users have the needed
 	# permissions on nvidia systems, bug #973590
-	if use systemd && use video_cards_nvidia; then
+	if use systemd; then
 		insinto /usr/lib/systemd/system/gdm.service.d
 		doins "${FILESDIR}/90-nvidia-acl.conf"
 	fi
