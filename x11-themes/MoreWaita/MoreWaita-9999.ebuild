@@ -30,13 +30,3 @@ src_prepare() {
 	find . -name "meson.build" -exec sed -i 's/16x16_iconsdir/iconsdir_16x/g' {} + || die
 
 }
-
-pkg_postinst() {
-	xdg_pkg_postinst
-	xdg_icon_cache_update
-}
-
-pkg_postrm() {
-	xdg_pkg_postrm
-	xdg_icon_cache_update
-}
