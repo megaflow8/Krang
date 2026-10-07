@@ -27,15 +27,6 @@ KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv 
 IUSE="dbus debug +elf doc +introspection +mime selinux static-libs sysprof systemtap test utils xattr"
 RESTRICT="!test? ( test )"
 
-# * elfutils (via libelf) does not build on Windows. gresources are not embedded
-# within ELF binaries on that platform anyway and inspecting ELF binaries from
-# other platforms is not that useful so exclude the dependency in this case.
-# * Technically static-libs is needed on zlib, util-linux and perhaps more, but
-# these are used by GIO, which glib[static-libs] consumers don't really seem
-# to need at all, thus not imposing the deps for now and once some consumers
-# are actually found to static link libgio-2.0.a, we can revisit and either add
-# them or just put the (build) deps in that rare consumer instead of recursive
-# RDEPEND here (due to lack of recursive DEPEND).
 RDEPEND="
 	!<dev-libs/gobject-introspection-${INTROSPECTION_PV}
 	!<dev-util/gdbus-codegen-${PV}
@@ -88,10 +79,6 @@ PDEPEND="
 
 MULTILIB_CHOST_TOOLS=(
 	/usr/bin/gio-querymodules$(get_exeext)
-)
-
-PATCHES=(
-	"${FILESDIR}"/${PN}-2.64.1-mark-gdbus-server-auth-test-flaky.patch
 )
 
 python_check_deps() {
