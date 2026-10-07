@@ -4,24 +4,15 @@
 EAPI=8
 
 CRATES="
-	glycin@3.1.0
-	glycin-common@1.0.4
-	glycin-utils@4.1.0
 "
-# These should be in the gentoo crate dist
-CRATES+="
-	libglycin-gtk4-rebind@0.1.0
-	libglycin-gtk4-rebind-sys@0.1.0
-	libglycin-rebind@0.1.0
-	libglycin-rebind-sys@0.1.0
-"
-RUST_MIN_VER="1.92"
+
+RUST_MIN_VER="1.93"
 
 inherit cargo gnome.org meson vala
 
 DESCRIPTION="Sandboxed and extendable image loading library"
 HOMEPAGE="https://gnome.pages.gitlab.gnome.org/glycin"
-SRC_URI+=" https://binhost.h97i.org/Crates/libglycin-2.2.0-crates.tar.xz ${CARGO_CRATE_URIS}"
+SRC_URI+=" https://binhost.h97i.org/Crates/libglycin-2.2.2-crates.tar.xz ${CARGO_CRATE_URIS}"
 
 # Dependent crate licenses
 LICENSE+="
