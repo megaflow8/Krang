@@ -262,7 +262,7 @@ src_prepare() {
 
 src_configure() {
 	local emesonargs=(
-	-Dprofile=release
+	-Dprofile=dev
 	)
 	meson_src_configure
 	ln -s "${CARGO_HOME}" "${BUILD_DIR}/cargo" || die
