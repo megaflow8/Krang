@@ -21,7 +21,7 @@ SRC_URI+="
 "
 if [[ ${PKGBUMPING} != ${PVR} ]]; then
 	SRC_URI+="
-		https://binhost.h97i.org/Crates/loupe-51.0.0-crates.tar.xz
+		https://binhost.h97i.org/Crates/loupe-51.1.0-crates.tar.xz
 	"
 fi
 
