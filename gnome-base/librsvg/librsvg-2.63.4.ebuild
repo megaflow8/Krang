@@ -15,7 +15,7 @@ inherit cargo gnome2 meson-multilib python-any-r1 rust-toolchain vala
 
 DESCRIPTION="Scalable Vector Graphics (SVG) rendering library"
 HOMEPAGE="https://wiki.gnome.org/Projects/LibRsvg https://gitlab.gnome.org/GNOME/librsvg"
-SRC_URI+=" https://binhost.h97i.org/Crates/librsvg-c-${PV}-crates.tar.xz"
+SRC_URI+=" https://binhost.h97i.org/Crates/librsvg-c-2.63.4-crates.tar.xz"
 
 LICENSE="LGPL-2.1+"
 # Dependent crate licenses
