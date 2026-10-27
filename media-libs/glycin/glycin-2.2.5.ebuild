@@ -12,7 +12,7 @@ inherit cargo gnome.org meson vala
 
 DESCRIPTION="Sandboxed and extendable image loading library"
 HOMEPAGE="https://gnome.pages.gitlab.gnome.org/glycin"
-SRC_URI+=" https://binhost.h97i.org/Crates/libglycin-2.2.4-crates.tar.xz ${CARGO_CRATE_URIS}"
+SRC_URI+=" https://binhost.h97i.org/Crates/libglycin-2.2.5-crates.tar.xz ${CARGO_CRATE_URIS}"
 
 # Dependent crate licenses
 LICENSE+="
