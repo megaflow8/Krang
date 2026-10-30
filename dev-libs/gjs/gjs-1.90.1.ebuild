@@ -18,7 +18,7 @@ RDEPEND="
 	>=dev-libs/glib-2.86.0:2
 	dev-libs/libffi:=
 	>=dev-libs/gobject-introspection-1.86.0:=
-	dev-lang/spidermonkey:140
+	dev-lang/spidermonkey:153
 	x11-libs/cairo[X,glib]
 	readline? ( sys-libs/readline:0= )
 "
