@@ -19,9 +19,9 @@ LICENSE="
 
 SLOT="0"
 
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 ~arm arm64 ~riscv x86"
 
-IUSE="audit debug branding fprint plymouth selinux systemd test X"
+IUSE="audit debug branding fprint plymouth selinux systemd test video_cards_nvidia X"
 
 RESTRICT="!test? ( test )"
 REQUIRED_USE="^^ ( systemd )"
@@ -34,7 +34,7 @@ COMMON_DEPEND="
 	>=dev-libs/libgudev-232:=
 	>=dev-libs/glib-2.68:2
 	>=dev-libs/json-glib-1.2.0
-	>=sys-apps/accountsservice-26.27.3:=
+	>=sys-apps/accountsservice-0.6.35:=
 	sys-auth/polkit
 	sys-apps/keyutils:=
 	selinux? ( sys-libs/libselinux )
@@ -68,8 +68,10 @@ RDEPEND="${COMMON_DEPEND}
 	fprint? ( sys-auth/fprintd[pam] )
 
 	systemd? (
+		video_cards_nvidia? (
 			sys-apps/acl
 		)
+	)
 	X? ( x11-apps/xhost )
 "
 DEPEND="${COMMON_DEPEND}
@@ -101,9 +103,16 @@ src_prepare() {
 
 	# Show logo when branding is enabled
 	use branding && eapply "${FILESDIR}/${PN}-3.30.3-logo.patch"
+	eapply "${FILESDIR}/gdm-pam-openrc.patch"
 }
 
 src_configure() {
+	# --with-initial-vt=7 conflicts with plymouth, bug #453392
+	# gdm-3.30 now reaps (stops) the login screen when the login VT isn't active, which
+	# saves on memory. However this means if we don't start on VT1, gdm doesn't start up
+	# before user manually goes to VT7. Thus as-is we can not keep gdm away from VT1,
+	# so lets try always having it in VT1 and see if that is an issue for people before
+	# hacking up workarounds for the initial start case.
 	local emesonargs=(
 		--localstatedir /var
 
@@ -117,10 +126,15 @@ src_configure() {
 		-Drun-dir=/run/gdm
 		$(meson_feature selinux)
 		$(meson_use systemd systemd-journal)
-		-Dinitial-vt=1
-		-Dsystemdsystemunitdir="$(systemd_get_systemunitdir)"
-		-Dsystemduserunitdir="$(systemd_get_userunitdir)"
+		$(meson_use X x11-support)
+	)
+
+		emesonargs+=(
+			-Dinitial-vt=1
+			-Dsystemdsystemunitdir="$(systemd_get_systemunitdir)"
+			-Dsystemduserunitdir="$(systemd_get_userunitdir)"
 		)
+
 	meson_src_configure
 }
 
@@ -129,7 +143,7 @@ src_install() {
 
 	# Ensure that gdm-greeter-XXX dynamic users have the needed
 	# permissions on nvidia systems, bug #973590
-	if use systemd; then
+	if use systemd && use video_cards_nvidia; then
 		insinto /usr/lib/systemd/system/gdm.service.d
 		doins "${FILESDIR}/90-nvidia-acl.conf"
 	fi
